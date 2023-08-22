@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nick_nm"})})
 public class UserEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private Long iuser;
 
