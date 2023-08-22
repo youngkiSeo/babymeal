@@ -1,15 +1,16 @@
 package com.green.babymeal.user.model;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-
+@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nick_nm"})})
 public class UserEntity {
 
     @Id @GeneratedValue
@@ -38,6 +39,37 @@ public class UserEntity {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+
+    @Column(name = "role",nullable = false)
+    private String role;
+
+
+    @Column(name = "secret_key")
+    private String secret_key;
+
+    @Column(name = "zip_code",nullable = false)
+    private String zipCode;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "address_detail",nullable = false)
+    private String addressDetail;
+
+    @Column(name = "nick_nm")
+    private String nickNm;
+
+    @ColumnDefault("0")
+    @Column(name = "point")
+    private int point;
+
+    @ColumnDefault("0")
+    @Column(name = "del_yn",nullable = false)
+    private char delYn;
+
+
 
 
 }
