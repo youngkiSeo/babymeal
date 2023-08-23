@@ -2,14 +2,16 @@ package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.core.annotation.Order;
 
 @Entity
 @Data
 @Table(name = "category")
+@Order(6)
 public class CategoryEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cate_id")
+    @Column(name = "cate_id",columnDefinition = "BIGINT UNSIGNED")
     private Long cateId;
 
     @Column(name = "cate_name",nullable = false)

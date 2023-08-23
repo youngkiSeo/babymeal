@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 
 @Data
 @Entity
-@Order(3)
+@Order(4)
 @Table(name = "orderdetail")
 public class OrderDetailEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
