@@ -1,6 +1,5 @@
-package com.green.babymeal.mypage.model;
+package com.green.babymeal.common.entity;
 
-import com.green.babymeal.user.model.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;

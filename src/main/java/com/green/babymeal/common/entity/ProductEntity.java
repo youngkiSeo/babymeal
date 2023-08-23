@@ -1,4 +1,4 @@
-package com.green.babymeal.product.model;
+package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

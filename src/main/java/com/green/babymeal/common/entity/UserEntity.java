@@ -1,4 +1,4 @@
-package com.green.babymeal.user.model;
+package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
 
