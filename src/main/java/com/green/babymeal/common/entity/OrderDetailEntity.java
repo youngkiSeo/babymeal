@@ -11,7 +11,7 @@ import org.springframework.core.annotation.Order;
 @Table(name = "orderdetail")
 public class OrderDetailEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED")
+    @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED",length=20)
     private Long orderDetailId;
 
     @ManyToOne
@@ -21,13 +21,13 @@ public class OrderDetailEntity {
     @JoinColumn(name = "productId",columnDefinition = "BIGINT UNSIGNED")
     private Long productId;
 
-    @Column(name = "count")
+    @Column(name = "count",length=11)
     private int count;
 
-    @Column(name = "totalPrice",nullable = false)
+    @Column(name = "totalPrice",nullable = false,length=11)
     private int totalPrice;
 
     @ColumnDefault("0")
-    @Column(name = "delYn")
+    @Column(name = "delYn",length=4)
     private int delYn;
 }
