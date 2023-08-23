@@ -40,8 +40,6 @@ public class UserEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-
-
     @Column(name = "role",nullable = false)
     private String role;
 
