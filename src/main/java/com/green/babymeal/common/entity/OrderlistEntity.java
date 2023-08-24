@@ -22,15 +22,17 @@ public class OrderlistEntity {
     @JoinColumn(name = "iuser",nullable = false)
     private UserEntity iuser;
 
+    @ColumnDefault("1")
     @Column(name = "payment",nullable = false,length=3)
-    private int payment;
+    private Byte payment;
 
+    @ColumnDefault("1")
     @Column(name = "shipment",nullable = false,length=3)
-    private int shipment;
+    private Byte shipment;
 
     @ColumnDefault("0")
     @Column(name = "cancel",length=3)
-    private int cancel;
+    private Byte cancel;
 
     @Column(name = "createdAt",nullable = false)
     @CreationTimestamp
@@ -53,7 +55,7 @@ public class OrderlistEntity {
 
     @ColumnDefault("0")
     @Column(name = "delYn",length=4)
-    private int delYn;
+    private Byte delYn;
 
     @ColumnDefault("0")
     @Column(name = "userpoint",length=11)

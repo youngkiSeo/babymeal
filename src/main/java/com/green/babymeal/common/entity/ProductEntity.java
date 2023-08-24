@@ -23,18 +23,18 @@ public class ProductEntity {
     private String pName;
 
     @Column(name = "pPrice",nullable = false,length=11)
-    private String pPrice;
+    private int pPrice;
 
     @ColumnDefault("0")
-    @Column(name = "pQuantity",length=2011)
-    private String pQuantity;
+    @Column(name = "pQuantity",length=11)
+    private int pQuantity;
 
     @Column(name = "description",length=100)
     private String description;
 
     @ColumnDefault("0")
     @Column(name = "isDelete",length=4)
-    private String isDelete;
+    private Byte isDelete;
 
     @CreationTimestamp
     @Column(name = "createdAt")
@@ -46,9 +46,12 @@ public class ProductEntity {
 
     @ColumnDefault("0")
     @Column(name = "saleVoumn",length=11)
-    private String saleVoumn;
+    private int saleVoumn;
 
     @ColumnDefault("0")
     @Column(name = "allergy",length=4)
-    private String allergy;
+    private Byte allergy;
+
+    @Column(name = "point_rate")
+    private float pointRate;
 }
