@@ -29,5 +29,5 @@ public class OrderDetailEntity {
 
     @ColumnDefault("0")
     @Column(name = "delYn",length=4)
-    private int delYn;
+    private Byte delYn;
 }
