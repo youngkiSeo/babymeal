@@ -16,15 +16,15 @@ public class CateRelationEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id",nullable = false,columnDefinition = "BIGINT UNSIGNED")
-    private ProductEntity productId;
+    private ProductEntity productEntity;
 
     @ManyToOne
     @JoinColumn(name = "cateId",nullable = false,columnDefinition = "BIGINT UNSIGNED")
-    private CategoryEntity cateId;
+    private CategoryEntity categoryEntity;
 
     @ManyToOne
     @JoinColumn(name = "cateDetailId",nullable = false,columnDefinition = "BIGINT UNSIGNED")
-    private CateDetailEntity cateDetailId;
+    private CateDetailEntity cateDetailEntity;
 
 
 }
