@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Order(1)
+@Order(2)
 @Table(name = "product")
 public class ProductEntity {
 

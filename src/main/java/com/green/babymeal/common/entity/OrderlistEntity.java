@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Order(2)
+@Order(3)
 @Table(name = "order_list")
 public class OrderlistEntity {
 
