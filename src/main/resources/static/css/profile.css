@@ -1,0 +1,24 @@
+section { display: flex; flex-direction: column; align-items: center; }
+
+#flexContainer {
+    align-items: center; display: flex;
+    justify-content: center; margin-bottom: 15px; width: 100%;
+}
+.modal-follow { height: 100%; width: 100%; position: fixed; left:0; top: 0; z-index: 100; background-color: rgba(0, 0, 0, 0.87);}
+.modal-follow > div { height: 100%; width: 100%; display: flex; justify-content: center; align-items: center; }
+.modal-follow .container { position: relative; height: 400px; width: 400px; background-color: white; border-radius: 10px; }
+.modal-follow .container > div.top { height: 33px; }
+.modal-follow .container #title { text-align: center; padding-top: 5px; padding-bottom: 5px; }
+.modal-follow .container i { position: absolute; right: 15px; top: 5px; font-size: 25px; color: #5a5959; }
+.modal-follow .container .followCont { overflow-y: auto; height: 367px; border-top: 1px solid #d3d3d3; }
+.modal-follow .container .followCont .follow-item { display: flex; padding-left: 8px; padding-right: 8px; margin-top: 8px; }
+.modal-follow .container .followCont .follow-item > div { flex-grow: 1; margin-left: 5px; }
+
+.modal-img .swiper-container { height: 40vw; width: 90vw; }
+.modal-img .swiper-slide { display: flex; justify-content: center; }
+
+.modal-img .swiper-slide .no-main-profile { font-size: 30px; }
+.modal-img .swiper-slide img { object-fit: contain; height: 480px; }
+
+.instaBtn { background: white; border-color: #7f7e7e; border-radius: 3px; color: #7f7e7e; }
+.instaBtnEnable { background: #0095f6; border-color: #0095f6; color: white; }

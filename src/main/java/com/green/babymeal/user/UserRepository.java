@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    UserEntity findByProviderTypeAndIuser(ProviderType providerType, String iuser);
-    UserBabyinfoEntity findByGenderTypeAndGenger(GenderType genderType, Character gender);
+    UserEntity findByProviderTypeAndEmail(ProviderType providerType, String email);
+    //UserBabyinfoEntity findByGenderTypeAndGenger(GenderType genderType, Character gender);
 }

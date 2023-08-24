@@ -10,8 +10,8 @@ app:
     redis-refresh-key: "Z-RT"
   oauth2:
     authorized-redirect-uris:
-      - http://localhost:8082/oauth/redirect #카카카카카
-      - http://192.168.0.207:8082/oauth/redirect
+      - http://localhost:8080/oauth/redirect #카카카카카
+      - http://192.168.0.207:8080/oauth/redirect
 
 springboot:
   jwt:
@@ -91,7 +91,7 @@ spring:
 
 # cors
 cors:
-  allowed-origins: 'http://localhost:8082'
+  allowed-origins: 'http://localhost:8080'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600

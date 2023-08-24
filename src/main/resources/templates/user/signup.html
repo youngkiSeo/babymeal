@@ -1,0 +1,21 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/basic_layout">
+
+<head></head>
+
+<th:block layout:fragment="content">
+    <h1>회원가입</h1>
+
+    <form th:action="@{signup}" method="post" th:object="${userEntity}">
+        <div><input type="email" th:field="*{email}" placeholder="email" autofocus required></div>
+        <div><input type="password" th:field="*{pw}" placeholder="password" required></div>
+        <div><input type="text" th:field="*{nm}" placeholder="name" required></div>
+        <div>
+            <input type="submit" value="회원가입">
+        </div>
+    </form>
+</th:block>
+
+</html>

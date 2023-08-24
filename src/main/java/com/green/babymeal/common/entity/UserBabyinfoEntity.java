@@ -23,7 +23,6 @@ public class UserBabyinfoEntity {
     private String birthday;
 
     @Column(name = "gender", length = 2)
-    @ColumnDefault("0")
     @Enumerated(EnumType.STRING)
     private GenderType genderType;
 
