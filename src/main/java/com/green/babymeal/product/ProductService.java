@@ -43,7 +43,7 @@ public class ProductService {
         return 1;
     }
 
-    public List<ReviewEntity> getReviewById(Long productId) {
-        return reviewRepository.findAllByProductId(productId);
-    }
+//    public List<ReviewEntity> getReviewById(Long productId) {
+//        return reviewRepository.findAllByProductId(productId);
+//    }
 }
