@@ -2,6 +2,8 @@ package com.green.babymeal.mypage;
 
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
+import com.green.babymeal.mypage.model.OrderlistDetailUserVo;
+import com.green.babymeal.mypage.model.OrderlistDetailVo;
 import com.green.babymeal.mypage.model.OrderlistSelVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MypageService {
     private final OrderlistRepository orderlistRep;
-    private final OrderDetailRepository orderdetailRep;
+    private final OrderDetailRepository orderDetailRep;
     private final ThumbnailRepository thumbnailRep;
-   private final ProductCategoryRelationRepository productcategoryRep;
+    private final ProductCategoryRelationRepository productcategoryRep;
 
 
 
@@ -27,7 +29,7 @@ public class MypageService {
 
         List<OrderlistSelVo> list = new ArrayList<>();
         for (int i = 0; i <orderlist.size(); i++) {
-            List<OrderDetailEntity> OrderDetail = orderdetailRep.findAllByOrderId(orderlist.get(i));
+            List<OrderDetailEntity> OrderDetail = orderDetailRep.findAllByOrderId(orderlist.get(i));
             ProductThumbnailEntity Thumbnail = thumbnailRep.findAllByProductId(OrderDetail.get(0).getProductId());
             ProductCateRelationEntity cate= productcategoryRep.findByProductEntity(OrderDetail.get(0).getProductId());
 
@@ -37,7 +39,6 @@ public class MypageService {
                 totalPrice+= OrderDetail.get(i).getTotalPrice();
                 Long cateId = cate.getCategoryEntity().getCateId();
                 if (OrderDetail.size() > 1){
-
                     String pName = OrderDetail.get(i).getProductId().getPName();
                     name = "["+cateId+"단계] "+pName + "외 " + (OrderDetail.size()-1) + "개" ;
                 }else
@@ -58,4 +59,11 @@ public class MypageService {
 
         return list;
     }
+
+    public List<OrderlistDetailVo> orderDetail(Long orderId){
+        List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(orderId);
+
+        return byOrderId;
+    }
+
 }
