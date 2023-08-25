@@ -7,8 +7,9 @@ import com.green.babymeal.common.config.security.model.LoginInfoVo;
 import com.green.babymeal.common.config.security.model.UserPrincipal;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -16,19 +17,18 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class AuthTokenProvider {
-    private final AppProperties APP_PROPERTIES;
+    private final AppProperties appProperties;
 
-    @Autowired
-    public AuthTokenProvider(AppProperties appProperties) {
-        this.APP_PROPERTIES = appProperties;
-
+    @PostConstruct
+    private void init() {
         byte[] accessKeyBytes = Decoders.BASE64.decode(appProperties.getAuth().getAceessSecret());
-        this.APP_PROPERTIES.setAccessTokenKey(Keys.hmacShaKeyFor(accessKeyBytes));
+        this.appProperties.setAccessTokenKey(Keys.hmacShaKeyFor(accessKeyBytes));
 
         byte[] refreshKeyBytes = Decoders.BASE64.decode(appProperties.getAuth().getRefreshSecret());
-        this.APP_PROPERTIES.setRefreshTokenKey(Keys.hmacShaKeyFor(refreshKeyBytes));
+        this.appProperties.setRefreshTokenKey(Keys.hmacShaKeyFor(refreshKeyBytes));
     }
 
     public AuthToken createAccessToken(String id) {
@@ -36,8 +36,8 @@ public class AuthTokenProvider {
     }
 
     public AuthToken createAccessToken(String id, LoginInfoVo vo) {
-        long expiry = APP_PROPERTIES.getAuth().getAccessTokenExpiry();
-        Key key = APP_PROPERTIES.getAccessTokenKey();
+        long expiry = appProperties.getAuth().getAccessTokenExpiry();
+        Key key = appProperties.getAccessTokenKey();
         return createToken(id, expiry, key, vo);
     }
 
@@ -46,8 +46,8 @@ public class AuthTokenProvider {
     }
 
     public AuthToken createRefreshToken(String id, LoginInfoVo vo) {
-        long expiry = APP_PROPERTIES.getAuth().getRefreshTokenExpiry();
-        Key key = APP_PROPERTIES.getRefreshTokenKey();
+        long expiry = appProperties.getAuth().getRefreshTokenExpiry();
+        Key key = appProperties.getRefreshTokenKey();
         return createToken(id, expiry, key, vo);
     }
 
@@ -62,7 +62,7 @@ public class AuthTokenProvider {
     public Authentication getAuthentication(AuthToken authToken) {
         if(authToken.validate()) {
             UserPrincipal userPrincipal = authToken.getUserDetails();
-            return new UsernamePasswordAuthenticationToken(userPrincipal, authToken, userPrincipal.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
         } else {
             throw new TokenValidFailedException();
         }

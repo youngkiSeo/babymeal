@@ -30,25 +30,31 @@ public class AuthToken {
     }
 
     private String createAuthToken(String id, long expiry, LoginInfoVo vo) {
-        JwtBuilder jb = Jwts.builder()
-                .setSubject(id)
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(createClaims(id, vo))
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expiry))
                 .signWith(key)
-                .setExpiration(new Date(new Date().getTime() + expiry));
-        if(vo != null) {
-            jb.setClaims(createClaims(vo));
-        }
-        return jb.compact();
+                .compact();
     }
 
-    private Claims createClaims(LoginInfoVo vo) {
+    private Claims createClaims(String id, LoginInfoVo vo) {
         Claims claims = Jwts.claims();
-        claims.put(IUSER, vo.getIuser());
-        claims.put(ROLES, vo.getRoles());
+        claims.setSubject(id);
+        if(vo != null) {
+            claims.put(IUSER, vo.getIuser());
+            claims.put(ROLES, vo.getRoles());
+        }
         return claims;
     }
 
     public boolean validate() {
         return this.getTokenClaims() != null;
+    }
+
+    public long getTokenExpirationTime() {
+        return getTokenClaims().getExpiration().getTime();
     }
 
     public Claims getTokenClaims() {

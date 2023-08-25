@@ -20,7 +20,7 @@ function getDateTimeInfo(dt) {
 
 //프로필 화면으로 이동
 function moveToProfile(iuser) {
-    location.href = `../../templates/user/profile?iuser=${iuser}`;
+    location.href = `/user/profile?iuser=${iuser}`;
 }
 
 const feedObj = {

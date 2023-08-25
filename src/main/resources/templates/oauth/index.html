@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/basic_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <th:block layout:fragment="content">
+        <script>
+            const urlStr = window.location.href;
+            const url = new URL(urlStr);
+            const urlParams = url.searchParams;
+
+            const access_token = urlParams.get('access_token');
+            console.log(access_token);
+
+            window.localStorage.setItem("access_token", access_token);
+            location.href = '/feed';
+        </script>
+    </th:block>
+</body>
+
+</html>

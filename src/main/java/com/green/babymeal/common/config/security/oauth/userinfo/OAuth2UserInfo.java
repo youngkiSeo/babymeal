@@ -13,7 +13,7 @@ public abstract class OAuth2UserInfo {
         return attributes;
     }
 
-    public abstract String getId(); // 꼭 받아야 하는 부분이 될듯 싶음
+    public abstract String getId();
 
     public abstract String getName();
 

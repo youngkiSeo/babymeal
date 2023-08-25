@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@ConfigurationProperties(prefix = "app") // yaml에 있는 것을 객체로 가져와서 사용을 하는 부분 이름만 맞춰주면 된다.
+@ConfigurationProperties(prefix = "app")
 public class AppProperties {
-    private final Auth auth = new Auth(); // yaml auth 셋팅을 가져오는 부분
-    private final OAuth2 oauth2 = new OAuth2(); // yaml oauth2 셋팅을 가져오는 부분
+    private final Auth auth = new Auth();
+    private final OAuth2 oauth2 = new OAuth2();
 
     @Setter
     public Key accessTokenKey;
@@ -22,7 +22,7 @@ public class AppProperties {
 
     @Getter
     @Setter
-    public static class Auth {// yaml auth 셋팅을 가져오는 부분
+    public static class Auth {
         private String headerSchemeName;
         private String tokenType;
         private String aceessSecret;
@@ -35,7 +35,7 @@ public class AppProperties {
 
     @Getter
     @Setter
-    public static final class OAuth2 {// yaml oauth2 셋팅을 가져오는 부분
+    public static final class OAuth2 {
         private List<String> authorizedRedirectUris = new ArrayList<>();
     }
 }

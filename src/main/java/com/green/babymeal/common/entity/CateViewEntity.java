@@ -16,9 +16,10 @@ public class CateViewEntity {
 
     @ManyToOne
     @JoinColumn(name = "cateId",columnDefinition = "BIGINT UNSIGNED")
-    private CategoryEntity cateId;
+    private CategoryEntity categoryEntity;
+
 
     @ManyToOne
     @JoinColumn(name = "cateDetailId",columnDefinition = "BIGINT UNSIGNED")
-    private CateDetailEntity cateDetailId;
+    private CateDetailEntity cateDetailEntity;
 }
