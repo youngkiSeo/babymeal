@@ -116,7 +116,11 @@ if(newFeedModalBtnElem) {
                     fData.append('imgs', files[i]);
                 }
                 fData.append('ctnt', body.querySelector('textarea').value);
-                fData.append('location', body.querySelector('input[type=text]').value);
+
+                const location = body.querySelector('input[type=text]').value;
+                if(location) {
+                    fData.append('location', location);
+                }
 
                 const headers = {};
                 const access_token = window.localStorage.getItem("access_token");
@@ -129,12 +133,13 @@ if(newFeedModalBtnElem) {
                     headers,
                     body: fData
                 }).then(res => res.json())
-                    .then(myJson => {
+                    .then(res => {
 
+                        console.log(res)
                         const closeBtn = modal.querySelector('.btn-close');
                         closeBtn.click();
 
-                        if(feedObj && myJson) {
+                        if(feedObj && res) {
                             feedObj.refreshList();
                         }
                     });

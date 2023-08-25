@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -39,7 +38,9 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.loginInfoVo.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return this.loginInfoVo.getRoles().stream().map(SimpleGrantedAuthority::new).toList();
+        //new SimpleGrantedAuthority("");
+        //return this.loginInfoVo.getRoles().stream().map(item -> new SimpleGrantedAuthority(item)).toList();
     }
 
     @Override
@@ -77,7 +78,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         loginInfoVo.addRole(user.getRoleType().getCode());
         return UserPrincipal.builder()
                 .loginInfoVo(loginInfoVo)
-                .uid(user.getEmail())
+                .uid(user.getUid())
                 .unm(user.getName())
                 .build();
     }

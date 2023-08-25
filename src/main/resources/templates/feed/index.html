@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/login_layout">
+
+<head>
+  <title>피드</title>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+  <link rel="stylesheet" th:href="@{/css/feed.css}">
+  <script defer src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+  <script defer th:src="@{/js/common_feed.js}"></script>
+  <script defer th:src="@{/js/feed.js}"></script>
+</head>
+
+<th:block layout:fragment="content">
+  <div class="d-flex flex-row justify-content-center w614 w-full">
+    <div id="item_container" class="w614"></div>
+  </div>
+  <div class="loading display-none"><img th:src="@{/img/loading.gif}"></div>
+</th:block>
+
+</html>

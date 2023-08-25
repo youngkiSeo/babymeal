@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="LOG_PATH" value="./logs" />
+    <property name="LOG_FILE_NAME" value="logInfo" />
+    <!-- TRACE > DEBUG > INFO > WARN > ERROR
+
+        trace : debug보다 더 상세한 메시지를 표현하기 위한 레벨 의미
+        debug : 앱 디버깅을 위한 메시지를 표시하는 레벨 의미
+        info : 앱의 상태 변경과 같은 정보 전달을 위해 사용
+        warn : 시스템 에러의 원인 될 수 있는 경고 레벨 의미
+        error : 로직 수행 중에 시스템에 심각한 문제가 발생해서 앱의 작동이 불가능한 경우를 의미
+    -->
+    <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %thread] [%logger] %msg%n" />
+
+    <!-- 파일 로그 출력 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}_${type}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 콘솔 로그 출력 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

@@ -21,9 +21,11 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdAt; // 데이터 값이 찍혔을 것이다.
+    private LocalDateTime createdAt;
 
     @JsonIgnore
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+
 }

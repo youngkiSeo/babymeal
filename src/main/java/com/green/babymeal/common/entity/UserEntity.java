@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.green.babymeal.common.config.security.model.ProviderType;
 import com.green.babymeal.common.config.security.model.RoleType;
 import jakarta.persistence.*;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -26,22 +25,23 @@ public class UserEntity {
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private Long iuser;
 
-    @Column(name = "email",nullable = false)
+
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "image")
     private String image;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "birthday",nullable = false)
-    private LocalDateTime birthday;
+    @Column(name = "birthday")
+    private String birthday;
 
-    @Column(name = "mobile_nb",nullable = false)
+    @Column(name = "mobile_nb")
     private String mobile_nb;
 
     @Column(name = "created_at")
@@ -54,23 +54,23 @@ public class UserEntity {
     @NotNull
     private RoleType roleType;
 
-    @Column(name="provider_type", nullable = false, length = 20)
+    @Column(nullable = false, length = 80)
+    @Size(min = 3, max = 80)
+    private String uid;
+
+    @Column(name="provider_type", length = 20)
     @Enumerated(EnumType.STRING)
     @NotNull
     @Size(min = 10 , max = 20) // java 단 에서의 사이즈이다.
     private ProviderType providerType; // 자동으로 스네이크 기법으로 변경 해준다.
 
-
-    @Column(name = "secret_key")
-    private String secret_key;
-
-    @Column(name = "zip_code",nullable = false)
+    @Column(name = "zip_code")
     private String zipCode;
 
     @Column(name = "address")
     private String address;
 
-    @Column(name = "address_detail",nullable = false)
+    @Column(name = "address_detail")
     private String addressDetail;
 
     @Column(name = "nick_nm")
@@ -81,7 +81,7 @@ public class UserEntity {
     private int point;
 
     @ColumnDefault("0")
-    @Column(name = "del_yn",nullable = false)
+    @Column(name = "del_yn")
     private char delYn;
 
 

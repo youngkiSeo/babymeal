@@ -2,8 +2,9 @@ package com.green.babymeal.common.entity;
 
 import com.green.babymeal.common.config.security.model.GenderType;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
 @Entity

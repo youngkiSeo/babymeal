@@ -13,7 +13,7 @@
 
 <th:block layout:fragment="content" th:with="auth=${#authentication.getPrincipal().getUser()}">
   <div id="localConst" th:data-iuser="${profile.iuser}"></div>
-  <form th:if="${auth.iuser eq profile.iuser}" th:action="@{/templates/user/profileImg}" method="post" enctype="multipart/form-data">
+  <form th:if="${auth.iuser eq profile.iuser}" th:action="@{/user/profileImg}" method="post" enctype="multipart/form-data">
     <div>
       이미지 : <input type="file" name="imgArr" multiple accept="image/*">
       <input type="submit" value="업로드">
