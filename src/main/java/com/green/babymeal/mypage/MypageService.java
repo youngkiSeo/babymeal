@@ -1,35 +1,69 @@
 package com.green.babymeal.mypage;
 
-import com.green.babymeal.common.entity.OrderlistEntity;
-import com.green.babymeal.common.entity.UserEntity;
-import com.green.babymeal.common.repository.OrderDetailRepository;
-import com.green.babymeal.common.repository.OrderlistRepository;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.*;
+import com.green.babymeal.mypage.model.OrderlistDetailUserVo;
+import com.green.babymeal.mypage.model.OrderlistDetailVo;
 import com.green.babymeal.mypage.model.OrderlistSelVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MypageService {
     private final OrderlistRepository orderlistRep;
-    private final OrderDetailRepository orderdetailRep;
+    private final OrderDetailRepository orderDetailRep;
+    private final ThumbnailRepository thumbnailRep;
+    private final ProductCategoryRelationRepository productcategoryRep;
+
 
 
     public  List<OrderlistSelVo> orderlist (){
         Long iuser = 1L;
         UserEntity entity = new UserEntity();
         entity.setIuser(1L);
-        List<OrderlistEntity> orderlist = orderlistRep.findAll();
-        List<OrderlistEntity> allByIuser = orderlistRep.findAllByIuser(entity);
+        List<OrderlistEntity> orderlist = orderlistRep.findAllByIuser(entity);
 
+        List<OrderlistSelVo> list = new ArrayList<>();
+        for (int i = 0; i <orderlist.size(); i++) {
+            List<OrderDetailEntity> OrderDetail = orderDetailRep.findAllByOrderId(orderlist.get(i));
+            ProductThumbnailEntity Thumbnail = thumbnailRep.findAllByProductId(OrderDetail.get(0).getProductId());
+            ProductCateRelationEntity cate= productcategoryRep.findByProductEntity(OrderDetail.get(0).getProductId());
 
-        List<OrderlistSelVo> list = allByIuser.stream().map(item -> OrderlistSelVo.builder()
-                .orderId(item.getOrderid())
-                .createdAt(item.getCreatedAt())
-                .build()).toList();
+            int totalPrice =0;
+            String name = "";
+            for (int j = 0; j <OrderDetail.size(); j++) {
+                totalPrice+= OrderDetail.get(i).getTotalPrice();
+                Long cateId = cate.getCategoryEntity().getCateId();
+                if (OrderDetail.size() > 1){
+                    String pName = OrderDetail.get(i).getProductId().getPName();
+                    name = "["+cateId+"단계] "+pName + "외 " + (OrderDetail.size()-1) + "개" ;
+                }else
+
+                    name="["+cateId+"단계] "+OrderDetail.get(i).getProductId().getPName();
+            }
+
+            OrderlistSelVo build = OrderlistSelVo.builder()
+                    .orderId(orderlist.get(i).getOrderid())
+                    .createdAt(String.valueOf(orderlist.get(i).getCreatedAt()))
+                    .price(totalPrice)
+                    .name(name)
+                    .shipment(orderlist.get(i).getShipment())
+                    .thumbnail(Thumbnail.getImg())
+                    .build();
+            list.add(build);
+        }
 
         return list;
     }
+
+    public List<OrderlistDetailVo> orderDetail(Long orderId){
+        List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(orderId);
+
+        return byOrderId;
+    }
+
 }

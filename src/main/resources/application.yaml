@@ -6,8 +6,8 @@ app:
     accessTokenExpiry: 200000
     refresh-secret: ForJavaSpringBootClass502DaeguGreenArtAcademy
     refreshTokenExpiry: 1296000000
-    redis-access-black-key: "Z-AT-BLACK"
-    redis-refresh-key: "Z-RT"
+    redis-access-black-key: "A-AT-BLACK"
+    redis-refresh-key: "A-RT"
   oauth2:
     authorized-redirect-uris:
       - http://localhost:8080/oauth/redirect #카카카카카
@@ -99,7 +99,7 @@ cors:
 
   data:
     redis:
-      host: 192.168.0.144
+      host: localhost
       port: 6379
 
 # mybatis config

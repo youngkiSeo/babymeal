@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/login_layout">
+
+<head>
+    <title>Direct Message</title>
+    <link rel="stylesheet" th:href="@{/css/dm.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.0/sockjs.min.js" integrity="sha512-ksHM9XpigYGeRdXZfI4GddPsUjmLj6zd1MCNXL4fsfDwp1G+u6hC73uwDjlpjdX4tbEtj/N1AWkLo6WjDwQkyA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer th:src="@{/js/dm.js}"></script>
+</head>
+
+<th:block layout:fragment="content">
+    <div id="localConst" th:with="oppoiuser=${param.oppoiuser}" th:data-oppoiuser="${oppoiuser}"/>
+    <div class="d-flex flex-row w-full h-full justify-content-center">
+        <div class="d-flex flex-row p-3 w800">
+            <div class="dm_user_list_container w300 over_y_a h600"></div>
+            <div class="flex-grow-1 d-flex flex-column">
+                <div class="dm_msg_container over_y_a flex-grow-1 w-full h600"></div>
+                <div class="dm_form h100 w-full">
+                    <div class="input-group mb-3">
+                        <input type="text" id="msg_input" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationFacade {
+
+    public boolean isLogin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null;
+    }
     public UserEntity getLoginUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) auth.getPrincipal();
