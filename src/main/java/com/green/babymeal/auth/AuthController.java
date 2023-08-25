@@ -21,7 +21,6 @@ public class AuthController {
                                                 , HttpServletRequest req
                                                 , HttpServletResponse res) {
 
-        ResponseEntity.ok(service.signUp(dto, req, res));
         SignUpResultDto dto1 = service.signUp(dto, req, res);
         //AuthResVo vo = service.signUp(dto, req, res);
         //return ResponseEntity.ok(vo);
