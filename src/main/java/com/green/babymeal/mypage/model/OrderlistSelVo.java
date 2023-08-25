@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 public class OrderlistSelVo {
     private Long orderId;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private int price;
     private String thumbnail;
     private String name;

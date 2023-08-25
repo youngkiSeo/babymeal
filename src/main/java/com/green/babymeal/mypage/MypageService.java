@@ -1,10 +1,7 @@
 package com.green.babymeal.mypage;
 
-import com.green.babymeal.common.entity.OrderDetailEntity;
-import com.green.babymeal.common.entity.OrderlistEntity;
-import com.green.babymeal.common.entity.UserEntity;
-import com.green.babymeal.common.repository.OrderDetailRepository;
-import com.green.babymeal.common.repository.OrderlistRepository;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.*;
 import com.green.babymeal.mypage.model.OrderlistSelVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +14,9 @@ import java.util.List;
 public class MypageService {
     private final OrderlistRepository orderlistRep;
     private final OrderDetailRepository orderdetailRep;
+    private final ThumbnailRepository thumbnailRep;
+   private final ProductCategoryRelationRepository productcategoryRep;
+
 
 
     public  List<OrderlistSelVo> orderlist (){
@@ -25,27 +25,33 @@ public class MypageService {
         entity.setIuser(1L);
         List<OrderlistEntity> orderlist = orderlistRep.findAllByIuser(entity);
 
-
         List<OrderlistSelVo> list = new ArrayList<>();
         for (int i = 0; i <orderlist.size(); i++) {
             List<OrderDetailEntity> OrderDetail = orderdetailRep.findAllByOrderId(orderlist.get(i));
+            ProductThumbnailEntity Thumbnail = thumbnailRep.findAllByProductId(OrderDetail.get(0).getProductId());
+            ProductCateRelationEntity cate= productcategoryRep.findByProductEntity(OrderDetail.get(0).getProductId());
+
             int totalPrice =0;
             String name = "";
             for (int j = 0; j <OrderDetail.size(); j++) {
                 totalPrice+= OrderDetail.get(i).getTotalPrice();
+                Long cateId = cate.getCategoryEntity().getCateId();
                 if (OrderDetail.size() > 1){
+
                     String pName = OrderDetail.get(i).getProductId().getPName();
-                    name = pName + "외" + (OrderDetail.size()-1) + "개" ;
+                    name = "["+cateId+"단계] "+pName + "외 " + (OrderDetail.size()-1) + "개" ;
                 }else
-                    name=OrderDetail.get(i).getProductId().getPName();
+
+                    name="["+cateId+"단계] "+OrderDetail.get(i).getProductId().getPName();
             }
 
             OrderlistSelVo build = OrderlistSelVo.builder()
                     .orderId(orderlist.get(i).getOrderid())
-                    .createdAt(orderlist.get(i).getCreatedAt())
+                    .createdAt(String.valueOf(orderlist.get(i).getCreatedAt()))
                     .price(totalPrice)
                     .name(name)
                     .shipment(orderlist.get(i).getShipment())
+                    .thumbnail(Thumbnail.getImg())
                     .build();
             list.add(build);
         }
