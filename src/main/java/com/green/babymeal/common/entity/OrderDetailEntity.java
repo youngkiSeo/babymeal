@@ -16,10 +16,11 @@ public class OrderDetailEntity {
 
     @ManyToOne
     @JoinColumn(name = "orderId",columnDefinition = "BIGINT UNSIGNED")
-    private OrderDetailEntity orderId;
+    private OrderlistEntity orderId;
 
+    @ManyToOne
     @JoinColumn(name = "productId",columnDefinition = "BIGINT UNSIGNED")
-    private Long productId;
+    private ProductEntity productId;
 
     @Column(name = "count",length=11)
     private int count;

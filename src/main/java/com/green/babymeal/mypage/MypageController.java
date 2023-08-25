@@ -1,5 +1,6 @@
 package com.green.babymeal.mypage;
 
+import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import com.green.babymeal.mypage.model.OrderlistSelVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
