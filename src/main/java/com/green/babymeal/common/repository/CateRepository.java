@@ -35,4 +35,7 @@ public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
             " where B.categoryEntity.cateId=:cateId and A.pQuantity!=0 and A.isDelete=0 and C.img is not null")
     List<CateSelVo> findBySel(@Param("cateId") Long cateId);
 
+
+
+
 }

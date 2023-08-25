@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -44,12 +45,16 @@ public class CateService {
        log.info("{}",cateSelList.getCateDetailId());
         if("null".equals(cateSelList.getCateDetailId())){
           return  cateRepository.findBy(cateSelList.getCateId(),cateSelList.getCateDetailId());
+
         }
         else{
           return  cateRepository.findBySel(cateSelList.getCateId());
         }
+    }
 
 
-
+    public List selsel(CateSelList cateSelList){
+        List<CategoryEntity> allById = cateRepository.findAllById(Collections.singleton(cateSelList.getCateId()));
+        return null;
     }
 }
