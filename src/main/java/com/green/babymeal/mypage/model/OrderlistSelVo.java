@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 public class OrderlistSelVo {
     private Long orderId;
     private LocalDateTime createdAt;
-    private String thumbnail;
-    private String title;
-    private String name;
     private int price;
-    private String shipment;
+    private String thumbnail;
+    private String name;
+
+    private int shipment;
 }
