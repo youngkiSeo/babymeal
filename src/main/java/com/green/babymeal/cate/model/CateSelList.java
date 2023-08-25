@@ -9,6 +9,6 @@ public class CateSelList {
 
     private Long cateId;
     private Long cateDetailId;
-    private Pageable pageable;
+
 
 }

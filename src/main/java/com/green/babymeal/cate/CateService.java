@@ -1,8 +1,9 @@
 package com.green.babymeal.cate;
 
+import com.green.babymeal.cate.model.CateSelList;
+import com.green.babymeal.cate.model.CateSelSel;
 import com.green.babymeal.cate.model.CateViewRepositoryCate;
 import com.green.babymeal.cate.model.CateViewRepositoryDetail;
-import com.green.babymeal.common.entity.CateViewEntity;
 import com.green.babymeal.common.entity.CategoryEntity;
 import com.green.babymeal.common.repository.CateDetailRepository;
 import com.green.babymeal.common.repository.CateRepository;
@@ -25,7 +26,7 @@ public class CateService {
 
 
 
-    public List selCateList(){
+    public List selCate(){
         List list1=new ArrayList();
         List<CategoryEntity> all = cateRepository.findAll();
         CategoryEntity entity=new CategoryEntity();
@@ -38,5 +39,9 @@ public class CateService {
             list1.add(byCategoryEntity1);
         }
         return list1;
+    }
+
+    public List<CateSelSel> selCateList(CateSelList cateSelList){
+        return cateRepository.findBy(cateSelList);
     }
 }
