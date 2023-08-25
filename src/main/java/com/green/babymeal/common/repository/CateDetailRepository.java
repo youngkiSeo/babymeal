@@ -1,4 +1,4 @@
-package com.green.babymeal.cate;
+package com.green.babymeal.common.repository;
 
 
 import com.green.babymeal.common.entity.CateDetailEntity;
