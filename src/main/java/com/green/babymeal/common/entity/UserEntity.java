@@ -26,7 +26,6 @@ public class UserEntity {
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private Long iuser;
 
-
     @Column(name = "email",nullable = false)
     private String email;
 
