@@ -1,8 +1,10 @@
 package com.green.babymeal.auth;
 
+import com.green.babymeal.CommonRes;
 import com.green.babymeal.auth.model.AuthResVo;
 import com.green.babymeal.auth.model.SignInReqDto;
 import com.green.babymeal.auth.model.SignUpReqDto;
+import com.green.babymeal.auth.model.SignUpResultDto;
 import com.green.babymeal.common.config.exception.AuthErrorCode;
 import com.green.babymeal.common.config.exception.RestApiException;
 import com.green.babymeal.common.config.properties.AppProperties;
@@ -38,7 +40,7 @@ public class AuthService {
     private final AppProperties appProperties;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResVo signUp(SignUpReqDto dto
+    public SignUpResultDto signUp(SignUpReqDto dto
                         , HttpServletRequest req
                         , HttpServletResponse res) {
 
@@ -52,12 +54,26 @@ public class AuthService {
                 .email(dto.getEmail())
                 .providerType(ProviderType.LOCAL)
                 .roleType(RoleType.USER)
-                .address()
-                .addressDetail()
-                .
+                .address(dto.getAddress())
+                .addressDetail(dto.getAddressDetail())
+                .birthday(dto.getBirthday())
+                .mobile_nb(dto.getMobileNb())
+                .nickNm(dto.getNickNm())
                 .build();
         userRep.save(p);
-        return processAuth(p, req, res);
+
+        processAuth(p, req, res);
+        SignUpResultDto success = new SignUpResultDto();
+
+        if (userRep!=null){
+            setSuccessResult(success);
+        } else {
+            setFailResult(success);
+        }
+
+        return success;
+
+//        return processAuth(p, req, res);
     }
 
     public AuthResVo signIn(SignInReqDto dto, HttpServletRequest req, HttpServletResponse res) {
@@ -80,6 +96,7 @@ public class AuthService {
         }
 
         return processAuth(r, req, res);
+
     }
 
     private AuthResVo processAuth(UserEntity userEntity, HttpServletRequest req, HttpServletResponse res) {
@@ -143,5 +160,18 @@ public class AuthService {
         AuthToken at = authTokenProvider.createAccessToken(up.getUid(), vo);
 
         return AuthResVo.builder().accessToken(at.getToken()).build();
+    }
+
+    //성공 실패 추가
+    private void setSuccessResult(SignUpResultDto result) {
+        result.setSuccess(true);
+        result.setCode(CommonRes.SUCCESS.getCode());
+        result.setMsg(CommonRes.SUCCESS.getMsg());
+    }
+
+    private void setFailResult(SignUpResultDto result) {
+        result.setSuccess(false);
+        result.setCode(CommonRes.FAIL.getCode());
+        result.setMsg(CommonRes.FAIL.getMsg());
     }
 }

@@ -39,7 +39,7 @@ public class UserEntity {
     private String name;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private String birthday;
 
     @Column(name = "mobile_nb")
     private String mobile_nb;

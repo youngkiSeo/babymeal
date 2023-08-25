@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByProviderTypeAndUid(ProviderType providerType, String uid);
     //UserBabyinfoEntity findByGenderTypeAndGenger(GenderType genderType, Character gender);
+    UserEntity findByIuser(UserEntity entity);
+
 }

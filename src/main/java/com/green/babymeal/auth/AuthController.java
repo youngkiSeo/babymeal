@@ -3,6 +3,7 @@ package com.green.babymeal.auth;
 import com.green.babymeal.auth.model.AuthResVo;
 import com.green.babymeal.auth.model.SignInReqDto;
 import com.green.babymeal.auth.model.SignUpReqDto;
+import com.green.babymeal.auth.model.SignUpResultDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,15 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AuthResVo> postSignUp(@RequestBody SignUpReqDto dto
+    public ResponseEntity<SignUpResultDto> postSignUp(@RequestBody SignUpReqDto dto
                                                 , HttpServletRequest req
                                                 , HttpServletResponse res) {
-        AuthResVo vo = service.signUp(dto, req, res);
-        return ResponseEntity.ok(vo);
+
+        ResponseEntity.ok(service.signUp(dto, req, res));
+        SignUpResultDto dto1 = service.signUp(dto, req, res);
+        //AuthResVo vo = service.signUp(dto, req, res);
+        //return ResponseEntity.ok(vo);
+        return ResponseEntity.ok(dto1);
     }
 
     @PostMapping("/sign-in")
