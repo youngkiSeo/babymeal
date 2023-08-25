@@ -1,13 +1,11 @@
 package com.green.babymeal.cate;
 
-import com.green.babymeal.cate.model.CateSelList;
-import com.green.babymeal.cate.model.CateSelSel;
-import com.green.babymeal.cate.model.CateViewRepositoryCate;
-import com.green.babymeal.cate.model.CateViewRepositoryDetail;
+import com.green.babymeal.cate.model.*;
 import com.green.babymeal.common.entity.CategoryEntity;
 import com.green.babymeal.common.repository.CateDetailRepository;
 import com.green.babymeal.common.repository.CateRepository;
 import com.green.babymeal.common.repository.CateViewRepository;
+import com.green.babymeal.common.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,7 @@ public class CateService {
 
 
 
+
     public List selCate(){
         List list1=new ArrayList();
         List<CategoryEntity> all = cateRepository.findAll();
@@ -41,7 +40,16 @@ public class CateService {
         return list1;
     }
 
-    public List<CateSelSel> selCateList(CateSelList cateSelList){
-        return cateRepository.findBy(cateSelList);
+    public List<CateSelVo> selCateList(CateSelList cateSelList){
+       log.info("{}",cateSelList.getCateDetailId());
+        if("null".equals(cateSelList.getCateDetailId())){
+          return  cateRepository.findBy(cateSelList.getCateId(),cateSelList.getCateDetailId());
+        }
+        else{
+          return  cateRepository.findBySel(cateSelList.getCateId());
+        }
+
+
+
     }
 }

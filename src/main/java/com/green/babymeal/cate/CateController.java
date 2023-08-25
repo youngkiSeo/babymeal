@@ -4,7 +4,7 @@ package com.green.babymeal.cate;
 
 
 import com.green.babymeal.cate.model.CateSelList;
-import com.green.babymeal.cate.model.CateSelSel;
+import com.green.babymeal.cate.model.CateSelVo;
 import lombok.RequiredArgsConstructor;
 
 
@@ -19,16 +19,15 @@ import java.util.List;
 public class CateController {
 
 
-    private final CateService service;
+  private final CateService service;
 
-    @GetMapping("/all")
-    private List selCate(){
-       return service.selCate();
-    }
+  @GetMapping("/all")
+  private List selCate(){
+     return service.selCate();
+  }
 
     @PostMapping("/list")
-    private List<CateSelSel> selCateList(@RequestBody CateSelList cateSelList){
+    private List<CateSelVo> selCateList(@RequestBody CateSelList cateSelList){
         return service.selCateList(cateSelList);
     }
-
 }
