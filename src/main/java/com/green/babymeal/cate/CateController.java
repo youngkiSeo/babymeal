@@ -5,6 +5,7 @@ package com.green.babymeal.cate;
 
 import com.green.babymeal.cate.model.CateSelList;
 import com.green.babymeal.cate.model.CateSelVo;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/cate")
+@Tag(name = "카테고리")
 public class CateController {
 
 
@@ -26,8 +28,13 @@ public class CateController {
      return service.selCate();
   }
 
-    @PostMapping("/list")
-    private List<CateSelVo> selCateList(@RequestBody CateSelList cateSelList){
+    @GetMapping("/list")
+    private List<CateSelVo> selCateList( CateSelList cateSelList){
         return service.selCateList(cateSelList);
+    }
+
+    @GetMapping("/lili")
+    private List selCateListli(@RequestBody CateSelList cateSelList){
+      return service.selsel(cateSelList);
     }
 }
