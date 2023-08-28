@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.babyfood.main.MainMapper">
+
+
+    <select id="SelMainCount">
+        SELECT COUNT(*)
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0;
+    </select>
+
+    <select id="SelMainVo">
+        SELECT A.product_id productId,B.img thumbnail,A.p_name name,A.p_price price,A.p_quantity quantity,A.sale_voumn saleVoumn,A.point_rate pointRate
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0
+        ORDER BY A.created_at desc
+        LIMIT #{startIdx},#{row};
+    </select>
+
+
+
+
+</mapper>
