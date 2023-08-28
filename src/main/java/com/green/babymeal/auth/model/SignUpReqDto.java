@@ -2,6 +2,8 @@ package com.green.babymeal.auth.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class SignUpReqDto {
     private String uid;
@@ -10,7 +12,7 @@ public class SignUpReqDto {
     private String email;
     private String address;
     private String addressDetail;
-    private String birthday;
+    private LocalDate birthday;
     private String mobileNb;
     private String nickNm;
 }
