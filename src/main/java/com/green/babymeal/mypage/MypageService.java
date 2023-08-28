@@ -5,6 +5,7 @@ import com.green.babymeal.common.repository.*;
 import com.green.babymeal.mypage.model.OrderlistDetailUserVo;
 import com.green.babymeal.mypage.model.OrderlistDetailVo;
 import com.green.babymeal.mypage.model.OrderlistSelVo;
+import com.green.babymeal.mypage.model.OrderlistUserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -60,10 +61,18 @@ public class MypageService {
         return list;
     }
 
-    public List<OrderlistDetailVo> orderDetail(Long orderId){
+    public OrderlistDetailUserVo orderDetail(Long orderId){
         List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(orderId);
+        OrderlistEntity orderlistEntity = orderlistRep.findByOrderid(orderId);
+        OrderlistUserVo vo = new OrderlistUserVo();
+        vo.setReciever(orderlistEntity.getReciever());
+        vo.setAddress(orderlistEntity.getAddress());
+        vo.setAddressDetail(orderlistEntity.getAddressDetail());
+        vo.setPhoneNm(orderlistEntity.getPhoneNm());
+        vo.setRequest(orderlistEntity.getRequest());
+        vo.setUsepoint(orderlistEntity.getUsepoint());
+        return OrderlistDetailUserVo.builder().list(byOrderId).user(vo).build();
 
-        return byOrderId;
     }
 
 }

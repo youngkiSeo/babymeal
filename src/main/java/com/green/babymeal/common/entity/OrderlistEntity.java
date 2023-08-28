@@ -58,7 +58,7 @@ public class OrderlistEntity {
     private Byte delYn;
 
     @ColumnDefault("0")
-    @Column(name = "userpoint",length=11)
-    private int userpoint;
+    @Column(name = "usepoint",length=11)
+    private int usepoint;
 
 }
