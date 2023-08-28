@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title = "Greengram"
-                , description = "대구그린컴퓨터학원 SNS"
+        info = @Info(title = "개미는 뚠뚠"
+                , description = "오늘도 뚠뚠"
                 , version = "v0.0.1"
         ),
         security = @SecurityRequirement(name = "authorization")

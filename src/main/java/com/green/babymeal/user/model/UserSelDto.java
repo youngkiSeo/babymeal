@@ -6,6 +6,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserselDto {
+public class UserSelDto {
 private Long iuser;
 }
