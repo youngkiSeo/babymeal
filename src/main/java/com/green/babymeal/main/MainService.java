@@ -105,6 +105,7 @@ public class MainService {
 
 
 
+
     private void thumbnailNm(List<MainSelVo> mainSelVos) {
         for (int i = 0; i < mainSelVos.size(); i++) {
             String thumbnail = mainSelVos.get(i).getThumbnail();
