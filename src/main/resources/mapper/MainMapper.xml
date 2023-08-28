@@ -5,15 +5,15 @@
 <mapper namespace="com.green.babymeal.main.MainMapper">
 
 
-    <select id="SelMainCount">
-        SELECT COUNT(*)
+    <select id="selMainCount">
+        SELECT COUNT(A.product_id)
         FROM product A
         LEFT JOIN product_thumbnail B
         ON A.product_id=B.product_id
         WHERE A.is_delete=0 AND A.p_quantity>0;
     </select>
 
-    <select id="SelMainVo">
+    <select id="selMainVo">
         SELECT A.product_id productId,B.img thumbnail,A.p_name name,A.p_price price,A.p_quantity quantity,A.sale_voumn saleVoumn,A.point_rate pointRate
         FROM product A
         LEFT JOIN product_thumbnail B
@@ -42,5 +42,54 @@
         order by A.sale_voumn desc,rand()
         LIMIT #{row};
     </select>
+
+    <select id="random">
+        select A.product_id productId,B.img thumbnail,A.p_name name,A.p_price price,A.p_quantity quantity,A.sale_voumn saleVoumn,A.point_rate pointRate
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0
+        ORDER BY RAND()
+        limit 8
+    </select>
+
+
+    <select id="bestSel">
+        select A.product_id productId,B.img thumbnail,A.p_name name,A.p_price price,A.p_quantity quantity,A.sale_voumn saleVoumn,A.point_rate pointRate
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0
+        ORDER BY A.sale_voumn desc
+        LIMIT 8
+    </select>
+
+
+    <select id="bestSelAllCount">
+        select count(A.product_id)
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0
+        ORDER BY A.sale_voumn desc
+    </select>
+
+    <select id="bestSelAll">
+        select A.product_id productId,B.img thumbnail,A.p_name name,A.p_price price,A.p_quantity quantity,A.sale_voumn saleVoumn,A.point_rate pointRate
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0
+        ORDER BY A.sale_voumn desc
+        LIMIT #{startIdx},#{row}
+    </select>
+
+
+    <select id="levelSel">
+        select distinct cate_id
+        from product_category_relation
+        where product_id=#{productId}
+    </select>
+
 
 </mapper>
