@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nick_nm"})})
 @NoArgsConstructor
+
 public class UserEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

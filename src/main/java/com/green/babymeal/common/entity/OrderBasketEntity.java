@@ -2,6 +2,10 @@ package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -9,11 +13,14 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "order_basket")
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@SuperBuilder
 public class OrderBasketEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT UNSIGNED")
-    private Long cart_id;
+    private Long cartId;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -25,7 +32,8 @@ public class OrderBasketEntity {
 
     private int count;
 
-    @Column(name = "created_at")
+    @CreatedDate
+    @Column(name = "created_at",nullable = false)
     private LocalDate createAt;
 
 }

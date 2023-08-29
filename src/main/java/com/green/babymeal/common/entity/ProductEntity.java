@@ -1,7 +1,8 @@
 package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 @Entity
 @Order(2)
 @Table(name = "product")
+@NoArgsConstructor
+@SuperBuilder
 public class ProductEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
