@@ -1,10 +1,15 @@
 package com.green.babymeal.main.model;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class MainSelPaging {
 
     private int maxPage;
