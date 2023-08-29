@@ -1,17 +1,20 @@
 package com.green.babymeal.product;
 
-import com.green.babymeal.common.entity.ProductEntity;
-import com.green.babymeal.common.entity.ReviewEntity;
-import com.green.babymeal.common.entity.UserEntity;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.ProductAllergyRepository;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.common.repository.ReviewRepository;
 import com.green.babymeal.product.model.ProductReviewDto;
+import com.green.babymeal.product.model.ProductSelDto;
+import com.green.babymeal.product.model.ProductVolumeDto;
 import com.green.babymeal.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,6 +27,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductAllergyRepository ProductAllergyRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,5 +53,35 @@ public class ProductService {
         ProductEntity entity = new ProductEntity();
         entity.setProductId(productId);
         return reviewRepository.findAllByProductId(entity);
+    }
+
+    public List<ProductVolumeDto> selProductVolumeYearMonth(int year, int month) {
+        return productRepository.findSaleVolume(year, month);
+    }
+
+    public ProductSelDto selProduct(Long productId) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지않는상품입니다 : " + productId)); // 예외처리
+
+        List<ProductAllergyEntity> productAllergies = ProductAllergyRepository.findByProductId_ProductId(productId);
+        List<String> allergyName = productAllergies.stream()
+                .map(productAllergyEntity -> getAllergyName(productAllergyEntity.getAllergyId()))
+                .collect(Collectors.toList());
+
+        ProductSelDto productAndAllergyDto = new ProductSelDto();
+        productAndAllergyDto.setPName(productEntity.getPName());
+        productAndAllergyDto.setDescription(productEntity.getDescription());
+        productAndAllergyDto.setPPrice(productEntity.getPPrice());
+        productAndAllergyDto.setPQuantity(productEntity.getPQuantity());
+        productAndAllergyDto.setSaleVoumn(productEntity.getSaleVoumn());
+        productAndAllergyDto.setAllergyNames(allergyName);
+        return productAndAllergyDto;
+    }
+
+    private String getAllergyName(AllergyEntity allergyEntity) {
+        if (allergyEntity == null) {
+            return null;
+        }
+        return allergyEntity.getAllergyName();
     }
 }

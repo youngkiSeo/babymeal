@@ -1,14 +1,9 @@
 package com.green.babymeal.user;
 
 import com.green.babymeal.common.entity.UserEntity;
-import com.green.babymeal.user.model.UserInsDto;
-import com.green.babymeal.user.model.UserSelDto;
-import com.green.babymeal.user.model.UserVo;
+import com.green.babymeal.user.model.UserDelDto;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +16,10 @@ public class UserController {
 
     private final UserService service;
 
-    @PostMapping("/join")
+    /*@PostMapping("/join")
     public ResponseEntity<UserEntity> PostUser(@RequestBody UserInsDto dto){
         return service.insUser(dto);
-    }
+    }*/
 
     @GetMapping("/{uid}")
     public UserEntity GetUser(@PathVariable String uid){
@@ -34,6 +29,13 @@ public class UserController {
     @GetMapping("/search")
     public List<UserEntity> GetUserAll(){
         return service.selUserAll();
+    }
+
+    @DeleteMapping("/uid")
+    @Operation(summary = "유저/관리자 삭제",description = "iuser : 회원의 고유값(PK) <- 해당 유저가 삭제됨<br>")
+    public ResponseEntity<Integer> delUser(@RequestParam String uid){
+        service.delUser(uid);
+        return ResponseEntity.ok(1);
     }
 
 }
