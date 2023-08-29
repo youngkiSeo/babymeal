@@ -3,6 +3,7 @@ package com.green.babymeal.product;
 
 import com.green.babymeal.common.entity.ReviewEntity;
 import com.green.babymeal.product.model.ProductReviewDto;
+import com.green.babymeal.product.model.ProductVolumeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -40,4 +41,13 @@ public class ProductController {
     List<ReviewEntity> selReview(@PathVariable Long productId){
         return service.getReviewById(productId);
     }
+
+
+    @GetMapping("/chart")
+    @Operation(summary = "월별 판매량 조회", description = "월을 넣으면 해당 월의 판매량 출력"+
+    "년도+월 : 1월 - > 2301 , 12월 -> 2312 이렇게 넣어주세요")
+    List<ProductVolumeDto> selProductVolumeYearMonth(@RequestParam int year, @RequestParam int month){
+        return service.selProductVolumeYearMonth(year, month);
+    }
+
 }

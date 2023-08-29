@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.green.babyfood.main.MainMapper">
+<mapper namespace="com.green.babymeal.main.MainMapper">
 
 
     <select id="SelMainCount">
@@ -24,6 +24,23 @@
     </select>
 
 
+    <select id="birth">
+        SELECT TIMESTAMPDIFF(MONTH, birthday, date(NOW()))
+        FROM user
+        WHERE iuser=#{iuser}
+    </select>
 
+
+    <select id="birthRecommendFilter">
+        select A.product_id productId,B.img thumbnail,A.p_name name,A.p_price price,A.p_quantity quantity,A.sale_voumn saleVoumn,A.point_rate pointRate
+        FROM product A
+        LEFT JOIN product_thumbnail B
+        ON A.product_id=B.product_id
+        LEFT JOIN product_category_relation C
+        ON A.product_id=C.product_id
+        WHERE A.is_delete=0 AND A.p_quantity>0 AND C.cate_id=#{cateId}
+        order by A.sale_voumn desc,rand()
+        LIMIT #{row};
+    </select>
 
 </mapper>

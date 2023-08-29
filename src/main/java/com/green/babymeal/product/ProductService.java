@@ -6,6 +6,7 @@ import com.green.babymeal.common.entity.UserEntity;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.common.repository.ReviewRepository;
 import com.green.babymeal.product.model.ProductReviewDto;
+import com.green.babymeal.product.model.ProductVolumeDto;
 import com.green.babymeal.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,9 @@ public class ProductService {
         ProductEntity entity = new ProductEntity();
         entity.setProductId(productId);
         return reviewRepository.findAllByProductId(entity);
+    }
+
+    public List<ProductVolumeDto> selProductVolumeYearMonth(int year, int month) {
+        return productRepository.findSaleVolume(year, month);
     }
 }
