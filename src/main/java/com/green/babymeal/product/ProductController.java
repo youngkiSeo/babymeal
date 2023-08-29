@@ -1,8 +1,11 @@
 package com.green.babymeal.product;
 
 
+import com.green.babymeal.common.entity.ProductEntity;
 import com.green.babymeal.common.entity.ReviewEntity;
 import com.green.babymeal.product.model.ProductReviewDto;
+import com.green.babymeal.product.model.ProductSelDto;
+import com.green.babymeal.product.model.ProductVolumeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,20 @@ public class ProductController {
             "테스트시 참고 : 존재하는 상품번호 예시 1 6")
     List<ReviewEntity> selReview(@PathVariable Long productId){
         return service.getReviewById(productId);
+    }
+
+
+    @GetMapping("/chart")
+    @Operation(summary = "월별 판매량 조회", description = "연도/월 넣으면 해당 월의 판매량 출력"+
+    "주문리스트 생성후 확인/수정 예정입니다 ")
+    List<ProductVolumeDto> selProductVolumeYearMonth(@RequestParam int year, @RequestParam int month){
+        return service.selProductVolumeYearMonth(year, month);
+    }
+
+    @GetMapping("/{productId}")
+    @Operation(summary = "상품 상세정보", description = "상품 코드 입력해주세요")
+    ProductSelDto selProduct(@RequestParam Long productId){
+        return service.selProduct(productId);
     }
 
 }

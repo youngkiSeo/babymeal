@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-### LOG ###
-logs
+# ignore all files in the build/ directory
+logs/
+.logs/

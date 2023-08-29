@@ -1,17 +1,20 @@
 package com.green.babymeal.product;
 
-import com.green.babymeal.common.entity.ProductEntity;
-import com.green.babymeal.common.entity.ReviewEntity;
-import com.green.babymeal.common.entity.UserEntity;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.ProductAllergyRepository;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.common.repository.ReviewRepository;
 import com.green.babymeal.product.model.ProductReviewDto;
+import com.green.babymeal.product.model.ProductSelDto;
+import com.green.babymeal.product.model.ProductVolumeDto;
 import com.green.babymeal.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,6 +27,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductAllergyRepository ProductAllergyRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,5 +53,38 @@ public class ProductService {
         ProductEntity entity = new ProductEntity();
         entity.setProductId(productId);
         return reviewRepository.findAllByProductId(entity);
+    }
+
+    public List<ProductVolumeDto> selProductVolumeYearMonth(int year, int month) {
+        return productRepository.findSaleVolume(year, month);
+    }
+
+    public ProductSelDto selProduct(Long productId) {
+        // 상품 ID로부터 상품 정보를 조회
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지않는상품입니다 : " + productId)); // 예외처리
+        // 상품과 관련된 알러지 정보 조회
+        List<ProductAllergyEntity> productAllergies = ProductAllergyRepository.findByProductId_ProductId(productId);
+        // 알러지 정보를 문자열 리스트로 변환
+        List<String> allergyName = productAllergies.stream()
+                .map(productAllergyEntity -> getAllergyName(productAllergyEntity.getAllergyId()))
+                .collect(Collectors.toList());
+        // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
+        ProductSelDto productAllergyDto = new ProductSelDto();
+        productAllergyDto.setPName(productEntity.getPName());
+        productAllergyDto.setDescription(productEntity.getDescription());
+        productAllergyDto.setPPrice(productEntity.getPPrice());
+        productAllergyDto.setPQuantity(productEntity.getPQuantity());
+        productAllergyDto.setSaleVoumn(productEntity.getSaleVoumn());
+        productAllergyDto.setAllergyNames(allergyName);
+        return productAllergyDto;
+    }
+
+    private String getAllergyName(AllergyEntity allergyEntity) {
+        // 알러지id로 알러지 종류(이름) 매칭
+        if (allergyEntity == null) {
+            return null;
+        }
+        return allergyEntity.getAllergyName();
     }
 }
