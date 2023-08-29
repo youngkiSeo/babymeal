@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class MainController1 {
+public class SocialLogin {
 
     @GetMapping("/oauth/redirect")
     public String getRedirect() {

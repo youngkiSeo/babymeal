@@ -1,6 +1,5 @@
 package com.green.babymeal.common.entity;
 
-import com.green.babymeal.common.config.security.model.GenderType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,14 +17,13 @@ public class UserBabyinfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Long baby_id;
+    private Long babyId;
 
     @Column(length = 20)
     private String birthday;
 
-    @Column(name = "gender", length = 2)
-    @Enumerated(EnumType.STRING)
-    private GenderType genderType;
+    @Column(length = 100)
+    private String prefer;
 
     @ManyToOne
     @JoinColumn(name = "iuser")

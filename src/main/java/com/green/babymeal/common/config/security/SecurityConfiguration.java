@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                                             , "/pic/**"
                                             , "/error"
                                             , "/err"
-
+                                    ,"/**"
                                             , "/admin/**"
                                             , "/dm","/feed","/user/profile","/user/signin","/user/signup"
                                             ,"/api/v1/auth/**"
