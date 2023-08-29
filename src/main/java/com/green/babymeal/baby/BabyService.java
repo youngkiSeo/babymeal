@@ -27,15 +27,15 @@ public class BabyService {
         entity.setPrefer(dto.getPrefer());
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setIuser(dto.getIuser());
+        userEntity.setIuser(1L);
         entity.setUserEntity(userEntity);
 
 
-        List<UserBabyinfoEntity> byUserEntityIuser = rep.findByUserEntity_Iuser(dto.getIuser());
+    //    List<UserBabyinfoEntity> byUserEntityIuser = rep.findByUserEntity_Iuser(dto.getIuser());
 
-        if("null".equals(byUserEntityIuser)){
+      //  if("null".equals(byUserEntityIuser)){
             rep.save(entity);
-        }
+      //  }
 
             UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
             userBabyalleEntity.setUserBabyinfoEntity(entity);
