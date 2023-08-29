@@ -60,25 +60,28 @@ public class ProductService {
     }
 
     public ProductSelDto selProduct(Long productId) {
+        // 상품 ID로부터 상품 정보를 조회
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지않는상품입니다 : " + productId)); // 예외처리
-
+        // 상품과 관련된 알러지 정보 조회
         List<ProductAllergyEntity> productAllergies = ProductAllergyRepository.findByProductId_ProductId(productId);
+        // 알러지 정보를 문자열 리스트로 변환
         List<String> allergyName = productAllergies.stream()
                 .map(productAllergyEntity -> getAllergyName(productAllergyEntity.getAllergyId()))
                 .collect(Collectors.toList());
-
-        ProductSelDto productAndAllergyDto = new ProductSelDto();
-        productAndAllergyDto.setPName(productEntity.getPName());
-        productAndAllergyDto.setDescription(productEntity.getDescription());
-        productAndAllergyDto.setPPrice(productEntity.getPPrice());
-        productAndAllergyDto.setPQuantity(productEntity.getPQuantity());
-        productAndAllergyDto.setSaleVoumn(productEntity.getSaleVoumn());
-        productAndAllergyDto.setAllergyNames(allergyName);
-        return productAndAllergyDto;
+        // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
+        ProductSelDto productAllergyDto = new ProductSelDto();
+        productAllergyDto.setPName(productEntity.getPName());
+        productAllergyDto.setDescription(productEntity.getDescription());
+        productAllergyDto.setPPrice(productEntity.getPPrice());
+        productAllergyDto.setPQuantity(productEntity.getPQuantity());
+        productAllergyDto.setSaleVoumn(productEntity.getSaleVoumn());
+        productAllergyDto.setAllergyNames(allergyName);
+        return productAllergyDto;
     }
 
     private String getAllergyName(AllergyEntity allergyEntity) {
+        // 알러지id로 알러지 종류(이름) 매칭
         if (allergyEntity == null) {
             return null;
         }
