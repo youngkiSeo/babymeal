@@ -1,14 +1,11 @@
 package com.green.babymeal.user;
 
+import com.green.babymeal.auth.AuthService;
 import com.green.babymeal.common.entity.UserEntity;
-import com.green.babymeal.user.model.UserInsDto;
-import com.green.babymeal.user.model.UserVo;
+import com.green.babymeal.user.model.UserDelDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -16,8 +13,10 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository rep;
+    private final UserMapper mapper;
+    private final AuthService service;
 
-    public ResponseEntity<UserEntity> insUser(UserInsDto dto){
+    /*public ResponseEntity<UserEntity> insUser(UserInsDto dto){
         UserEntity entity = new UserEntity();
         entity.setName(dto.getName());
         entity.setNickNm(dto.getNick_name());
@@ -30,17 +29,24 @@ public class UserService {
         entity.setPassword(dto.getPassword());
         entity.setUid(dto.getUid());
        return ResponseEntity.ok(rep.save(entity));
-    }
+    }*/
 
     public UserEntity selUser(String uid){
         UserEntity entity = new UserEntity();
         entity.setUid(uid);
-        return rep.findByUid(uid);
+        UserEntity userEntity=rep.findByUid(uid);
+        return userEntity;
     }
 
     public List<UserEntity> selUserAll(){
         return rep.findAll();
     }
+
+    public void delUser(String email){
+
+    }
+
+
 
 
 
