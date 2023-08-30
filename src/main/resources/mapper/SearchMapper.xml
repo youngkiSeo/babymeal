@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.babymeal.search.SearchMapper">
+
+    <select id="selfilter">
+        SELECT A.product_id productid,A.p_name NAME,D.img img,A.p_price price,F.cate_id cateId
+        FROM product A
+        left JOIN product_allergy B
+        ON A.product_id = B.product_id
+        left JOIN allergy C
+        on C.allergy_id = B.allergy_id
+        LEFT JOIN product_thumbnail D
+        ON D.product_id = A.product_id
+        LEFT JOIN product_category_relation F
+        ON A.product_id = F.product_id
+        WHERE p_name LIKE '%${word}%'
+        and p_name REGEXP #{msg}
+        AND A.p_quantity !=0
+        AND A.is_delete = 0
+        AND D.img is not null
+        <if test="allergy!=''">
+            AND A.product_id NOT IN(SELECT product_id FROM product_allergy WHERE allergy_id in(${allergy}))
+        </if>
+        GROUP BY A.product_id
+        <choose>
+            <when test="sorter == 0">
+                ORDER BY A.sale_volume DESC
+            </when>
+            <when test="sorter == 1">
+                ORDER BY A.sale_volume
+            </when>
+            <when test="sorter == 2">
+                ORDER BY A.p_price DESC
+            </when>
+            <when test="sorter == 3">
+                ORDER BY A.p_price
+            </when>
+        </choose>
+        LIMIT #{startIdx}, #{row}
+    </select>
+
+    <select id="maxpage">
+        SELECT count(DISTINCT A.product_id)
+        FROM product A
+        left join product_allergy B
+        on A.product_id=B.product_id
+        LEFT JOIN product_thumbnail C
+        ON A.product_id = C.product_id
+        LEFT JOIN product_category_relation D
+        ON A.product_id = D.product_id
+        where A.p_quantity!=0 AND A.is_delete=0
+        and A.p_name LIKE '%${word}%'
+        AND A.p_name REGEXP #{msg}
+        <if test="allergy!=''">
+            AND A.product_id NOT IN(SELECT product_id FROM product_allergy WHERE allergy_id in(${allergy}))
+        </if>
+        AND D.cate_id IS NOT null
+    </select>
+
+</mapper>
