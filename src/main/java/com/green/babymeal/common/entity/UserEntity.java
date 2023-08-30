@@ -84,7 +84,7 @@ public class UserEntity {
 
     @ColumnDefault("0")
     @Column(name = "del_yn")
-    private char delYn;
+    private Byte delYn;
 
 
 

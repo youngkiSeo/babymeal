@@ -16,13 +16,14 @@ public class UserBabyalleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "baby_allergy" ,updatable = false, nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long babyallergy;
 
     @ManyToOne
     @JoinColumn(name = "baby_id")
     @ToString.Exclude
     private UserBabyinfoEntity userBabyinfoEntity;
+
 
     @ManyToOne
     @JoinColumn(name = "allergyId")

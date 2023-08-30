@@ -75,7 +75,7 @@ public class ProductService {
         productAllergyDto.setDescription(productEntity.getDescription());
         productAllergyDto.setPPrice(productEntity.getPPrice());
         productAllergyDto.setPQuantity(productEntity.getPQuantity());
-        productAllergyDto.setSaleVoumn(productEntity.getSaleVoumn());
+        productAllergyDto.setSaleVoumn(productEntity.getSaleVolume());
         productAllergyDto.setAllergyNames(allergyName);
         return productAllergyDto;
     }

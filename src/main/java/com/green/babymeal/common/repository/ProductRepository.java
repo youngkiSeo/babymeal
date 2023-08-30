@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
 
-    @Query("SELECT p.pName, SUM(p.saleVoumn) AS totalSaleVolume " +
+    @Query("SELECT p.pName, SUM(p.saleVolume) AS totalSaleVolume " +
             "FROM ProductEntity p " +
             "WHERE YEAR(p.createdAt) = :year AND MONTH(p.createdAt) = :month " +
             "GROUP BY p.pName")

@@ -48,8 +48,8 @@ public class ProductEntity {
     private LocalDateTime updatedAt;
 
     @ColumnDefault("0")
-    @Column(name = "saleVoumn",length=11)
-    private int saleVoumn;
+    @Column(name = "saleVolume",length=11)
+    private int saleVolume;
 
     @ColumnDefault("0")
     @Column(name = "allergy",length=4)
