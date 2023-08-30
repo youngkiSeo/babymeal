@@ -20,6 +20,10 @@ public interface OrderlistRepository extends JpaRepository<OrderlistEntity, Long
 
     // 어드민
     Page<OrderlistEntity> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+    @Query("SELECT A " +
+            "FROM OrderlistEntity A " +
+            "WHERE A.ordercode = :orderCode")
+    List<OrderlistEntity> findOrderById(Long orderCode);
 
 
 }
