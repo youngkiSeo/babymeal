@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class OrderlistEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED",length=100)
     private Long orderid;
 

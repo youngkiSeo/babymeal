@@ -5,6 +5,7 @@ import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
 import com.green.babymeal.mypage.model.*;
 import com.green.babymeal.user.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -107,51 +108,34 @@ public class MypageService {
     }
     public ProfileVo profileupdate(ProfileUpdDto dto){
         UserEntity loginUser = USERPK.getLoginUser();
-        Optional<UserEntity> byid = userRep.findById(loginUser.getIuser());
+        UserEntity entity = userRep.findById(loginUser.getIuser()).get();
 
-        UserEntity entity = new UserEntity();
-        entity.setIuser(loginUser.getIuser());
-        entity.setNickNm(dto.getNickNm());
+        if (!dto.getNickNm().equals("")){
+            entity.setNickNm(dto.getNickNm());
+        }
 
-        log.info("userId:{}",loginUser.getUid());
-        entity.setNickNm(dto.getNickNm());
-        String encode = PW_ENCODER.encode(dto.getPassword());
-        entity.setPassword(encode);
-        entity.setMobile_nb(dto.getPhoneNumber());
-        entity.setName(dto.getName());
-        entity.setBirthday(dto.getBirthday());
-        entity.setZipCode(dto.getZipcode());
-        entity.setAddress(dto.getAddress());
-        entity.setAddressDetail(dto.getAddressDetail());
-        entity.setUid(byid.get().getUid());
-        entity.setEmail(byid.get().getEmail());
-
-//        if (!dto.getNickNm().equals("")){
-//            String nickNm = byid.get().getNickNm();
-//            entity.setNickNm(nickNm);
-//        }
-//
-//        if (!dto.getPassword().equals("")){
-//        }
-//
-//        if (!dto.getPhoneNumber().equals("")) {
-//        }
-//
-//        if (!dto.getName().equals("")) {
-//        }
-//        if (!dto.getBirthday().equals("")){
-//        }
-//        if (!dto.getZipcode().equals("")){
-//
-//        }
-//        if (!dto.getAddress().equals("")){
-//
-//        }
-//        if (!dto.getAddressDetail().equals("")){
-//
-//        }
-
-
+        if (!dto.getPassword().equals("")){
+            String encode = PW_ENCODER.encode(dto.getPassword());
+            entity.setPassword(encode);
+        }
+        if (!dto.getPhoneNumber().equals("")) {
+            entity.setMobile_nb(dto.getPhoneNumber());
+        }
+        if (!dto.getName().equals("")) {
+            entity.setName(dto.getName());
+        }
+        if (!dto.getBirthday().equals("")){
+            entity.setBirthday(dto.getBirthday());
+        }
+        if (!dto.getZipcode().equals("")){
+            entity.setZipCode(dto.getZipcode());
+        }
+        if (!dto.getAddress().equals("")){
+            entity.setAddress(dto.getAddress());
+        }
+        if (!dto.getAddressDetail().equals("")){
+            entity.setAddressDetail(dto.getAddressDetail());
+        }
         userRep.save(entity);
 
         return ProfileVo.builder()
@@ -168,6 +152,38 @@ public class MypageService {
                 .point(entity.getPoint())
                 .build();
 
+    }
+    public int nicknmcheck(String nickname){
+        UserEntity loginUser = USERPK.getLoginUser();
+        Long iuser = loginUser.getIuser();
+        UserEntity userentity = userRep.findById(iuser).get();
+
+        UserEntity NickNm = userRep.findByNickNm(nickname);
+
+        if (userentity.getNickNm().equals(nickname)){
+            return 2;
+        }
+        else if (!(null==NickNm)) {
+            return 1;
+        }
+        return 0;
+    }
+    public void deluser(HttpServletRequest req) {
+        UserEntity user = USERPK.getLoginUser();
+        Long iuser = user.getIuser();
+        UserEntity userentity = userRep.findById(iuser).get();
+        log.info("user: {}",userentity.getName());
+        //userentity.setDelYn((byte) 1);
+        userRep.save(userentity);
+    }
+
+    public int selpw(String password){
+        UserEntity userId = USERPK.getLoginUser();
+        UserEntity userEntity = userRep.findById(userId.getIuser()).get();
+        boolean matches = PW_ENCODER.matches(password, userEntity.getPassword());
+        if (matches==true){
+            return 1;
+        }else return 0;
     }
 
 
