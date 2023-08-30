@@ -1,6 +1,7 @@
 package com.green.babymeal.main;
 
 import com.green.babymeal.common.config.security.AuthenticationFacade;
+import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.main.model.MainSelPaging;
 import com.green.babymeal.main.model.MainSelVo;
 import com.green.babymeal.main.model.SelDto;
@@ -17,7 +18,8 @@ import java.util.List;
 public class MainService {
 
     private final MainMapper mapper;
-    public final AuthenticationFacade USERPK;
+    private final AuthenticationFacade USERPK;
+    private final ProductRepository productRepository;
 
     public MainSelPaging mainSel(SelDto dto){
         if(dto.getCheck()==1){

@@ -4,15 +4,18 @@ import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.OrderBasketRepository;
 import com.green.babymeal.common.repository.ThumbnailRepository;
+import com.green.babymeal.orderbasket.model.OrderBasketCount;
 import com.green.babymeal.orderbasket.model.OrderBasketInsDto;
 import com.green.babymeal.orderbasket.model.OrderBasketVo;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,7 @@ public class OrderBasketService {
             existCheck.setCount(existCheck.getCount() + dto.getCount());
             repository.save(existCheck);
             return existCheck.getCartId();
+
         } else {
             OrderBasketEntity orderBasketEntity = OrderBasketEntity.builder()
                     .productEntity(productEntity)
@@ -65,6 +69,7 @@ public class OrderBasketService {
                     .productName(orderBasketEntity.getProductEntity().getPName())
                     .price(orderBasketEntity.getProductEntity().getPPrice())
                     .createdAt(orderBasketEntity.getCreateAt())
+                    .count(orderBasketEntity.getCount())
                     .thumbnail("http://192.168.0.144:5001/img/product/" + productId + "/" + productThumbnailEntity.getImg())
                     .build();
             list.add(vo);
@@ -74,4 +79,30 @@ public class OrderBasketService {
     }
 
 
+
+    public int put(OrderBasketCount orderBasketCount){
+        OrderBasketEntity orderBasketEntity = repository.findById(orderBasketCount.getCartId()).get();
+        if(orderBasketCount.getCheck()==1){
+            orderBasketEntity.setCount(orderBasketEntity.getCount()+1);
+            repository.save(orderBasketEntity);
+            return 1;
+        }
+        else {
+          orderBasketEntity.setCount(orderBasketEntity.getCount()-1);
+          repository.save(orderBasketEntity);
+          return 1;
+        }
+    }
+
+
+    @Transactional
+    public int delete(Long cartId){
+        repository.deleteById(cartId);
+        Optional<OrderBasketEntity> byId = repository.findById(cartId);
+
+        if(byId.isEmpty()){
+            return 1;
+        }
+        else return 0;
+    }
 }
