@@ -160,10 +160,7 @@ public class MypageService {
 
         UserEntity NickNm = userRep.findByNickNm(nickname);
 
-        if (userentity.getNickNm().equals(nickname)){
-            return 2;
-        }
-        else if (!(null==NickNm)) {
+        if (!(null==NickNm)) {
             return 1;
         }
         return 0;
@@ -173,7 +170,7 @@ public class MypageService {
         Long iuser = user.getIuser();
         UserEntity userentity = userRep.findById(iuser).get();
         log.info("user: {}",userentity.getName());
-        //userentity.setDelYn((byte) 1);
+        userentity.setDelYn((byte) 1);
         userRep.save(userentity);
     }
 
