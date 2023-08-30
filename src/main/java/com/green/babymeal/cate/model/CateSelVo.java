@@ -1,12 +1,14 @@
 package com.green.babymeal.cate.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CateSelVo {
 
     private Long productId;
-    private String img;
+    private String thumbnail;
     private int price;
     private String name;
     private int quantity;
@@ -14,7 +16,7 @@ public class CateSelVo {
 
     public CateSelVo(Long productId, String img, int price, String name, int quantity, int saleVoumn) {
         this.productId = productId;
-        this.img = img;
+        this.thumbnail = img;
         this.price = price;
         this.name = name;
         this.quantity = quantity;
