@@ -11,4 +11,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByUid(String uid);
     //UserBabyinfoEntity findByGenderTypeAndGenger(GenderType genderType, Character gender);
 
+    //닉네임찾기
+    UserEntity findByNickNm(String nickNm);
+
 }
