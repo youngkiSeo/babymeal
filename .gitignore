@@ -33,5 +33,5 @@ build/
 .vscode/
 
 # ignore all files in the build/ directory
-logs/
-.logs/
+./logs/**
+./logs/logInfo.log
