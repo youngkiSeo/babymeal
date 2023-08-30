@@ -8,6 +8,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class OrderBasketService {
@@ -24,17 +26,12 @@ public class OrderBasketService {
                 .iuser(USERPK.getLoginUser().getIuser())
                 .build();
 
+
         OrderBasketEntity existCheck = repository.findByProductEntity_ProductIdAndUserEntity_Iuser(dto.getProductId(), USERPK.getLoginUser().getIuser());
         if (existCheck != null) {
-            OrderBasketEntity orderBasketEntity = OrderBasketEntity.builder()
-                    .count(existCheck.getCount() + dto.getCount())
-                    .cartId(existCheck.getCartId())
-                    .createAt(existCheck.getCreateAt())
-                    .productEntity(productEntity)
-                    .userEntity(userEntity)
-                    .build();
-            repository.save(orderBasketEntity);
-        return  orderBasketEntity.getCartId();
+            existCheck.setCount(existCheck.getCount() + dto.getCount());
+            repository.save(existCheck);
+            return existCheck.getCartId();
         } else {
             OrderBasketEntity orderBasketEntity = OrderBasketEntity.builder()
                     .productEntity(productEntity)
@@ -43,6 +40,8 @@ public class OrderBasketService {
                     .build();
             repository.save(orderBasketEntity);
         return orderBasketEntity.getCartId();
+
+
         }
     }
 }

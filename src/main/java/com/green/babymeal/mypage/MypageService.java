@@ -1,22 +1,28 @@
 package com.green.babymeal.mypage;
 
+import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
-import com.green.babymeal.mypage.model.OrderlistDetailUserVo;
-import com.green.babymeal.mypage.model.OrderlistDetailVo;
-import com.green.babymeal.mypage.model.OrderlistSelVo;
-import com.green.babymeal.mypage.model.OrderlistUserVo;
+import com.green.babymeal.mypage.model.*;
+import com.green.babymeal.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MypageService {
     private final OrderlistRepository orderlistRep;
     private final OrderDetailRepository orderDetailRep;
+    private final UserRepository userRep;
+    private final PasswordEncoder PW_ENCODER;
+    private final AuthenticationFacade USERPK;
     private final ThumbnailRepository thumbnailRep;
     private final ProductCategoryRelationRepository productcategoryRep;
 
@@ -74,5 +80,95 @@ public class MypageService {
         return OrderlistDetailUserVo.builder().list(byOrderId).user(vo).build();
 
     }
+    public OrderlistEntity delorder(Long orderId){
+        OrderlistEntity entity = orderlistRep.getReferenceById(orderId);
+        Byte delYn = 1;
+        //entity.setOrderid(orderId);
+        entity.setDelYn(delYn);
+        OrderlistEntity save = orderlistRep.save(entity);
+        return save;
+    }
+    public ProfileVo profile(){
+        UserEntity loginUser = USERPK.getLoginUser();
+        Optional<UserEntity> byId = userRep.findById(loginUser.getIuser());
+        return ProfileVo.builder()
+                .iuser(byId.get().getIuser())
+                .address(byId.get().getAddress())
+                .addressDetail(byId.get().getAddressDetail())
+                .birthday(byId.get().getBirthday())
+                .email(byId.get().getEmail())
+                .image(byId.get().getImage())
+                .mobileNb(byId.get().getMobile_nb())
+                .name(byId.get().getName())
+                .nickNm(byId.get().getNickNm())
+                .zipcode(byId.get().getZipCode())
+                .point(byId.get().getPoint())
+                .build();
+    }
+    public ProfileVo profileupdate(ProfileUpdDto dto){
+        UserEntity loginUser = USERPK.getLoginUser();
+        Optional<UserEntity> byid = userRep.findById(loginUser.getIuser());
+
+        UserEntity entity = new UserEntity();
+        entity.setIuser(loginUser.getIuser());
+        entity.setNickNm(dto.getNickNm());
+
+        log.info("userId:{}",loginUser.getUid());
+        entity.setNickNm(dto.getNickNm());
+        String encode = PW_ENCODER.encode(dto.getPassword());
+        entity.setPassword(encode);
+        entity.setMobile_nb(dto.getPhoneNumber());
+        entity.setName(dto.getName());
+        entity.setBirthday(dto.getBirthday());
+        entity.setZipCode(dto.getZipcode());
+        entity.setAddress(dto.getAddress());
+        entity.setAddressDetail(dto.getAddressDetail());
+        entity.setUid(byid.get().getUid());
+        entity.setEmail(byid.get().getEmail());
+
+//        if (!dto.getNickNm().equals("")){
+//            String nickNm = byid.get().getNickNm();
+//            entity.setNickNm(nickNm);
+//        }
+//
+//        if (!dto.getPassword().equals("")){
+//        }
+//
+//        if (!dto.getPhoneNumber().equals("")) {
+//        }
+//
+//        if (!dto.getName().equals("")) {
+//        }
+//        if (!dto.getBirthday().equals("")){
+//        }
+//        if (!dto.getZipcode().equals("")){
+//
+//        }
+//        if (!dto.getAddress().equals("")){
+//
+//        }
+//        if (!dto.getAddressDetail().equals("")){
+//
+//        }
+
+
+        userRep.save(entity);
+
+        return ProfileVo.builder()
+                .iuser(entity.getIuser())
+                .address(entity.getAddress())
+                .addressDetail(entity.getAddressDetail())
+                .birthday(entity.getBirthday())
+                .email(entity.getEmail())
+                .image(entity.getImage())
+                .mobileNb(entity.getMobile_nb())
+                .name(entity.getName())
+                .nickNm(entity.getNickNm())
+                .zipcode(entity.getZipCode())
+                .point(entity.getPoint())
+                .build();
+
+    }
+
 
 }
