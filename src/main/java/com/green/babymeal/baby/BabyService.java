@@ -22,20 +22,18 @@ public class BabyService {
     private final BabyAlleRepository repository;
 
     public BabyInsVo insBaby(BabyInsDto dto){
-        UserBabyinfoEntity entity = new UserBabyinfoEntity();
-        entity.setBirthday(dto.getBirthday());
-        entity.setPrefer(dto.getPrefer());
-
-        UserEntity userEntity = new UserEntity();
-        userEntity.setIuser(1L);
-        entity.setUserEntity(userEntity);
 
 
-    //    List<UserBabyinfoEntity> byUserEntityIuser = rep.findByUserEntity_Iuser(dto.getIuser());
+           UserBabyinfoEntity entity = new UserBabyinfoEntity();
+           UserEntity userEntity = new UserEntity();
+           entity.setBirthday(dto.getBirthday());
+           entity.setPrefer(dto.getPrefer());
+           userEntity.setIuser(dto.getIuser());
+           entity.setUserEntity(userEntity);
 
-      //  if("null".equals(byUserEntityIuser)){
+//        if(rep.findById(dto.getIuser()) == null){
             rep.save(entity);
-      //  }
+//        }
 
             UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
             userBabyalleEntity.setUserBabyinfoEntity(entity);
@@ -45,19 +43,18 @@ public class BabyService {
             repository.save(userBabyalleEntity);
 
 
-
-
         return BabyInsVo.builder()
                 .birthday(entity.getBirthday())
                 .prefer(entity.getPrefer())
                 .iuser(userEntity.getIuser())
-                .babyId(userBabyalleEntity.getBabyallergy())
+                //.babyId(userBabyalleEntity.getBabyallergy())
                 .build();
     }
 
-    /*public void delete(Long babyId){
+
+    public void delete(Long babyId){
 //        repository.deleteById();
         rep.deleteById(babyId);
-    }*/
+    }
 
 }

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.List;
+
 @Entity
 @Table(name = "baby")
 @Data
@@ -24,6 +26,9 @@ public class UserBabyinfoEntity {
 
     @Column(length = 100)
     private String prefer;
+
+    @OneToMany(mappedBy = "userBabyinfoEntity", cascade = CascadeType.REMOVE) // mappedBy 컬럼이 안생기는 조인
+    private List<UserBabyalleEntity> userBabyalleEntity;
 
     @ManyToOne
     @JoinColumn(name = "iuser")
