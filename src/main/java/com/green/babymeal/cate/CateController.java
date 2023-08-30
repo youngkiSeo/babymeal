@@ -33,8 +33,5 @@ public class CateController {
         return service.selCateList(cateSelList);
     }
 
-    @GetMapping("/lili")
-    private List selCateListli(@RequestBody CateSelList cateSelList){
-      return service.selsel(cateSelList);
-    }
+
 }

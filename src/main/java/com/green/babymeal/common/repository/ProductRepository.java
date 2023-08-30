@@ -17,4 +17,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
             "WHERE YEAR(p.createdAt) = :year AND MONTH(p.createdAt) = :month " +
             "GROUP BY p.pName")
     List<ProductVolumeDto> findSaleVolume(@Param("year") int year, @Param("month") int month);// 월별 데이터 추출을 위함
+
+
+
+
 }

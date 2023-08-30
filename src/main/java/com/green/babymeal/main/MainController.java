@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/main")
 @RequiredArgsConstructor
 @Tag(name = "메인 페이지")
-public class MainController2 {
+public class MainController {
 
     private final MainService service;
 
