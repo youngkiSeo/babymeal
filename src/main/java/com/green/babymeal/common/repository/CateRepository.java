@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
 
-    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVoumn) " +
+    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume) " +
             " from ProductEntity A" +
             " left join ProductCateRelationEntity B" +
             " on A.productId=B.productEntity.productId" +
@@ -24,7 +24,7 @@ public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
     List<CateSelVo> findBy(@Param("cateId") Long cateId, @Param("cateDetailId") Long cateDetailId);
 
 
-    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVoumn) " +
+    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume) " +
             " from ProductEntity A" +
             " left join ProductCateRelationEntity B" +
             " on A.productId=B.productEntity.productId" +
