@@ -25,8 +25,8 @@ public class UserBabyalleEntity {
     private UserBabyinfoEntity userBabyinfoEntity;
 
     @ManyToOne
-    @JoinColumn(name = "allergy_id")
+    @JoinColumn(name = "allergyId")
     @ToString.Exclude
-    private UserEntity userEntity;
+    private AllergyEntity allergyEntity;
 
 }
