@@ -19,6 +19,9 @@ public class OrderlistEntity {
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED",length=100)
     private Long orderid;
 
+    @Column(name = "order_code",unique = true,updatable = false,nullable = false)
+    private Long ordercode;
+
     @ManyToOne
     @JoinColumn(name = "iuser",nullable = false)
     private UserEntity iuser;
