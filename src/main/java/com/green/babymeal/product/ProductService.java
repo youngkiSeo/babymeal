@@ -2,6 +2,7 @@ package com.green.babymeal.product;
 
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.ProductAllergyRepository;
+import com.green.babymeal.common.repository.ProductCategoryRelationRepository;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.common.repository.ReviewRepository;
 import com.green.babymeal.product.model.ProductReviewDto;
@@ -30,6 +31,9 @@ public class ProductService {
 
     @Autowired
     private ProductAllergyRepository ProductAllergyRepository;
+
+    @Autowired
+    private ProductCategoryRelationRepository productCategoryRelationRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -69,9 +73,13 @@ public class ProductService {
         List<String> allergyName = productAllergies.stream()
                 .map(productAllergyEntity -> getAllergyName(productAllergyEntity.getAllergyId()))
                 .collect(Collectors.toList());
+//        // 상품 단계 조회
+//        Long cateIdLong = productCategoryRelationRepository.findCateIdByProductEntity(productId);
+//        //String cateId = cateIdLong.toString();
+
         // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
         ProductSelDto productAllergyDto = new ProductSelDto();
-        productAllergyDto.setPName(productEntity.getPName());
+        productAllergyDto.setPName("["+"단계]"+productEntity.getPName());
         productAllergyDto.setDescription(productEntity.getDescription());
         productAllergyDto.setPPrice(productEntity.getPPrice());
         productAllergyDto.setPQuantity(productEntity.getPQuantity());
