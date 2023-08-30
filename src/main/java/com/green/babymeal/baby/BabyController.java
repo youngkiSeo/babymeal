@@ -19,9 +19,9 @@ public class BabyController {
         return service.insBaby(dto);
     }
 
-    /*@DeleteMapping("/{babyId}")
+    @DeleteMapping("/{babyId}")
     public Integer deleteBaby(@RequestParam Long babyId){
         service.delete(babyId);
         return 1;
-    }*/
+    }
 }
