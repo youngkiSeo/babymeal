@@ -9,6 +9,7 @@ import com.green.babymeal.main.model.SelDto;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sun.jdi.IntegerValue;
 import jakarta.persistence.EntityManager;
@@ -37,12 +38,14 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MainSelPaging mainSel(SelDto dto) {
+
         QProductEntity qProductEntity = new QProductEntity("ProductEntity");
         QProductThumbnailEntity qProductThumbnailEntity = new QProductThumbnailEntity("ProductThumbnailEntity");
         QProductCateRelationEntity qProductCateRelationEntity = new QProductCateRelationEntity("ProductCateRelationEntity");
 
-        if (dto.getCheck() == 1) {
+        int startIdx = (dto.getPage() - 1) * dto.getRow();
 
+        if (dto.getCheck() == 1) {
 
 
             List<MainSelVo> fetch = jpaQueryFactory
@@ -52,7 +55,7 @@ public class MainServiceImpl implements MainService {
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
                     .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
                     .orderBy(qProductEntity.createdAt.desc())
-                    .offset(StartIdx)
+                    .offset(startIdx)
                     .limit(dto.getRow())
                     .fetch();
 
@@ -71,41 +74,53 @@ public class MainServiceImpl implements MainService {
                     .list(fetch)
                     .build();
 
+        } else if (dto.getCheck() == 2) {
+            Object userBabyBirth = em.createQuery("select u.birthday from UserEntity u where u.id=:iuser ")
+                    .setParameter("iuser", USERPK.getLoginUser().getIuser()).getSingleResult();
+            LocalDate userBabyBirthday = (LocalDate) userBabyBirth;
+            Period between = Period.between(userBabyBirthday, LocalDate.now());
+            System.out.println("between.getMonths() = " + between.getMonths());
+            Long cate;
+            if (between.getMonths() <= 4) {
+                return null;
+            } else if (between.getMonths() <= 6) {
+                cate = 1L;
+            } else if (between.getMonths() <= 10) {
+                cate = 2L;
+            } else if (between.getMonths() <= 13) {
+                cate = 3L;
+            } else cate = 4L;
+
+            System.out.println("cate = " + cate);
+
+            List<MainSelVo> fetch = jpaQueryFactory
+                    .select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .leftJoin(qProductCateRelationEntity)
+                    .on(qProductEntity.productId.eq(qProductCateRelationEntity.productEntity.productId))
+                    .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cate), qProductEntity.pQuantity.ne(0),
+                            qProductEntity.isDelete.eq((byte)0),qProductThumbnailEntity.img.isNotNull())
+                    .orderBy(qProductEntity.saleVolume.desc())
+                    .limit(dto.getRow())
+                    .fetch();
+
+            System.out.println("fetch = " + fetch);
+
+            for (MainSelVo vo: fetch) {
+               vo.setName("["+cate+"단계]"+vo.getName());
+            }
+
+            return MainSelPaging.builder()
+                    .maxCount(Long.valueOf(fetch.size()))
+                    .list(fetch)
+                    .build();
+
+
         }
-
-
-         else if (dto.getCheck()==2) {
-             Object userBabyBirth = em.createQuery("select u.birthday from UserEntity u where u.id=:iuser ")
-                     .setParameter("iuser", USERPK.getLoginUser().getIuser()).getSingleResult();
-             LocalDate userBabyBirthday=(LocalDate)userBabyBirth;
-             Period between = Period.between(userBabyBirthday, LocalDate.now());
-             Long cate=0L;
-             if(between.getMonths()<=4){
-                 return null;
-             } else if(between.getMonths()<=6){
-                 cate=1L;
-             } else if (between.getMonths()<=10) {
-                 cate=2L;
-             } else if (between.getMonths()<=13) {
-                 cate=3L;
-             }else cate=4L;
-
-             jpaQueryFactory.select(getBean(qProductEntity,qProductThumbnailEntity ))
-                     .from(qProductEntity)
-                     .leftJoin(qProductThumbnailEntity)
-                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
-                     .leftJoin(qProductCateRelationEntity)
-                     .on(qProductEntity.productId.eq(qProductCateRelationEntity.productEntity.productId))
-                     .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cate),qProductEntity.pQuantity.ne(0),
-                             qProductEntity.isDelete.eq((byte)0),qProductThumbnailEntity.img.isNotNull())
-                     .orderBy(qProductEntity.createdAt.desc())
-                     .offset()
-
-
-
-         }
-         return null;
-     }
+        return null;
+    }
 
 
     private static QBean<MainSelVo> getBean(QProductEntity qProductEntity, QProductThumbnailEntity qProductThumbnailEntity) {
@@ -126,7 +141,6 @@ public class MainServiceImpl implements MainService {
 //                  .from(qProductEntity)
 //                  .fetchOne();
 //          int maxPage = ;
-
 
 
 //      }
