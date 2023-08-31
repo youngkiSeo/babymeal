@@ -17,10 +17,10 @@ public class OrderlistEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED",length=100)
-    private Long orderid;
+    private Long orderId;
 
     @Column(name = "order_code",unique = true,updatable = false,nullable = false)
-    private Long ordercode;
+    private Long orderCode;
 
     @ManyToOne
     @JoinColumn(name = "iuser",nullable = false)

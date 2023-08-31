@@ -1,5 +1,6 @@
 package com.green.babymeal.common.repository;
 
+import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import com.green.babymeal.common.entity.UserEntity;
 import io.lettuce.core.dynamic.annotation.Param;
@@ -24,6 +25,8 @@ public interface OrderlistRepository extends JpaRepository<OrderlistEntity, Long
             "FROM OrderlistEntity A " +
             "WHERE A.ordercode = :orderCode")
     List<OrderlistEntity> findOrderById(Long orderCode);
+
+    List<OrderlistEntity> findByOrdercode(Long orderCode); // 주문번호로 데이터 조회
 
 
 }
