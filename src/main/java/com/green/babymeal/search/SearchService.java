@@ -94,6 +94,7 @@ public class SearchService {
 
 
         String msg = "";
+
         boolean isEnglish = true;
 
         Pattern p = Pattern.compile("[a-zA-Z0-9]");
@@ -109,14 +110,16 @@ public class SearchService {
         //인기검색어 - 레디스저장
 
         try{
-             redisTemplate.opsForZSet().incrementScore("babymeal", product, 1);
+             redisTemplate.opsForZSet().incrementScore("babymeal", msg, 1);
         }catch (Exception e) {
             e.printStackTrace();
         }
 
+        String finalMsg = msg;
         Runnable task = () -> {
-            redisTemplate.opsForZSet().incrementScore("babymeal", product, -1);
+            redisTemplate.opsForZSet().incrementScore("babymeal", finalMsg, -1);
         };
+
         taskScheduler.schedule(task, Date.from(Instant.now().plus(10, ChronoUnit.SECONDS)));
 
         CharSequence normalized = TwitterKoreanProcessorJava.normalize(msg);
@@ -144,7 +147,7 @@ public class SearchService {
         for (int i = 0; i <productDto.size(); i++) {
             String thumbnail = productDto.get(i).getImg();
             int productid = productDto.get(i).getProductid();
-            String fullPath ="http://192.168.0.144:5001/img/product/"+productid+"/"+thumbnail;
+            String fullPath =thumbnail;
             productDto.get(i).setImg(fullPath);
 
             String cateId = productDto.get(i).getCateId();

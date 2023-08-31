@@ -102,6 +102,9 @@ public class BuyService {
             //product 상품수량 업데이트
             productRep.save(productEntity);
 
+            // 장바구니 삭제
+            orderBasketRep.deleteById(dto.getInsorderbasket().get(i).getCartId());
+
         }
         //유저 point 업데이트
         int resultpoint = dto.getPoint() - point;
@@ -111,6 +114,7 @@ public class BuyService {
         int paymentprice = totalprice- dto.getPoint();
 
         BuyProductVo build = BuyProductVo.builder().OrderId(orderlistEntity.getOrderId())
+                .OrderCode(orderlistEntity.getOrderCode())
                 .totalprice(totalprice)
                 .point(dto.getPoint())
                 .paymentprice(paymentprice).build();
