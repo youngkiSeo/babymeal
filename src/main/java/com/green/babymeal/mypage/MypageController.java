@@ -2,6 +2,7 @@ package com.green.babymeal.mypage;
 
 import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.common.entity.SaleVolumnEntity;
 import com.green.babymeal.mypage.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -85,5 +86,15 @@ public class MypageController {
             "return:0이면 비밀번호 틀림")
     int checkPw(@RequestParam String password){
         return service.selpw(password);
+    }
+
+
+    @PostMapping("/salevolumn")
+    public SaleVolumnEntity InsSaleVolumn(@RequestBody SaleVolumnDto dto){
+        return service.Inssalevolumn(dto);
+    }
+    @GetMapping("/salevolum")
+    public List<SaleVolumnVo> select(){
+        return service.Selectsale();
     }
 }

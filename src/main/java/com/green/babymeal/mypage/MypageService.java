@@ -184,4 +184,24 @@ public class MypageService {
     }
 
 
+    private final ProductRepository productRep;
+    private final SaleVolumnRepository saleRep;
+    public SaleVolumnEntity Inssalevolumn(SaleVolumnDto dto){
+        ProductEntity productEntity = productRep.findById(dto.getProductId()).get();
+        SaleVolumnEntity entity = SaleVolumnEntity.builder().count(dto.getCount()).productId(productEntity).build();
+
+        SaleVolumnEntity save = saleRep.save(entity);
+
+        return save;
+    }
+    public List<SaleVolumnVo> Selectsale(){
+
+        List<SaleVolumnVo> saleVolumnVos = saleRep.find();
+        //   List<SaleVolumnVo> allByCreatedAtBetween = saleRep.findAllByCreatedAtBetween(start, end);
+
+        return saleVolumnVos;
+
+    }
+
+
 }
