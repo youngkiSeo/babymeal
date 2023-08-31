@@ -2,6 +2,8 @@ package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.core.annotation.Order;
 
@@ -9,6 +11,8 @@ import org.springframework.core.annotation.Order;
 @Entity
 @Order(4)
 @Table(name = "orderdetail")
+@NoArgsConstructor
+@SuperBuilder
 public class OrderDetailEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED",length=20)

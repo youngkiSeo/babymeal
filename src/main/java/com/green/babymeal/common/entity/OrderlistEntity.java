@@ -1,26 +1,37 @@
 package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.core.annotation.Order;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
 @Order(3)
 @Table(name = "order_list")
+@NoArgsConstructor
+@DynamicInsert
+@SuperBuilder
+@ToString(callSuper = true)
 public class OrderlistEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED",length=100)
-    private Long orderid;
+    private Long orderId;
 
     @Column(name = "order_code",unique = true,updatable = false,nullable = false)
-    private Long ordercode;
+    private Long orderCode;
 
     @ManyToOne
     @JoinColumn(name = "iuser",nullable = false)
@@ -40,7 +51,7 @@ public class OrderlistEntity {
 
     @Column(name = "createdAt",nullable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "phoneNm",nullable = false,length=50)
     private String phoneNm;

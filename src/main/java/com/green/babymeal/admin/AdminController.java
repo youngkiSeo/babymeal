@@ -1,6 +1,7 @@
 package com.green.babymeal.admin;
 
 
+import com.green.babymeal.admin.model.OrderlistRes;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,8 +28,13 @@ public class AdminController {
 
 
     @GetMapping("/order")
-    @Operation(summary = "주문내역 조회", description = "조회할 기간의 날짜 YYmmdd - YYmmdd 입력해주세요<br>" +
-            "페이지 예시 : [ { <br>" +
+    @Operation(summary = "주문내역 조회/검색/필터", description = "사용법" +
+            "날짜(기간), 검색어, 주문번호, 상품번호, 주문상태 조건으로 검색가능" +
+            "필터1 : 검색어  필터2 : 주문번호  필터3 : 상품번호   필터4 : 주문상태" +
+            "사용할 검색/필터조건은 1로 보내주세요 ex) filter1 = 1 , 미사용할거라면 X" +
+            "날짜 선택 : 조회할 기간의 날짜 YYmmdd - YYmmdd 입력해주세요<br>" +
+            "날짜 입력하지 않으면 올해 1월1일~오늘날짜(자정)으로 디폴트값 설정되어 있음" +
+            "페이지네이션 예시 : [ { <br>" +
             "  \"page\": 0, <br>" +
             "  \"size\": 10,<br>" +
             "  \"sort\": [<br>" +
@@ -33,14 +42,30 @@ public class AdminController {
             "  ]<br>" +
             "} ] 입니다. > 생성날짜 기준 오름차순 정렬, 내림차순은 desc 입니다 <br>" +
             "변수명, asc/desc(오름차/내림차 택1) 해서 정렬가능<br>")
-    public Page<OrderlistEntity> allOrder(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                          Pageable pageable) {
+    public Page<OrderlistRes> allOrder(@RequestParam(required = false) String filter1,
+                                       @RequestParam(required = false) String filter2,
+                                       @RequestParam(required = false) String filter3,
+                                       @RequestParam(required = false) String filter4,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+                                       Pageable pageable) {
 
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+        Date startDate;
+        Date endDate;
 
-        return service.allOrder(startDateTime, endDateTime, pageable);
+        // 시작날짜, 마지막날짜가 null값이면 올해 1월 1일 / 오늘 자정까지로 시간 세팅함
+        if (start == null) {
+            startDate = Date.from(LocalDate.now().withDayOfYear(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } else {
+            startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
+        if (end == null) {
+            endDate = Date.from(LocalDateTime.now().with(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
+        } else {
+            endDate = Date.from(end.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
+        }
+
+        return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, pageable);
     }
 
 
@@ -50,6 +75,10 @@ public class AdminController {
     public List<OrderlistEntity> selOrder(@PathVariable Long orderCode){
         return service.selOrder(orderCode);
     }
+
+
+
+
 }
 
 
