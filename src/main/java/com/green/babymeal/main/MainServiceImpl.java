@@ -42,7 +42,6 @@ public class MainServiceImpl implements MainService {
 
         if (dto.getCheck() == 1) {
 
-
             List<MainSelVo> fetch = jpaQueryFactory
                     .select(getBean(qProductEntity, qProductThumbnailEntity))
                     .from(qProductEntity)
@@ -140,6 +139,8 @@ public class MainServiceImpl implements MainService {
         return null;
     }
 
+
+
     private void productNmCateId(List<MainSelVo> fetch) {
         for (MainSelVo vo : fetch) {
             ProductEntity productEntity = new ProductEntity();
@@ -161,79 +162,11 @@ public class MainServiceImpl implements MainService {
                 qProductEntity.saleVolume.as("saleVoumn"),
                 qProductEntity.pointRate);
     }
-
 }
-//
-//          Long aLong = jpaQueryFactory
-//                  .select(qProductEntity.count())
-//                  .from(qProductEntity)
-//                  .fetchOne();
-//          int maxPage = ;
 
 
-//      }
-//      return null;
-
-///       if(dto.getCheck()==2){
-///
-///       }
-//       return null;
-//}
 
 
-//    public MainSelPaging mainSel(SelDto dto){
-//        if(dto.getCheck()==1){
-////            int selMaxPageCount = mapper.selMainCount();
-////            int maxPage=(int)Math.ceil((double)selMaxPageCount/dto.getRow());
-////            int startIdx=(dto.getPage()-1)*dto.getRow();
-////            List<MainSelVo> mainSelVos = mapper.selMainVo(startIdx,dto.getRow());
-////            thumbnailNm(mainSelVos);
-////
-////            MainSelPaging mainSelPaging=MainSelPaging.builder()
-////                            .maxPage(maxPage)
-////                            .maxCount(selMaxPageCount)
-////                            .list(mainSelVos)
-////                            .build();
-////
-////            return mainSelPaging;
-//            QProductEntity qProductEntity=new QProductEntity("productEntity");
-//            List<ProductEntity> fetch = jpaQueryFactory
-//                    .selectFrom(qProductEntity).fetch();
-//           return MainSelPaging.builder()
-//                    .entities(fetch)
-//                    .build();
-//
-//
-//        }
-//
-//        else if(dto.getCheck()==2){
-//
-//            int month = mapper.birth(USERPK.getLoginUser().getIuser());
-//            log.info("{}:",month);
-//            int cate = 0;
-//            if (month <= 4) {
-//                return null;
-//            }
-//            if (month > 4 && month <= 6) {
-//                cate = 1;
-//            } else if (month > 6 && month <= 10) {
-//                cate = 2;
-//            } else if (month > 10 && month <= 13) {
-//                cate = 3;
-//            } else if (month > 13) {
-//                cate = 4;
-//            }
-//            log.info("{}:",USERPK.getLoginUser().getIuser());
-//            List<MainSelVo> mainSelVos = mapper.birthRecommendFilter(cate, dto.getRow());
-//            thumbnailNm(mainSelVos);
-//            log.info("{}:",mainSelVos);
-//            MainSelPaging mainSelPaging=MainSelPaging.builder()
-//                    .list(mainSelVos)
-//                    .build();
-//
-//            return mainSelPaging;
-//
-//        }
 //
 //
 //        else if(dto.getCheck()==3){
