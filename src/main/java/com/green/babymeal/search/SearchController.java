@@ -30,6 +30,7 @@ public class SearchController {
     public List<SearchPopularVo> searchRankList(){
         return service.list();
     }
+
     @GetMapping("/filter")
     @Operation(summary = "필터",description = ""+
             " sorter: 0이면 판매량 많은 순서 1이면 판매량 적은 순서 <br> "+
@@ -42,4 +43,6 @@ public class SearchController {
         SearchSelRes selfilter = service.selfilter(product,page,row,sorter,filter);
         return selfilter;
     }
+
+
 }

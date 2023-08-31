@@ -5,6 +5,7 @@ import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
 import com.green.babymeal.mypage.model.*;
 import com.green.babymeal.user.UserRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,20 +22,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MypageService {
-    @Autowired
+
     private final OrderlistRepository orderlistRep;
-    @Autowired
     private final OrderDetailRepository orderDetailRep;
-    @Autowired
     private final UserRepository userRep;
-    @Autowired
     private final PasswordEncoder PW_ENCODER;
-    @Autowired
     private final AuthenticationFacade USERPK;
-    @Autowired
     private final ThumbnailRepository thumbnailRep;
-    @Autowired
     private final ProductCategoryRelationRepository productcategoryRep;
+    private final JPAQueryFactory jpaQueryFactory;
 
 
 
@@ -204,8 +201,11 @@ public class MypageService {
     }
     public List<SaleVolumnVo> Selectsale(){
 
+
+        LocalDate start = LocalDate.parse("2020-01-01");
+        LocalDate end = LocalDate.parse("2023-08-31");
         List<SaleVolumnVo> saleVolumnVos = saleRep.find();
-        //   List<SaleVolumnVo> allByCreatedAtBetween = saleRep.findAllByCreatedAtBetween(start, end);
+        //List<SaleVolumnVo> allByCreatedAtBetween = saleRep.findAllByCreatedAtBetween(start, end);
 
         return saleVolumnVos;
 
