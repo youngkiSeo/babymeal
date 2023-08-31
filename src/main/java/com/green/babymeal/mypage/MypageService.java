@@ -8,6 +8,7 @@ import com.green.babymeal.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MypageService {
+    @Autowired
     private final OrderlistRepository orderlistRep;
+    @Autowired
     private final OrderDetailRepository orderDetailRep;
+    @Autowired
     private final UserRepository userRep;
+    @Autowired
     private final PasswordEncoder PW_ENCODER;
+    @Autowired
     private final AuthenticationFacade USERPK;
+    @Autowired
     private final ThumbnailRepository thumbnailRep;
+    @Autowired
     private final ProductCategoryRelationRepository productcategoryRep;
 
 
