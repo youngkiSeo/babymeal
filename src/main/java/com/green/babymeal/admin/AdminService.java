@@ -36,21 +36,33 @@ public class AdminService {
         // 주문정보 담을 객체 생성
         List<OrderlistRes> resultList = new ArrayList<>();
 
-        //주문번호를 기반으로 주문상세정보를 가져와 조회
         for (OrderlistEntity order : outputOrderlist.getContent()) {
-            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_Ordercode(order.getOrdercode());
-            // 주문 상세정보가 있으면 데이터 가져옴
+            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_Ordercode(order.getOrderCode());
             if (!orderDetails.isEmpty()) {
-                OrderlistRes orderlistRes = new OrderlistRes();
-                orderlistRes.setOrderlist(order);
-                orderlistRes.setOrderDetails(orderDetails);
+                OrderlistRes orderlistRes = OrderlistRes.builder()
+                        .orderId(order.getOrderId())
+                        .ordercode(order.getOrderCode())
+                        .iuser(order.getIuser().getIuser()) // 예시: iuser의 id를 가져옴
+                        .userName(order.getIuser().getName()) // 예시: iuser의 이름을 가져옴
+                        .payment(order.getPayment())
+                        .shipment(order.getShipment())
+                        .cancel(order.getCancel())
+                        .phoneNm(order.getPhoneNm())
+                        .request(order.getRequest())
+                        .reciever(order.getReciever())
+                        .address(order.getAddress())
+                        .addressDetail(order.getAddressDetail())
+                        .delYn(order.getDelYn())
+                        .usepoint(order.getUsepoint())
+                        .orderDetails(orderDetails)
+                        .build();
                 resultList.add(orderlistRes);
             }
         }
 
         // 필터2 : 주문번호 기준 필터링
         if (filter2 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getOrderlist().getOrdercode().equals(Long.parseLong(filter2)));
+            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
         }
 
         if (filter3 != null) {
@@ -65,7 +77,7 @@ public class AdminService {
         }
 
         if (filter4 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getOrderlist().getPayment().equals(Long.parseLong(filter4)));
+            resultList.removeIf(orderRes -> !orderRes.getPayment().equals(Long.parseLong(filter4)));
         }
 
         // Page 객체로 변환

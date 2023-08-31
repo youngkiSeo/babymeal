@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 public class OrderlistRes {
     private Long orderId;
-    private Long orderCode;
+    private Long ordercode;
     private Long iuser;
     private String userName;
     private Byte payment; // 결제수단
