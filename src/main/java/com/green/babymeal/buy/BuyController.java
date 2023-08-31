@@ -1,7 +1,7 @@
-package com.green.babymeal.Buy;
+package com.green.babymeal.buy;
 
-import com.green.babymeal.Buy.model.BuyInsDto;
-import com.green.babymeal.Buy.model.BuyProductVo;
+import com.green.babymeal.buy.model.BuyInsDto;
+import com.green.babymeal.buy.model.BuyProductVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,6 @@ public class BuyController {
             "무통장입금(0)/카드(1)/계좌이체(2) <br>"+
             "request: 요청사항 <br>"+
             "receiver: 수령인 <br>"+
-            " 제품의 수량이 없거나 오류가 나면 return null <br>"+
-            " 결제가 완료 되면 주문 내역의 PK 값과 사용자가 사용한 point를 return 시켜줌<br>" +
             "totalprice: 상품들의 총 가격"+
             "point: 포인트 사용금액<br>"+
             "paymentprice: 결제한 금액<br>"+

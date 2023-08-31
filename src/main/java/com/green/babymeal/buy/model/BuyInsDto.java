@@ -1,4 +1,4 @@
-package com.green.babymeal.Buy.model;
+package com.green.babymeal.buy.model;
 
 import lombok.Data;
 
