@@ -1,10 +1,7 @@
 package com.green.babymeal.main;
 
 import com.green.babymeal.common.config.security.AuthenticationFacade;
-import com.green.babymeal.common.entity.ProductEntity;
-import com.green.babymeal.common.entity.ProductThumbnailEntity;
-import com.green.babymeal.common.entity.QProductEntity;
-import com.green.babymeal.common.entity.QProductThumbnailEntity;
+import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.main.model.MainSelPaging;
 import com.green.babymeal.main.model.MainSelVo;
@@ -40,23 +37,27 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MainSelPaging mainSel(SelDto dto) {
+        QProductEntity qProductEntity = new QProductEntity("ProductEntity");
+        QProductThumbnailEntity qProductThumbnailEntity = new QProductThumbnailEntity("ProductThumbnailEntity");
+        QProductCateRelationEntity qProductCateRelationEntity = new QProductCateRelationEntity("ProductCateRelationEntity");
+
         if (dto.getCheck() == 1) {
 
-            int StartIdx = (dto.getPage() - 1) * dto.getRow();
-            QProductEntity qProductEntity = new QProductEntity("ProductEntity");
-            QProductThumbnailEntity qProductThumbnailEntity = new QProductThumbnailEntity("ProductThumbnailEntity");
+
+
             List<MainSelVo> fetch = jpaQueryFactory
-                    .select( getBean(qProductEntity, qProductThumbnailEntity))
+                    .select(getBean(qProductEntity, qProductThumbnailEntity))
                     .from(qProductEntity)
                     .leftJoin(qProductEntity.productThumbnailEntityList, qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
                     .orderBy(qProductEntity.createdAt.desc())
                     .offset(StartIdx)
                     .limit(dto.getRow())
                     .fetch();
 
             long count = jpaQueryFactory
-                    .select(qProductEntity,qProductThumbnailEntity)
+                    .select(qProductEntity, qProductThumbnailEntity)
                     .from(qProductEntity)
                     .leftJoin(qProductEntity.productThumbnailEntityList, qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
@@ -64,7 +65,7 @@ public class MainServiceImpl implements MainService {
                     .fetchCount();
 
 
-        return    MainSelPaging.builder()
+            return MainSelPaging.builder()
                     .maxPage((int) Math.ceil((double) count / dto.getRow()))
                     .maxCount(count)
                     .list(fetch)
@@ -72,17 +73,39 @@ public class MainServiceImpl implements MainService {
 
         }
 
-        else if (dto.getCheck()==2) {
-            Object iuser = em.createQuery("select u.birthday from UserEntity u where u.id=:iuser ")
-                    .setParameter("iuser", USERPK.getLoginUser().getIuser()).getSingleResult();
-            LocalDate i=(LocalDate)iuser;
-            Period between = Period.between(i, LocalDate.now());
+
+         else if (dto.getCheck()==2) {
+             Object userBabyBirth = em.createQuery("select u.birthday from UserEntity u where u.id=:iuser ")
+                     .setParameter("iuser", USERPK.getLoginUser().getIuser()).getSingleResult();
+             LocalDate userBabyBirthday=(LocalDate)userBabyBirth;
+             Period between = Period.between(userBabyBirthday, LocalDate.now());
+             Long cate=0L;
+             if(between.getMonths()<=4){
+                 return null;
+             } else if(between.getMonths()<=6){
+                 cate=1L;
+             } else if (between.getMonths()<=10) {
+                 cate=2L;
+             } else if (between.getMonths()<=13) {
+                 cate=3L;
+             }else cate=4L;
+
+             jpaQueryFactory.select(getBean(qProductEntity,qProductThumbnailEntity ))
+                     .from(qProductEntity)
+                     .leftJoin(qProductThumbnailEntity)
+                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                     .leftJoin(qProductCateRelationEntity)
+                     .on(qProductEntity.productId.eq(qProductCateRelationEntity.productEntity.productId))
+                     .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cate),qProductEntity.pQuantity.ne(0),
+                             qProductEntity.isDelete.eq((byte)0),qProductThumbnailEntity.img.isNotNull())
+                     .orderBy(qProductEntity.createdAt.desc())
+                     .offset()
 
 
 
-        }
-        return null;
-    }
+         }
+         return null;
+     }
 
 
     private static QBean<MainSelVo> getBean(QProductEntity qProductEntity, QProductThumbnailEntity qProductThumbnailEntity) {
