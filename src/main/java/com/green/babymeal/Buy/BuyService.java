@@ -64,10 +64,18 @@ public class BuyService {
                 idx++;
             }
         }
-        log.info("code:{}",code);
-//        UserEntity userEntity = UserEntity.builder().iuser(loginUser.getIuser()).build();
-//        OrderlistEntity orderlistEntity = OrderlistEntity.builder().ordercode(code).iuser(userEntity)
-//                .phoneNm(dto.getPhoneNm()).request(dto.getRequest()).
+        log.info("random code:{}",code);
+        UserEntity userEntity = UserEntity.builder().iuser(loginUser.getIuser()).build();
+        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).phoneNm(dto.getPhoneNm())
+                .request(dto.getRequest()).reciever(dto.getReceiver()).address(dto.getAddress()).addressDetail(dto.getAddressDetail()).usepoint(dto.getPoint()).build();
+        orderlistRep.save(orderlistEntity);
+
+        //orderdetail insert
+        for (int i = 0; i <dto.getInsorderbasket().size(); i++) {
+
+        }
+
+
 
 
 

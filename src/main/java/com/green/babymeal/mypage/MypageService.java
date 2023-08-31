@@ -63,7 +63,7 @@ public class MypageService {
             }
 
             OrderlistSelVo build = OrderlistSelVo.builder()
-                    .orderId(orderlist.get(i).getOrderid())
+                    .orderId(orderlist.get(i).getOrderId())
                     .createdAt(String.valueOf(orderlist.get(i).getCreatedAt()))
                     .price(totalPrice)
                     .name(name)
