@@ -57,8 +57,7 @@ public class MypageController {
     }
     @GetMapping("/profile/nickname")
     @Operation(summary = "닉네임 중복체크" ,
-            description = "return : 1이면 중복인것<br>"+
-                    "return : 0 이면 중복이 아닙니다<br>"+
+            description = "return : 0 이면 중복이 아닙니다<br>"+
                     "return : 2 이면 유저의 닉네임 입니다<br>")
     public int getNickNamecheck(@RequestParam String nickname){
         return service.nicknmcheck(nickname);
