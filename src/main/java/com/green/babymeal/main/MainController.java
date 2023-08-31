@@ -20,12 +20,13 @@ public class MainController {
 
 
   @GetMapping
-  @Operation(summary = "메인페이지 상품",description = ""+
-  "check:1 (기본으로 보여줄 상품)<br>"+
-  "check:2 (회원 자녀의 개월에 따라 상품 추천)<br>"+
-  "check:3 (랜덤으로 상품 추천)<br>"+
-  "check:4 (제일 많이 팔린 상품)<br>"+
-  "check:5 (제일 많이 팔린 상품 더보기)<br>"+
+  @Operation(summary = "메인페이지 상품",description = "" +
+  "페이지가 필요 O에는 숫자 값이 있어야 하고, 필요 x에는 0이나 null을 보내도 된다.<br> "+
+  "check:1 (기본으로 보여줄 상품)<br> page(필요O),row(필요O)"+
+  "check:2 (회원 자녀의 개월에 따라 상품 추천)<br> page(필요x),row(필요O)"+
+  "check:3 (랜덤으로 상품 추천)<br> page(필요x),row(필요O)"+
+  "check:4 (제일 많이 팔린 상품)<br> page(필요x),row(필요O)"+
+  "check:5 (제일 많이 팔린 상품 더보기)<br> page(필요O),row(필요O)"+
   "page: 페이지 번호<br>"+
   "row: 한페이지에 보일 상품의 갯수<br><br>"+
   "productId: 상품의 고유 번호<br>"+
