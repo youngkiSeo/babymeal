@@ -1,13 +1,14 @@
 package com.green.babymeal.admin;
 
-import com.green.babymeal.admin.model.OrderDetailVo;
-import com.green.babymeal.admin.model.OrderlistRes;
-import com.green.babymeal.admin.model.ProductVo;
-import com.green.babymeal.admin.model.UserVo;
+import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.common.entity.ProductAllergyEntity;
+import com.green.babymeal.common.entity.ProductEntity;
 import com.green.babymeal.common.repository.OrderDetailRepository;
 import com.green.babymeal.common.repository.OrderlistRepository;
+import com.green.babymeal.common.repository.ProductAllergyRepository;
+import com.green.babymeal.common.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +32,12 @@ public class AdminService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ProductAllergyRepository productAllergyRepository;
 
 
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
@@ -87,7 +95,7 @@ public class AdminService {
         }
         return new PageImpl<>(resultList, outputOrderlist.getPageable(), outputOrderlist.getTotalElements());
     }
-}
+
 
 
 
@@ -132,9 +140,31 @@ public class AdminService {
 //            filterOrderlist.removeIf(order -> !order.getOrdercode().equals(orderCode));
 //        }
 //
-//        public List<OrderlistEntity> selOrder(Long orderCode){
-//            return orderlistRepository.findOrderById(orderCode);
-//        }
-//}
-//
-//
+    public List<OrderlistEntity> selOrder(Long orderCode) {
+        return orderlistRepository.findOrderById(orderCode);
+    }
+
+    public Page<ProductAdminDto> allProduct(Pageable pageable) {
+        return productRepository.findAll(pageable).map(productEntity -> {
+            List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
+
+            return ProductAdminDto.builder()
+                    .productId(productEntity.getProductId())
+                    .name(productEntity.getPName())
+                    .price(productEntity.getPPrice())
+                    .description(productEntity.getDescription())
+                    .quantity(productEntity.getPQuantity())
+                    .allegyName(allergyName)// 알러지 정보 추가
+                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 썸네일 이미지 추가
+                    .build();
+        });
+    }
+
+    public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름
+        List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
+
+        return productAllergyEntities.stream()
+                .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
+                .collect(Collectors.toList());
+    }
+}

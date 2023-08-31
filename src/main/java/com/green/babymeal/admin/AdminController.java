@@ -2,9 +2,12 @@ package com.green.babymeal.admin;
 
 
 import com.green.babymeal.admin.model.OrderlistRes;
+import com.green.babymeal.admin.model.ProductAdminDto;
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.common.entity.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +25,7 @@ import java.util.List;
 @RequestMapping("/api/Admin")
 @Tag(name = "관리자 페이지")
 public class AdminController {
+
     private final AdminService service;
 
 
@@ -57,19 +61,25 @@ public class AdminController {
     }
 
 
-//    @GetMapping("/order/{orderCode}")
-//    @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>"+
-//    "예시 주문번호 : 202308301651 입니다")
-//    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode){
-//        return service.selOrder(orderCode);
-//    }
+    @GetMapping("/order/{orderCode}")
+    @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>" +
+            "예시 주문번호 : 202308301651 입니다")
+    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode) {
+        return service.selOrder(orderCode);
+    }
 
 
-
+    @GetMapping("/product")
+    @Operation(summary = "상품정보조회 > 관리자용 <br>" +
+    "예시 : { <br>" +
+            "  \"page\": 0,<br>" +
+            "  \"size\": 100,<br>" +
+            "  \"sort\": \"productId,asc\"<br>" +
+            "} <br>" +
+    "size는 페이지당 출력갯수 sort는 정렬방식, 변수이름/asc 또는 desc등으로 사용하면 됩니다")
+    public Page<ProductAdminDto> allProduct(Pageable pageable){
+        return service.allProduct(pageable);
+    }
 
 }
-
-
-//    @GetMapping("/order/search")
-//    @Operation(summary = "주문내역 조회 - 검색기능")
 
