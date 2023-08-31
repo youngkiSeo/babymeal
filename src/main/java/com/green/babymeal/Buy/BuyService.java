@@ -3,12 +3,9 @@ package com.green.babymeal.Buy;
 import com.green.babymeal.Buy.model.BuyInsDto;
 import com.green.babymeal.Buy.model.BuyProductVo;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
-import com.green.babymeal.common.entity.OrderlistEntity;
-import com.green.babymeal.common.entity.UserEntity;
-import com.green.babymeal.common.repository.OrderBasketRepository;
-import com.green.babymeal.common.repository.OrderDetailRepository;
-import com.green.babymeal.common.repository.OrderlistRepository;
-import com.green.babymeal.common.repository.SaleVolumnRepository;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.*;
+import com.green.babymeal.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,13 +38,19 @@ public class BuyService {
     private final OrderDetailRepository orderDetailRep;
     @Autowired
     private final SaleVolumnRepository saleVolumnRep;
+    @Autowired
+    private final ProductRepository productRep;
+    @Autowired
+    private final UserRepository userRep;
 
 
 
     public BuyProductVo BuyProduct(BuyInsDto dto){
         UserEntity loginUser = USERPK.getLoginUser();
         Long iuser = loginUser.getIuser();
-        final Byte payment = 1;
+        UserEntity userEntity = userRep.findById(iuser).get();
+
+        final Byte delYn = 0;
         final Byte shipment = 1;
 
 
@@ -65,13 +68,55 @@ public class BuyService {
             }
         }
         log.info("code:{}",code);
-//        UserEntity userEntity = UserEntity.builder().iuser(loginUser.getIuser()).build();
-//        OrderlistEntity orderlistEntity = OrderlistEntity.builder().ordercode(code).iuser(userEntity)
-//                .phoneNm(dto.getPhoneNm()).request(dto.getRequest()).
+        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).payment(dto.getPayment()).phoneNm(dto.getPhoneNm()).shipment(shipment)
+                .request(dto.getRequest()).reciever(dto.getReceiver()).address(dto.getAddress()).addressDetail(dto.getAddressDetail()).usepoint(dto.getPoint()).build();
+
+        orderlistRep.save(orderlistEntity);
+
+        int totalprice = 0;
+        int point = 0;
+        for (int i = 0; i <dto.getInsorderbasket().size(); i++) {
+
+            // pointrate 가져오기
+            Long productId = dto.getInsorderbasket().get(i).getProductId();
+            ProductEntity productEntity = productRep.findById(productId).get();
+            int pQuantity = productEntity.getPQuantity();
+            int saleVolume = productEntity.getSaleVolume();
+            productEntity.setPQuantity(pQuantity-dto.getInsorderbasket().get(i).getCount());
+            productEntity.setSaleVolume(saleVolume+dto.getInsorderbasket().get(i).getCount());
+
+            float pointRate = productEntity.getPointRate();
+            log.info("상품 적립률:{}", pointRate);
+
+            totalprice+=dto.getInsorderbasket().get(i).getTotalprice();
+            //포인트 적립
+            point += dto.getInsorderbasket().get(i).getTotalprice() * pointRate;
+
+            //orderdetail table insert
+            OrderDetailEntity orderDetail = OrderDetailEntity.builder().orderId(orderlistEntity).productId(productEntity).count(dto.getInsorderbasket().get(i).getCount()).delYn(delYn).totalPrice(dto.getInsorderbasket().get(i).getTotalprice()).build();
+            orderDetailRep.save(orderDetail);
+
+            SaleVolumnEntity saleVolumnEntity = SaleVolumnEntity.builder().productId(productEntity).count(dto.getInsorderbasket().get(i).getCount()).build();
+            saleVolumnRep.save(saleVolumnEntity);
+
+            //product 상품수량 업데이트
+            productRep.save(productEntity);
+
+        }
+        //유저 point 업데이트
+        int resultpoint = dto.getPoint() - point;
+        userEntity.setPoint(userEntity.getPoint()-resultpoint);
+        userRep.save(userEntity);
+
+        int paymentprice = totalprice- dto.getPoint();
+
+        BuyProductVo build = BuyProductVo.builder().OrderId(orderlistEntity.getOrderId())
+                .totalprice(totalprice)
+                .point(dto.getPoint())
+                .paymentprice(paymentprice).build();
 
 
-
-        return null;
+        return build;
     }
 
     public static String getDate(String format) {
