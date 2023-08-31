@@ -46,35 +46,20 @@ public class AdminController {
                                        @RequestParam(required = false) String filter2,
                                        @RequestParam(required = false) String filter3,
                                        @RequestParam(required = false) String filter4,
-                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end,
                                        Pageable pageable) {
-
-        Date startDate;
-        Date endDate;
-
-        // 시작날짜, 마지막날짜가 null값이면 올해 1월 1일 / 오늘 자정까지로 시간 세팅함
-        if (start == null) {
-            startDate = Date.from(LocalDate.now().withDayOfYear(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        } else {
-            startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        }
-        if (end == null) {
-            endDate = Date.from(LocalDateTime.now().with(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
-        } else {
-            endDate = Date.from(end.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
-        }
 
         return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, pageable);
     }
 
 
-    @GetMapping("/order/{orderCode}")
-    @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>"+
-    "예시 주문번호 : 202308301651 입니다")
-    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode){
-        return service.selOrder(orderCode);
-    }
+//    @GetMapping("/order/{orderCode}")
+//    @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>"+
+//    "예시 주문번호 : 202308301651 입니다")
+//    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode){
+//        return service.selOrder(orderCode);
+//    }
 
 
 

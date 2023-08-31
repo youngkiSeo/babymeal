@@ -3754,3 +3754,238 @@ Security filter chain: [
 [2023-08-31 12:34:54.395 INFO  SpringApplicationShutdownHook] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
 [2023-08-31 12:34:54.397 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
 [2023-08-31 12:34:54.403 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2023-08-31 12:37:15.083 INFO  restartedMain] [com.green.babymeal.BabymealApplication] Starting BabymealApplication using Java 17.0.8 with PID 3392 (C:\Users\Administrator\babymeal\target\classes started by Administrator in C:\Users\Administrator\babymeal)
+[2023-08-31 12:37:15.085 INFO  restartedMain] [com.green.babymeal.BabymealApplication] No active profile set, falling back to 1 default profile: "default"
+[2023-08-31 12:37:15.115 INFO  restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2023-08-31 12:37:15.115 INFO  restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2023-08-31 12:37:15.523 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-08-31 12:37:15.523 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-08-31 12:37:15.536 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+[2023-08-31 12:37:15.708 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-08-31 12:37:15.709 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2023-08-31 12:37:15.831 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 120 ms. Found 16 JPA repository interfaces.
+[2023-08-31 12:37:15.836 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-08-31 12:37:15.836 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-08-31 12:37:15.842 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.baby.BabyAlleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.842 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.baby.BabyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.842 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.AllergyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.843 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.843 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.843 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateViewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.843 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderBasketRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderlistRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductAllergyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductCategoryRelationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ReviewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.SaleVolumnRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.844 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ThumbnailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.845 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.user.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:37:15.845 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2023-08-31 12:37:16.290 INFO  restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port(s): 8080 (http)
+[2023-08-31 12:37:16.295 INFO  restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2023-08-31 12:37:16.296 INFO  restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2023-08-31 12:37:16.296 INFO  restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.11]
+[2023-08-31 12:37:16.336 INFO  restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2023-08-31 12:37:16.337 INFO  restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 1222 ms
+[2023-08-31 12:37:16.590 INFO  restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2023-08-31 12:37:16.623 INFO  restartedMain] [org.hibernate.Version] HHH000412: Hibernate ORM core version 6.2.6.Final
+[2023-08-31 12:37:16.625 INFO  restartedMain] [org.hibernate.cfg.Environment] HHH000406: Using bytecode reflection optimizer
+[2023-08-31 12:37:16.708 INFO  restartedMain] [org.hibernate.bytecode.internal.BytecodeProviderInitiator] HHH000021: Bytecode provider name : bytebuddy
+[2023-08-31 12:37:16.788 INFO  restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2023-08-31 12:37:16.798 INFO  restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2023-08-31 12:37:16.846 INFO  restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection org.mariadb.jdbc.Connection@183af17e
+[2023-08-31 12:37:16.847 INFO  restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2023-08-31 12:37:17.067 INFO  restartedMain] [org.hibernate.bytecode.internal.BytecodeProviderInitiator] HHH000021: Bytecode provider name : bytebuddy
+[2023-08-31 12:37:17.571 INFO  restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2023-08-31 12:37:18.020 INFO  restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2023-08-31 12:37:18.171 INFO  restartedMain] [org.springframework.data.jpa.repository.query.QueryEnhancerFactory] Hibernate is in classpath; If applicable, HQL parser will be used.
+[2023-08-31 12:37:18.560 WARN  restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2023-08-31 12:37:19.205 INFO  restartedMain] [com.green.babymeal.common.config.web.WebMvcConfiguration] uploadPath C:\home\download
+[2023-08-31 12:37:19.246 INFO  restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7fe00d44, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6e599879, org.springframework.security.web.context.SecurityContextHolderFilter@41a6ec04, org.springframework.security.web.header.HeaderWriterFilter@58d53d55, org.springframework.security.web.authentication.logout.LogoutFilter@20d25bdf, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@1063e6f3, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@687f3ae3, com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter@3b7d2de3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@62f550a5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@34f1c17d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@611e155, org.springframework.security.web.session.SessionManagementFilter@2b044945, org.springframework.security.web.access.ExceptionTranslationFilter@343e154b, org.springframework.security.web.access.intercept.AuthorizationFilter@68250aa8]
+[2023-08-31 12:37:19.253 WARN  restartedMain] [org.springframework.security.config.annotation.web.builders.WebSecurity] 
+
+********************************************************************
+**********        Security debugging is enabled.       *************
+**********    This may include sensitive information.  *************
+**********      Do not use in a production system!     *************
+********************************************************************
+
+
+[2023-08-31 12:37:19.403 INFO  restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2023-08-31 12:37:19.418 INFO  restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2023-08-31 12:37:19.429 INFO  restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port(s): 8080 (http) with context path ''
+[2023-08-31 12:37:19.437 INFO  restartedMain] [com.green.babymeal.BabymealApplication] Started BabymealApplication in 4.689 seconds (process running for 5.082)
+[2023-08-31 12:37:23.809 INFO  SpringApplicationShutdownHook] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
+[2023-08-31 12:37:23.811 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2023-08-31 12:37:23.816 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2023-08-31 12:50:43.243 INFO  restartedMain] [com.green.babymeal.BabymealApplication] Starting BabymealApplication using Java 17.0.8 with PID 8072 (C:\Users\Administrator\babymeal\target\classes started by Administrator in C:\Users\Administrator\babymeal)
+[2023-08-31 12:50:43.245 INFO  restartedMain] [com.green.babymeal.BabymealApplication] No active profile set, falling back to 1 default profile: "default"
+[2023-08-31 12:50:43.273 INFO  restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2023-08-31 12:50:43.274 INFO  restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2023-08-31 12:50:43.675 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-08-31 12:50:43.675 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-08-31 12:50:43.689 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+[2023-08-31 12:50:43.855 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-08-31 12:50:43.856 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2023-08-31 12:50:43.972 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 115 ms. Found 16 JPA repository interfaces.
+[2023-08-31 12:50:43.978 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-08-31 12:50:43.978 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-08-31 12:50:43.984 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.baby.BabyAlleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.984 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.baby.BabyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.984 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.AllergyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.985 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.985 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.985 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateViewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderBasketRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderlistRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductAllergyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductCategoryRelationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ReviewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.SaleVolumnRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.986 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ThumbnailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.987 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.user.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-08-31 12:50:43.987 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+[2023-08-31 12:50:44.442 INFO  restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port(s): 8080 (http)
+[2023-08-31 12:50:44.447 INFO  restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2023-08-31 12:50:44.448 INFO  restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2023-08-31 12:50:44.449 INFO  restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.11]
+[2023-08-31 12:50:44.491 INFO  restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2023-08-31 12:50:44.491 INFO  restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 1217 ms
+[2023-08-31 12:50:44.739 INFO  restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2023-08-31 12:50:44.770 INFO  restartedMain] [org.hibernate.Version] HHH000412: Hibernate ORM core version 6.2.6.Final
+[2023-08-31 12:50:44.771 INFO  restartedMain] [org.hibernate.cfg.Environment] HHH000406: Using bytecode reflection optimizer
+[2023-08-31 12:50:44.856 INFO  restartedMain] [org.hibernate.bytecode.internal.BytecodeProviderInitiator] HHH000021: Bytecode provider name : bytebuddy
+[2023-08-31 12:50:44.937 INFO  restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2023-08-31 12:50:44.947 INFO  restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2023-08-31 12:50:44.995 INFO  restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection org.mariadb.jdbc.Connection@4681cbd5
+[2023-08-31 12:50:44.996 INFO  restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2023-08-31 12:50:45.198 INFO  restartedMain] [org.hibernate.bytecode.internal.BytecodeProviderInitiator] HHH000021: Bytecode provider name : bytebuddy
+[2023-08-31 12:50:45.723 INFO  restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2023-08-31 12:50:46.069 INFO  restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2023-08-31 12:50:46.253 INFO  restartedMain] [org.springframework.data.jpa.repository.query.QueryEnhancerFactory] Hibernate is in classpath; If applicable, HQL parser will be used.
+[2023-08-31 12:50:46.605 WARN  restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2023-08-31 12:50:47.253 INFO  restartedMain] [com.green.babymeal.common.config.web.WebMvcConfiguration] uploadPath C:\home\download
+[2023-08-31 12:50:47.293 INFO  restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@38306401, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1c725db3, org.springframework.security.web.context.SecurityContextHolderFilter@4eb5d027, org.springframework.security.web.header.HeaderWriterFilter@34f1c17d, org.springframework.security.web.authentication.logout.LogoutFilter@587948ac, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@3ef690dd, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@2921a8fc, com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter@78c79598, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2bed06cc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7e59e346, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1e867bd7, org.springframework.security.web.session.SessionManagementFilter@422da769, org.springframework.security.web.access.ExceptionTranslationFilter@3ab60310, org.springframework.security.web.access.intercept.AuthorizationFilter@7c9eda46]
+[2023-08-31 12:50:47.301 WARN  restartedMain] [org.springframework.security.config.annotation.web.builders.WebSecurity] 
+
+********************************************************************
+**********        Security debugging is enabled.       *************
+**********    This may include sensitive information.  *************
+**********      Do not use in a production system!     *************
+********************************************************************
+
+
+[2023-08-31 12:50:47.446 INFO  restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2023-08-31 12:50:47.460 INFO  restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2023-08-31 12:50:47.472 INFO  restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port(s): 8080 (http) with context path ''
+[2023-08-31 12:50:47.480 INFO  restartedMain] [com.green.babymeal.BabymealApplication] Started BabymealApplication in 4.579 seconds (process running for 4.997)
+[2023-08-31 12:50:50.643 INFO  http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-08-31 12:50:50.643 INFO  http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
+[2023-08-31 12:50:50.645 INFO  http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Completed initialization in 1 ms
+[2023-08-31 12:50:50.650 INFO  http-nio-8080-exec-1] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/api/Admin/order?page=0&size=100&sort=createdAt,asc':
+
+org.apache.catalina.connector.RequestFacade@1e94daa1
+
+servletPath:/api/Admin/order
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+accept: */*
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+sec-ch-ua-platform: "Windows"
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZHkxMjA2MTAwNEBnbWFpbC5jb20iLCJpdXNlciI6Nywicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MzI4OTk0NiwiZXhwIjoxNjk0NTg1OTQ2fQ.nB5QayR-FANcOCdAp1HFu-1LZ08fBxXhwS0MiAqbRbs
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-08-31 12:50:50.655 INFO  http-nio-8080-exec-1] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-08-31 12:50:50.655 INFO  http-nio-8080-exec-1] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-08-31 12:51:10.331 INFO  http-nio-8080-exec-5] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/api/Admin/order?page=0&size=100&sort=createdAt,asc':
+
+org.apache.catalina.connector.RequestFacade@79f4f126
+
+servletPath:/api/Admin/order
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+accept: */*
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+sec-ch-ua-platform: "Windows"
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZHkxMjA2MTAwNEBnbWFpbC5jb20iLCJpdXNlciI6Nywicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY5MzI4OTk0NiwiZXhwIjoxNjk0NTg1OTQ2fQ.nB5QayR-FANcOCdAp1HFu-1LZ08fBxXhwS0MiAqbRbs
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-08-31 12:51:10.331 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-08-31 12:51:10.332 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-08-31 12:52:55.558 INFO  SpringApplicationShutdownHook] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
+[2023-08-31 12:52:55.559 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2023-08-31 12:52:55.563 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.

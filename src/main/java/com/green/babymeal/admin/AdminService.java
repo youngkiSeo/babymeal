@@ -1,6 +1,9 @@
 package com.green.babymeal.admin;
 
+import com.green.babymeal.admin.model.OrderDetailVo;
 import com.green.babymeal.admin.model.OrderlistRes;
+import com.green.babymeal.admin.model.ProductVo;
+import com.green.babymeal.admin.model.UserVo;
 import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import com.green.babymeal.common.repository.OrderDetailRepository;
@@ -32,19 +35,24 @@ public class AdminService {
                                        String filter1, String filter2, String filter3, String filter4,
                                        Pageable pageable) {
         // "필터1 : 검색어  필터2 : 주문번호  필터3 : 상품번호   필터4 : 주문상태"
-        //기간 내 주문리스트를 가져온다
+        // 기간 내 주문리스트를 가져온다
         Page<OrderlistEntity> outputOrderlist = orderlistRepository.findByCreatedAtBetween(startDate, endDate, pageable);
         // 주문정보 담을 객체 생성
         List<OrderlistRes> resultList = new ArrayList<>();
 
         for (OrderlistEntity order : outputOrderlist.getContent()) {
             List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderCode());
+
+            UserVo userVoData = UserVo.builder()
+                    .name(order.getIuser().getName())
+                    .iuser(order.getIuser().getIuser())
+                    .build();
+
             if (!orderDetails.isEmpty()) {
                 OrderlistRes orderlistRes = OrderlistRes.builder()
                         .orderId(order.getOrderId())
                         .ordercode(order.getOrderCode())
-                        .iuser(order.getIuser().getIuser()) // 예시: iuser의 id를 가져옴
-                        .userName(order.getIuser().getName()) // 예시: iuser의 이름을 가져옴
+                        .userVo(userVoData)
                         .payment(order.getPayment())
                         .shipment(order.getShipment())
                         .cancel(order.getCancel())
@@ -55,43 +63,43 @@ public class AdminService {
                         .addressDetail(order.getAddressDetail())
                         .delYn(order.getDelYn())
                         .usepoint(order.getUsepoint())
-                        .orderDetails(orderDetails)
+                        .orderDetailVo(new ArrayList<>())
                         .build();
                 resultList.add(orderlistRes);
-
-                //
-                //    private Long orderDetailId;
-                //    private ProductEntity productId;
-                //    private int count;
-                //    private int totalPrice;
             }
         }
 
-        // 필터2 : 주문번호 기준 필터링
-        if (filter2 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
-        }
-
-        if (filter3 != null) {
-            resultList.removeIf(orderRes -> {
-                for (OrderDetailEntity orderDetail : orderRes.getOrderDetails()) {
-                    if (!orderDetail.getProductId().getProductId().equals(Long.parseLong(filter3))) {
-                        return true; // 상품번호가 일치하지 않으면 해당 주문 정보를 리스트에서 제거
-                    }
-                }
-                return false;
-            });
-        }
-
-        if (filter4 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getPayment().equals(Long.parseLong(filter4)));
-        }
-
-        // Page 객체로 변환
-        Page<OrderlistRes> resultPage = new PageImpl<>(resultList, pageable, resultList.size());
-
-        return resultPage;
+        return new PageImpl<>(resultList, outputOrderlist.getPageable(), outputOrderlist.getTotalElements());
     }
+
+}
+
+
+//        // 필터2 : 주문번호 기준 필터링
+//        if (filter2 != null) {
+//            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
+//        }
+//
+//        if (filter3 != null) {
+//            resultList.removeIf(orderRes -> {
+//                for (OrderDetailEntity orderDetail : orderRes.getOrderDetails()) {
+//                    if (!orderDetail.getProductId().getProductId().equals(Long.parseLong(filter3))) {
+//                        return true; // 상품번호가 일치하지 않으면 해당 주문 정보를 리스트에서 제거
+//                    }
+//                }
+//                return false;
+//            });
+//        }
+//
+//        if (filter4 != null) {
+//            resultList.removeIf(orderRes -> !orderRes.getPayment().equals(Long.parseLong(filter4)));
+//        }
+
+//        // Page 객체로 변환
+//        Page<OrderlistRes> resultPage = new PageImpl<>(resultList, pageable, resultList.size());
+//
+//        return null;
+//    }
 
 
 //        if (filter1 != null) {
@@ -106,9 +114,10 @@ public class AdminService {
 //            List<OrderDetailEntity> filteredByOrderCode = orderDetailRepository.findByOrderId_OrderCode(orderCode);
 //            filterOrderlist.removeIf(order -> !order.getOrdercode().equals(orderCode));
 //        }
-
-        public List<OrderlistEntity> selOrder(Long orderCode){
-            return orderlistRepository.findOrderById(orderCode);
-        }
-}
-
+//
+//        public List<OrderlistEntity> selOrder(Long orderCode){
+//            return orderlistRepository.findOrderById(orderCode);
+//        }
+//}
+//
+//
