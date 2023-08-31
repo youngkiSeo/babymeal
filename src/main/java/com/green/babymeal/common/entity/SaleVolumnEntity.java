@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -32,7 +33,7 @@ public class SaleVolumnEntity {
 
     @CreationTimestamp
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
 
 }
