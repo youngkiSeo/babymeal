@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class AdminService {
     private OrderDetailRepository orderDetailRepository;
 
 
-    public Page<OrderlistRes> allOrder(Date startDate, Date endDate,
+    public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4,
                                        Pageable pageable) {
         // "필터1 : 검색어  필터2 : 주문번호  필터3 : 상품번호   필터4 : 주문상태"
@@ -48,6 +49,18 @@ public class AdminService {
                     .iuser(order.getIuser().getIuser())
                     .build();
 
+            List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
+            if (!orderDetails.isEmpty()) {
+                orderDetailVoList = orderDetails.stream()
+                        .map(detail -> OrderDetailVo.builder()
+                                .orderDetailId(detail.getOrderDetailId())
+                                .productId(detail.getProductId().getProductId())
+                                .count(detail.getCount())
+                                .totalPrice(detail.getTotalPrice())
+                                .build())
+                        .collect(Collectors.toList());
+            }
+
             if (!orderDetails.isEmpty()) {
                 OrderlistRes orderlistRes = OrderlistRes.builder()
                         .orderId(order.getOrderId())
@@ -63,16 +76,20 @@ public class AdminService {
                         .addressDetail(order.getAddressDetail())
                         .delYn(order.getDelYn())
                         .usepoint(order.getUsepoint())
-                        .orderDetailVo(new ArrayList<>())
+                        .orderDetailVo(orderDetailVoList)
                         .build();
-                resultList.add(orderlistRes);
+                resultList.add(orderlistRes); // 기본 데이터 조회 완료
+            }
+
+            if (filter2 != null) {
+                resultList.removeIf(orderlistRes -> !orderlistRes.getOrdercode().equals(Long.parseLong(filter2)));
             }
         }
-
         return new PageImpl<>(resultList, outputOrderlist.getPageable(), outputOrderlist.getTotalElements());
     }
-
 }
+
+
 
 
 //        // 필터2 : 주문번호 기준 필터링

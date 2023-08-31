@@ -35,7 +35,7 @@ public class OrderlistRes {
     private Byte delYn;
     private int usepoint;
     private List<OrderDetailVo> orderDetailVo;
-    private List<ProductVo> productVo;
+    //private List<ProductVo> productVo;
     private UserVo userVo;
 }
 

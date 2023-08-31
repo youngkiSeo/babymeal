@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,10 +44,15 @@ public class AdminController {
                                        @RequestParam(required = false) String filter2,
                                        @RequestParam(required = false) String filter3,
                                        @RequestParam(required = false) String filter4,
-                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
-                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                        Pageable pageable) {
-
+        if (startDate == null) {
+            // 올해 1월 1일부터 오늘까지
+            LocalDate today = LocalDate.now();
+            startDate = LocalDate.of(today.getYear(), Month.JANUARY, 1);
+            endDate = today;
+        }
         return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, pageable);
     }
 
