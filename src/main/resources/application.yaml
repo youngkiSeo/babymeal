@@ -25,6 +25,8 @@ spring:
     multipart:
       max-file-size: 3MB
       max-request-size: 12MB
+  main:
+    allow-bean-definition-overriding: true
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

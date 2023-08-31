@@ -1,7 +1,12 @@
 package com.green.babymeal.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -14,6 +19,7 @@ public class ProductThumbnailEntity {
 
     @OneToOne
     @JoinColumn(name = "product_id",nullable = false)
+    @JsonBackReference
     private ProductEntity productId;
 
     @Column

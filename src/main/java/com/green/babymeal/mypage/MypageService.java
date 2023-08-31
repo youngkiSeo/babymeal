@@ -8,6 +8,7 @@ import com.green.babymeal.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MypageService {
+    @Autowired
     private final OrderlistRepository orderlistRep;
+    @Autowired
     private final OrderDetailRepository orderDetailRep;
+    @Autowired
     private final UserRepository userRep;
+    @Autowired
     private final PasswordEncoder PW_ENCODER;
+    @Autowired
     private final AuthenticationFacade USERPK;
+    @Autowired
     private final ThumbnailRepository thumbnailRep;
+    @Autowired
     private final ProductCategoryRelationRepository productcategoryRep;
 
 
@@ -181,6 +189,26 @@ public class MypageService {
         if (matches==true){
             return 1;
         }else return 0;
+    }
+
+
+    private final ProductRepository productRep;
+    private final SaleVolumnRepository saleRep;
+    public SaleVolumnEntity Inssalevolumn(SaleVolumnDto dto){
+        ProductEntity productEntity = productRep.findById(dto.getProductId()).get();
+        SaleVolumnEntity entity = SaleVolumnEntity.builder().count(dto.getCount()).productId(productEntity).build();
+
+        SaleVolumnEntity save = saleRep.save(entity);
+
+        return save;
+    }
+    public List<SaleVolumnVo> Selectsale(){
+
+        List<SaleVolumnVo> saleVolumnVos = saleRep.find();
+        //   List<SaleVolumnVo> allByCreatedAtBetween = saleRep.findAllByCreatedAtBetween(start, end);
+
+        return saleVolumnVos;
+
     }
 
 

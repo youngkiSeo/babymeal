@@ -1,5 +1,6 @@
 package com.green.babymeal.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.core.annotation.Order;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -57,4 +60,9 @@ public class ProductEntity {
 
     @Column(name = "point_rate")
     private float pointRate;
+
+
+    @OneToOne(mappedBy = "productId")
+    @JsonManagedReference
+    private ProductThumbnailEntity productThumbnailEntityList;
 }
