@@ -1,8 +1,10 @@
 package com.green.babymeal.main.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+
 public class MainSelVo {
 
 
@@ -12,6 +14,6 @@ public class MainSelVo {
     private int price;
     private int quantity;
     private int saleVoumn;
-    private int pointRate;
+    private float pointRate;
 
 }

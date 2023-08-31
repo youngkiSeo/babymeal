@@ -9,57 +9,106 @@ import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.main.model.MainSelPaging;
 import com.green.babymeal.main.model.MainSelVo;
 import com.green.babymeal.main.model.SelDto;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.QBean;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sun.jdi.IntegerValue;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
 
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MainServiceImpl implements MainService{
+public class MainServiceImpl implements MainService {
 
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private  JPAQueryFactory jpaQueryFactory;
+    private final EntityManager em;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final AuthenticationFacade USERPK;
 
-      @Override
-      public MainSelPaging mainSel(SelDto dto) {
-          if (dto.getCheck() == 1) {
-              QProductEntity qProductEntity = new QProductEntity("ProductEntity");
-              QProductThumbnailEntity qProductThumbnailEntity = new QProductThumbnailEntity("ProductThumbnailEntity");
-              JPAQueryFactory jpaQueryFactory=new JPAQueryFactory(em);
-              List<ProductEntity> fetch = jpaQueryFactory
-                      .select(qProductEntity)
-                      .from(qProductEntity)
-                      .leftJoin(qProductEntity.productThumbnailEntityList,qProductThumbnailEntity)
-                      .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
-                      .orderBy(qProductEntity.createdAt.desc())
-                      .fetch();
 
-              Long aLong = jpaQueryFactory
-                      .select(qProductEntity.count())
-                      .from(qProductEntity)
-                      .fetchOne();
-              int maxPage = (int) Math.ceil((double) aLong / dto.getRow());
+    @Override
+    public MainSelPaging mainSel(SelDto dto) {
+        if (dto.getCheck() == 1) {
 
-              return MainSelPaging.builder()
-                      .maxPage(maxPage)
-                      .maxCount(Long.valueOf(aLong).intValue())
-                      .entities(fetch)
-                      .build();
-          }
-          return null;
-      }
+            int StartIdx = (dto.getPage() - 1) * dto.getRow();
+            QProductEntity qProductEntity = new QProductEntity("ProductEntity");
+            QProductThumbnailEntity qProductThumbnailEntity = new QProductThumbnailEntity("ProductThumbnailEntity");
+            List<MainSelVo> fetch = jpaQueryFactory
+                    .select( getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductEntity.productThumbnailEntityList, qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .orderBy(qProductEntity.createdAt.desc())
+                    .offset(StartIdx)
+                    .limit(dto.getRow())
+                    .fetch();
+
+            long count = jpaQueryFactory
+                    .select(qProductEntity,qProductThumbnailEntity)
+                    .from(qProductEntity)
+                    .leftJoin(qProductEntity.productThumbnailEntityList, qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .orderBy(qProductEntity.createdAt.desc())
+                    .fetchCount();
+
+
+        return    MainSelPaging.builder()
+                    .maxPage((int) Math.ceil((double) count / dto.getRow()))
+                    .maxCount(count)
+                    .list(fetch)
+                    .build();
+
+        }
+
+        else if (dto.getCheck()==2) {
+            Object iuser = em.createQuery("select u.birthday from UserEntity u where u.id=:iuser ")
+                    .setParameter("iuser", USERPK.getLoginUser().getIuser()).getSingleResult();
+            LocalDate i=(LocalDate)iuser;
+            Period between = Period.between(i, LocalDate.now());
+
+
+
+        }
+        return null;
+    }
+
+
+    private static QBean<MainSelVo> getBean(QProductEntity qProductEntity, QProductThumbnailEntity qProductThumbnailEntity) {
+        return Projections.bean(MainSelVo.class,
+                qProductEntity.productId,
+                qProductThumbnailEntity.img.as("thumbnail"),
+                qProductEntity.pName.as("name"),
+                qProductEntity.pPrice.as("price"),
+                qProductEntity.pQuantity.as("quantity"),
+                qProductEntity.saleVolume.as("saleVoumn"),
+                qProductEntity.pointRate);
+    }
+
+}
+//
+//          Long aLong = jpaQueryFactory
+//                  .select(qProductEntity.count())
+//                  .from(qProductEntity)
+//                  .fetchOne();
+//          int maxPage = ;
+
+
+
+//      }
+//      return null;
+
 ///       if(dto.getCheck()==2){
 ///
 ///       }
@@ -178,4 +227,5 @@ public class MainServiceImpl implements MainService{
 //            mainSelVos.get(i).setName(levelName);
 //        }
 //    }
-}
+
+
