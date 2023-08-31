@@ -30,7 +30,7 @@ public class OrderlistEntity {
     private Long orderId;
 
     @Column(name = "order_code",unique = true,updatable = false,nullable = false)
-    private Long ordercode;
+    private Long orderCode;
 
     @ManyToOne
     @JoinColumn(name = "iuser",nullable = false)
