@@ -2,10 +2,9 @@ package com.green.babymeal.admin.model;
 
 import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.common.entity.ProductEntity;
 import com.green.babymeal.common.entity.UserEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;

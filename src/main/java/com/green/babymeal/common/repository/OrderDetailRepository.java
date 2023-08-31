@@ -15,13 +15,13 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailEntity, 
     @Query("select new com.green.babymeal.mypage.model.OrderlistDetailVo(C.productId,D.img,C.pName,A.createdAt,C.pPrice,B.count,B.totalPrice) " +
             " from OrderlistEntity A" +
             " left join OrderDetailEntity B" +
-            " on A.orderid = B.orderId.orderid"+
+            " on A.orderId = B.orderId.orderId"+
             " left join ProductEntity C"+
             " on B.productId.productId = C.productId"+
             " left join ProductThumbnailEntity D"+
             " on D.productId.productId = C.productId"+
-            " WHERE A.orderid=:orderId")
+            " WHERE A.orderId=:orderId")
     List<OrderlistDetailVo>findByOrderId(@Param("orderId")Long orderId);
-    List<OrderDetailEntity> findByOrderId_Ordercode(Long orderCode);
-    List<OrderDetailEntity> findByOrderId_OrdercodeIn(List<Long> orderCodes);
+    List<OrderDetailEntity> findByOrderId_OrderCode(Long orderCode);
+    List<OrderDetailEntity> findByOrderId_OrderCodeIn(List<Long> orderCodes);
 }

@@ -78,7 +78,7 @@ public class MypageService {
 
     public OrderlistDetailUserVo orderDetail(Long orderId){
         List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(orderId);
-        OrderlistEntity orderlistEntity = orderlistRep.findByOrderid(orderId);
+        OrderlistEntity orderlistEntity = orderlistRep.findByOrderId(orderId);
         OrderlistUserVo vo = new OrderlistUserVo();
         vo.setReciever(orderlistEntity.getReciever());
         vo.setAddress(orderlistEntity.getAddress());

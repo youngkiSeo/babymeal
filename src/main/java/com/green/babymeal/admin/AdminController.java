@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -47,18 +50,19 @@ public class AdminController {
                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
                                        Pageable pageable) {
 
-        LocalDateTime startDate;
-        LocalDateTime endDate;
+        Date startDate;
+        Date endDate;
 
+        // 시작날짜, 마지막날짜가 null값이면 올해 1월 1일 / 오늘 자정까지로 시간 세팅함
         if (start == null) {
-            startDate = LocalDate.now().withDayOfYear(1).atStartOfDay(); // 올해 1월 1일부터
+            startDate = Date.from(LocalDate.now().withDayOfYear(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         } else {
-            startDate = start.atStartOfDay();
+            startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
         if (end == null) {
-            endDate = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59); // 오늘 자정까지
+            endDate = Date.from(LocalDateTime.now().with(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
         } else {
-            endDate = end.atTime(23, 59, 59);
+            endDate = Date.from(end.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
         }
 
         return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, pageable);

@@ -58,24 +58,16 @@ public class BuyService {
             String formattedDate = getDate("yyyyMMdd");
             String randomCode = getRandomCode(4);
             code = Long.valueOf(formattedDate + randomCode);
-            OrderlistEntity byOrdercode = orderlistRep.findByOrdercode(code);
+            OrderlistEntity byOrdercode = orderlistRep.findByOrderCode(code);
 
             if (byOrdercode==null){
                 idx++;
             }
         }
-        log.info("random code:{}",code);
-        UserEntity userEntity = UserEntity.builder().iuser(loginUser.getIuser()).build();
-        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).phoneNm(dto.getPhoneNm())
-                .request(dto.getRequest()).reciever(dto.getReceiver()).address(dto.getAddress()).addressDetail(dto.getAddressDetail()).usepoint(dto.getPoint()).build();
-        orderlistRep.save(orderlistEntity);
-
-        //orderdetail insert
-        for (int i = 0; i <dto.getInsorderbasket().size(); i++) {
-
-        }
-
-
+        log.info("code:{}",code);
+//        UserEntity userEntity = UserEntity.builder().iuser(loginUser.getIuser()).build();
+//        OrderlistEntity orderlistEntity = OrderlistEntity.builder().ordercode(code).iuser(userEntity)
+//                .phoneNm(dto.getPhoneNm()).request(dto.getRequest()).
 
 
 

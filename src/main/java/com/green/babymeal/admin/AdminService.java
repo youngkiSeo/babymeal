@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class AdminService {
     private OrderDetailRepository orderDetailRepository;
 
 
-    public Page<OrderlistRes> allOrder(LocalDateTime startDate, LocalDateTime endDate,
+    public Page<OrderlistRes> allOrder(Date startDate, Date endDate,
                                        String filter1, String filter2, String filter3, String filter4,
                                        Pageable pageable) {
         // "필터1 : 검색어  필터2 : 주문번호  필터3 : 상품번호   필터4 : 주문상태"
@@ -37,7 +38,7 @@ public class AdminService {
         List<OrderlistRes> resultList = new ArrayList<>();
 
         for (OrderlistEntity order : outputOrderlist.getContent()) {
-            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_Ordercode(order.getOrderCode());
+            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderCode());
             if (!orderDetails.isEmpty()) {
                 OrderlistRes orderlistRes = OrderlistRes.builder()
                         .orderId(order.getOrderId())
@@ -57,6 +58,12 @@ public class AdminService {
                         .orderDetails(orderDetails)
                         .build();
                 resultList.add(orderlistRes);
+
+                //
+                //    private Long orderDetailId;
+                //    private ProductEntity productId;
+                //    private int count;
+                //    private int totalPrice;
             }
         }
 
@@ -96,7 +103,7 @@ public class AdminService {
 //        if (filter2 != null) {
 //            // 주문번호 필터 적용
 //            Long orderCode = Long.parseLong(filter2);
-//            List<OrderDetailEntity> filteredByOrderCode = orderDetailRepository.findByOrderId_Ordercode(orderCode);
+//            List<OrderDetailEntity> filteredByOrderCode = orderDetailRepository.findByOrderId_OrderCode(orderCode);
 //            filterOrderlist.removeIf(order -> !order.getOrdercode().equals(orderCode));
 //        }
 
