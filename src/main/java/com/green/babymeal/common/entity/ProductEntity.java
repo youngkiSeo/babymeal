@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.core.annotation.Order;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +45,11 @@ public class ProductEntity {
 
     @CreationTimestamp
     @Column(name = "createdAt")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @UpdateTimestamp
     @Column(name = "updatedAt")
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 
     @ColumnDefault("0")
     @Column(name = "saleVolume",length=11)
