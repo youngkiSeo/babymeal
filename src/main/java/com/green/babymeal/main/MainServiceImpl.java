@@ -2,25 +2,19 @@ package com.green.babymeal.main;
 
 import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
-import com.green.babymeal.common.repository.ProductRepository;
+import com.green.babymeal.common.repository.ProductCategoryRelationRepository;
 import com.green.babymeal.main.model.MainSelPaging;
 import com.green.babymeal.main.model.MainSelVo;
 import com.green.babymeal.main.model.SelDto;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sun.jdi.IntegerValue;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -34,6 +28,7 @@ public class MainServiceImpl implements MainService {
     private final EntityManager em;
     private final JPAQueryFactory jpaQueryFactory;
     private final AuthenticationFacade USERPK;
+    private final ProductCategoryRelationRepository productCategoryRelationRepository;
 
 
     @Override
@@ -66,6 +61,9 @@ public class MainServiceImpl implements MainService {
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
                     .orderBy(qProductEntity.createdAt.desc())
                     .fetchCount();
+
+
+            productNmCateId(fetch); //상품 이름에 단계를 붙힌다
 
 
             return MainSelPaging.builder()
@@ -101,15 +99,15 @@ public class MainServiceImpl implements MainService {
                     .leftJoin(qProductCateRelationEntity)
                     .on(qProductEntity.productId.eq(qProductCateRelationEntity.productEntity.productId))
                     .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cate), qProductEntity.pQuantity.ne(0),
-                            qProductEntity.isDelete.eq((byte)0),qProductThumbnailEntity.img.isNotNull())
-                    .orderBy(qProductEntity.saleVolume.desc())
+                            qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .orderBy(qProductEntity.saleVolume.desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
                     .limit(dto.getRow())
                     .fetch();
 
             System.out.println("fetch = " + fetch);
 
-            for (MainSelVo vo: fetch) {
-               vo.setName("["+cate+"단계]"+vo.getName());
+            for (MainSelVo vo : fetch) {
+                vo.setName("[" + cate + "단계]" + vo.getName());
             }
 
             return MainSelPaging.builder()
@@ -119,7 +117,37 @@ public class MainServiceImpl implements MainService {
 
 
         }
+
+        if (dto.getCheck() == 3) {
+            List<MainSelVo> fetch = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").desc())
+                    .limit(dto.getRow())
+                    .fetch();
+
+            productNmCateId(fetch); //상품 이름에 단계를 붙힌다
+
+            return MainSelPaging.builder()
+                    .maxCount(Long.valueOf(fetch.size()))
+                    .list(fetch)
+                    .build();
+
+
+        }
         return null;
+    }
+
+    private void productNmCateId(List<MainSelVo> fetch) {
+        for (MainSelVo vo : fetch) {
+            ProductEntity productEntity = new ProductEntity();
+            productEntity.setProductId(vo.getProductId());
+            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findByProductEntity(productEntity);
+            Long productCateId = byProductEntity.getProductCateId();
+            vo.setName("[" + productCateId + "단계]" + vo.getName());
+        }
     }
 
 
