@@ -158,7 +158,6 @@ public class MainServiceImpl implements MainService {
         }
         else {
             //제일 많이 팔린 상품 추천 더보기(전체)
-
             List<MainSelVo> fetch = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
                     .from(qProductEntity)
                     .leftJoin(qProductThumbnailEntity)
@@ -179,6 +178,7 @@ public class MainServiceImpl implements MainService {
 
         }
     }
+
 
 
     //상품에 단계를 붙히는 메소드

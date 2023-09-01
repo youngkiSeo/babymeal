@@ -15,11 +15,11 @@ public class CateViewEntity {
     private Long cateViewId;
 
     @ManyToOne
-    @JoinColumn(name = "cateId",columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "cate_id",columnDefinition = "BIGINT UNSIGNED")
     private CategoryEntity categoryEntity;
 
 
     @ManyToOne
-    @JoinColumn(name = "cateDetailId",columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "cate_detail_id",columnDefinition = "BIGINT UNSIGNED")
     private CateDetailEntity cateDetailEntity;
 }
