@@ -2,10 +2,13 @@ package com.green.babymeal.baby.model;
 
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
-public class BabyInfoVo {
-    private List list1;
-    private List list2;
+public class BaByInfoVo {
+
+    private Long babyId;
+    private LocalDate birthday;
+    private String prefer;
+
 }
