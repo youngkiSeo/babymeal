@@ -30,10 +30,10 @@ public class MypageController {
        return service.orderlist();
     }
 
-    @GetMapping("/orderlist/{ordercode}")
+    @GetMapping("/orderlist/{orderCode}")
     @Operation(summary = "상세 주문내역",description = "")
-    OrderlistDetailUserVo getOrderlistDetail(@PathVariable Long ordercode){
-        return service.orderDetail(ordercode);
+    OrderlistDetailUserVo getOrderlistDetail(@PathVariable Long orderCode){
+        return service.orderDetail(orderCode);
     }
 
     @DeleteMapping("/orderlist")
