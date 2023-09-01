@@ -21082,3 +21082,904 @@ Caused by: java.lang.IllegalArgumentException: Argument [Sun Jan 01 00:00:00 KST
 [2023-09-01 14:23:48.489 INFO  SpringApplicationShutdownHook] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
 [2023-09-01 14:23:48.491 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
 [2023-09-01 14:23:48.495 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2023-09-01 14:23:52.063 INFO  restartedMain] [com.green.babymeal.BabymealApplication] Starting BabymealApplication using Java 17.0.7 with PID 1848 (D:\Students\spring\babymeal\target\classes started by Administrator in D:\Students\spring\babymeal)
+[2023-09-01 14:23:52.064 INFO  restartedMain] [com.green.babymeal.BabymealApplication] No active profile set, falling back to 1 default profile: "default"
+[2023-09-01 14:23:52.097 INFO  restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2023-09-01 14:23:52.097 INFO  restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2023-09-01 14:23:52.543 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-09-01 14:23:52.543 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-09-01 14:23:52.558 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 3 ms. Found 0 Redis repository interfaces.
+[2023-09-01 14:23:52.744 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-09-01 14:23:52.745 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2023-09-01 14:23:52.864 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 118 ms. Found 16 JPA repository interfaces.
+[2023-09-01 14:23:52.870 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Multiple Spring Data modules found, entering strict repository configuration mode
+[2023-09-01 14:23:52.870 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2023-09-01 14:23:52.876 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.baby.BabyAlleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.876 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.baby.BabyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.876 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.AllergyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.876 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.877 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.877 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.CateViewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.877 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderBasketRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.877 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.OrderlistRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductAllergyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductCategoryRelationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ProductRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ReviewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.SaleVolumnRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.878 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.common.repository.ThumbnailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.879 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport] Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.green.babymeal.user.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-09-01 14:23:52.879 INFO  restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2023-09-01 14:23:53.356 INFO  restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port(s): 8080 (http)
+[2023-09-01 14:23:53.362 INFO  restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2023-09-01 14:23:53.363 INFO  restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2023-09-01 14:23:53.363 INFO  restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.11]
+[2023-09-01 14:23:53.409 INFO  restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2023-09-01 14:23:53.409 INFO  restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 1312 ms
+[2023-09-01 14:23:53.675 INFO  restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2023-09-01 14:23:53.710 INFO  restartedMain] [org.hibernate.Version] HHH000412: Hibernate ORM core version 6.2.6.Final
+[2023-09-01 14:23:53.712 INFO  restartedMain] [org.hibernate.cfg.Environment] HHH000406: Using bytecode reflection optimizer
+[2023-09-01 14:23:53.806 INFO  restartedMain] [org.hibernate.bytecode.internal.BytecodeProviderInitiator] HHH000021: Bytecode provider name : bytebuddy
+[2023-09-01 14:23:53.895 INFO  restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2023-09-01 14:23:53.907 INFO  restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2023-09-01 14:23:53.961 INFO  restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection org.mariadb.jdbc.Connection@7d560c0c
+[2023-09-01 14:23:53.962 INFO  restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2023-09-01 14:23:54.173 INFO  restartedMain] [org.hibernate.bytecode.internal.BytecodeProviderInitiator] HHH000021: Bytecode provider name : bytebuddy
+[2023-09-01 14:23:54.698 INFO  restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2023-09-01 14:23:54.936 INFO  restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2023-09-01 14:23:55.093 INFO  restartedMain] [org.springframework.data.jpa.repository.query.QueryEnhancerFactory] Hibernate is in classpath; If applicable, HQL parser will be used.
+[2023-09-01 14:23:55.492 WARN  restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2023-09-01 14:23:56.127 INFO  restartedMain] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2023-09-01 14:23:56.173 INFO  restartedMain] [com.green.babymeal.common.config.web.WebMvcConfiguration] uploadPath D:\home\download
+[2023-09-01 14:23:56.215 INFO  restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@380e9890, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7772420a, org.springframework.security.web.context.SecurityContextHolderFilter@228239ef, org.springframework.security.web.header.HeaderWriterFilter@46cf9111, org.springframework.security.web.authentication.logout.LogoutFilter@68dfd5de, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@6cdde137, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4d004675, com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter@39820793, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1ca4281e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6db79578, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7902d63, org.springframework.security.web.session.SessionManagementFilter@78fbbd5c, org.springframework.security.web.access.ExceptionTranslationFilter@60318928, org.springframework.security.web.access.intercept.AuthorizationFilter@6a8ddc98]
+[2023-09-01 14:23:56.218 WARN  restartedMain] [org.springframework.security.config.annotation.web.builders.WebSecurity] 
+
+********************************************************************
+**********        Security debugging is enabled.       *************
+**********    This may include sensitive information.  *************
+**********      Do not use in a production system!     *************
+********************************************************************
+
+
+[2023-09-01 14:23:56.363 INFO  restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2023-09-01 14:23:56.380 INFO  restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2023-09-01 14:23:56.393 INFO  restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port(s): 8080 (http) with context path ''
+[2023-09-01 14:23:56.401 INFO  restartedMain] [com.green.babymeal.BabymealApplication] Started BabymealApplication in 4.7 seconds (process running for 5.139)
+[2023-09-01 14:24:07.737 INFO  http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-09-01 14:24:07.738 INFO  http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
+[2023-09-01 14:24:07.739 INFO  http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Completed initialization in 1 ms
+[2023-09-01 14:24:07.744 INFO  http-nio-8080-exec-1] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/index.html':
+
+org.apache.catalina.connector.RequestFacade@43537dad
+
+servletPath:/swagger-ui/index.html
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+cache-control: max-age=0
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+upgrade-insecure-requests: 1
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+sec-fetch-site: same-origin
+sec-fetch-mode: navigate
+sec-fetch-user: ?1
+sec-fetch-dest: document
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzUzNzkxMywiZXhwIjoxNjk0ODMzOTEzfQ.Indf5dHZV0992F3D1e7LxY55MUIB_UUuwISN5yIeU8Q
+if-modified-since: Wed, 17 May 2023 05:07:26 GMT
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:24:07.749 INFO  http-nio-8080-exec-1] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:24:07.749 INFO  http-nio-8080-exec-1] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:24:07.781 INFO  http-nio-8080-exec-4] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/swagger-initializer.js':
+
+org.apache.catalina.connector.RequestFacade@5650dd33
+
+servletPath:/swagger-ui/swagger-initializer.js
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+sec-ch-ua-platform: "Windows"
+accept: */*
+sec-fetch-site: same-origin
+sec-fetch-mode: no-cors
+sec-fetch-dest: script
+referer: http://localhost:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzUzNzkxMywiZXhwIjoxNjk0ODMzOTEzfQ.Indf5dHZV0992F3D1e7LxY55MUIB_UUuwISN5yIeU8Q
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:24:07.782 INFO  http-nio-8080-exec-4] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:24:07.782 INFO  http-nio-8080-exec-4] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:24:07.885 INFO  http-nio-8080-exec-6] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/v3/api-docs/swagger-config':
+
+org.apache.catalina.connector.RequestFacade@35c5ed0e
+
+servletPath:/v3/api-docs/swagger-config
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+sec-ch-ua-platform: "Windows"
+accept: */*
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzUzNzkxMywiZXhwIjoxNjk0ODMzOTEzfQ.Indf5dHZV0992F3D1e7LxY55MUIB_UUuwISN5yIeU8Q
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:24:07.886 INFO  http-nio-8080-exec-6] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:24:07.886 INFO  http-nio-8080-exec-6] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:24:07.910 INFO  http-nio-8080-exec-2] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/v3/api-docs':
+
+org.apache.catalina.connector.RequestFacade@4f3ed01a
+
+servletPath:/v3/api-docs
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+accept: application/json,*/*
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+sec-ch-ua-platform: "Windows"
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzUzNzkxMywiZXhwIjoxNjk0ODMzOTEzfQ.Indf5dHZV0992F3D1e7LxY55MUIB_UUuwISN5yIeU8Q
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:24:07.912 INFO  http-nio-8080-exec-2] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:24:07.912 INFO  http-nio-8080-exec-2] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:24:07.989 INFO  http-nio-8080-exec-5] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/admin/1':
+
+org.apache.catalina.connector.RequestFacade@6379d52a
+
+servletPath:/admin/1
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+accept: */*
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjkzNTQ3ODA5fQ.AQDfAj28wzTnk2A9PPyt3I1K2IgC_IEZNk3qz393vZw
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:24:07.989 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjkzNTQ3ODA5fQ.AQDfAj28wzTnk2A9PPyt3I1K2IgC_IEZNk3qz393vZw
+[2023-09-01 14:24:07.989 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:24:08.225 INFO  http-nio-8080-exec-2] [org.springdoc.api.AbstractOpenApiResource] Init duration for springdoc-openapi is: 305 ms
+[2023-09-01 14:24:08.287 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 완료
+[2023-09-01 14:24:34.502 INFO  http-nio-8080-exec-3] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for POST '/baby':
+
+org.apache.catalina.connector.RequestFacade@362eaa68
+
+servletPath:/baby
+pathInfo:null
+headers: 
+host: localhost:8080
+connection: keep-alive
+content-length: 90
+sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"
+accept: */*
+content-type: application/json
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+sec-ch-ua-platform: "Windows"
+origin: http://localhost:8080
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate, br
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzUzNzkxMywiZXhwIjoxNjk0ODMzOTEzfQ.Indf5dHZV0992F3D1e7LxY55MUIB_UUuwISN5yIeU8Q
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:24:34.502 INFO  http-nio-8080-exec-3] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:24:34.502 INFO  http-nio-8080-exec-3] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:24.974 INFO  http-nio-8080-exec-10] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/index.html':
+
+org.apache.catalina.connector.RequestFacade@ead9531
+
+servletPath:/swagger-ui/index.html
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+cache-control: max-age=0
+upgrade-insecure-requests: 1
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:24.975 INFO  http-nio-8080-exec-10] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:24.976 INFO  http-nio-8080-exec-10] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:24.990 INFO  http-nio-8080-exec-1] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/swagger-ui.css':
+
+org.apache.catalina.connector.RequestFacade@76410964
+
+servletPath:/swagger-ui/swagger-ui.css
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: text/css,*/*;q=0.1
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:24.990 INFO  http-nio-8080-exec-4] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/index.css':
+
+org.apache.catalina.connector.RequestFacade@4a262403
+
+servletPath:/swagger-ui/index.css
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: text/css,*/*;q=0.1
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:24.990 INFO  http-nio-8080-exec-1] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:24.990 INFO  http-nio-8080-exec-1] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:24.990 INFO  http-nio-8080-exec-4] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:24.990 INFO  http-nio-8080-exec-4] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-6] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/swagger-ui-bundle.js':
+
+org.apache.catalina.connector.RequestFacade@36e66d6
+
+servletPath:/swagger-ui/swagger-ui-bundle.js
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: */*
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-6] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-6] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-2] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/swagger-ui-standalone-preset.js':
+
+org.apache.catalina.connector.RequestFacade@64b2375
+
+servletPath:/swagger-ui/swagger-ui-standalone-preset.js
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: */*
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-2] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-5] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/swagger-initializer.js':
+
+org.apache.catalina.connector.RequestFacade@207ad4dc
+
+servletPath:/swagger-ui/swagger-initializer.js
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: */*
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-2] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:24.991 INFO  http-nio-8080-exec-5] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:25.123 INFO  http-nio-8080-exec-3] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/v3/api-docs/swagger-config':
+
+org.apache.catalina.connector.RequestFacade@76b2290
+
+servletPath:/v3/api-docs/swagger-config
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: */*
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:25.124 INFO  http-nio-8080-exec-7] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/favicon-32x32.png':
+
+org.apache.catalina.connector.RequestFacade@6f80988c
+
+servletPath:/swagger-ui/favicon-32x32.png
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:25.124 INFO  http-nio-8080-exec-3] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:25.125 INFO  http-nio-8080-exec-3] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:25.125 INFO  http-nio-8080-exec-7] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:25.125 INFO  http-nio-8080-exec-7] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:25.138 INFO  http-nio-8080-exec-8] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/v3/api-docs':
+
+org.apache.catalina.connector.RequestFacade@6ef2268
+
+servletPath:/v3/api-docs
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+accept: application/json,*/*
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:25.138 INFO  http-nio-8080-exec-8] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:25.138 INFO  http-nio-8080-exec-8] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:25.140 INFO  http-nio-8080-exec-9] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/swagger-ui/favicon-32x32.png':
+
+org.apache.catalina.connector.RequestFacade@6e1ce9e3
+
+servletPath:/swagger-ui/favicon-32x32.png
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:25.140 INFO  http-nio-8080-exec-9] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:25.140 INFO  http-nio-8080-exec-9] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:37.976 INFO  http-nio-8080-exec-10] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for POST '/api/search/popular?product=%EC%A3%BD':
+
+org.apache.catalina.connector.RequestFacade@21789fe0
+
+servletPath:/api/search/popular
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+content-length: 0
+accept: */*
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+origin: http://192.168.0.207:8080
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:37.977 INFO  http-nio-8080-exec-10] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:37.977 INFO  http-nio-8080-exec-10] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
+[2023-09-01 14:28:45.732 INFO  http-nio-8080-exec-4] [Spring Security Debugger] 
+
+************************************************************
+
+Request received for GET '/api/search/popular':
+
+org.apache.catalina.connector.RequestFacade@47050a1c
+
+servletPath:/api/search/popular
+pathInfo:null
+headers: 
+host: 192.168.0.207:8080
+connection: keep-alive
+accept: */*
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36
+referer: http://192.168.0.207:8080/swagger-ui/index.html
+accept-encoding: gzip, deflate
+accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b21hdG9AdG9tYXRvLmNvbSIsIml1c2VyIjoxLCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlhdCI6MTY5MzU0NTgwOSwiZXhwIjoxNjk0ODQxODA5fQ.ZHTqQy8DbJjG6INPghtI2jeujgHJzQitwlX8zBKkE2U
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  LogoutFilter
+  OAuth2AuthorizationRequestRedirectFilter
+  OAuth2LoginAuthenticationFilter
+  JwtAuthenticationFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+[2023-09-01 14:28:45.733 INFO  http-nio-8080-exec-4] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 추출 token: null
+[2023-09-01 14:28:45.734 INFO  http-nio-8080-exec-4] [com.green.babymeal.common.config.security.filter.JwtAuthenticationFilter] JwtAuthenticationFilter - doFilterInternal: 토큰 유효성 체크 시작
