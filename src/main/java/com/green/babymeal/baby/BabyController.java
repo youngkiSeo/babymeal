@@ -2,8 +2,6 @@ package com.green.babymeal.baby;
 
 import com.green.babymeal.baby.model.BabyInsDto;
 import com.green.babymeal.baby.model.BabyInsVo;
-import com.green.babymeal.common.entity.UserBabyinfoEntity;
-import com.green.babymeal.common.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

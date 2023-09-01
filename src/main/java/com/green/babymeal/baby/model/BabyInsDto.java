@@ -9,6 +9,6 @@ public class BabyInsDto {
     private String birthday;
     private String prefer;
     private Long iuser;
-    private Long allegyId;
+    private String allegyId;
 
 }

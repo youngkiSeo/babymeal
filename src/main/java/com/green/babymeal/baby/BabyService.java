@@ -39,20 +39,25 @@ public class BabyService {
             rep.save(entity);
 //        }
 
+        String ss= dto.getAllegyId();
+        String[] split = ss.split(",");
+
+        for (int i = 0; i < split.length; i++) {
             UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
             userBabyalleEntity.setUserBabyinfoEntity(entity);
             AllergyEntity allergyEntity = new AllergyEntity();
-            allergyEntity.setAllergyId(dto.getAllegyId());
+            allergyEntity.setAllergyId(Long.valueOf(split[i]));
             userBabyalleEntity.setAllergyEntity(allergyEntity);
             repository.save(userBabyalleEntity);
+        }
 
+        BabyInsVo vo = new BabyInsVo();
+        vo.setBirthday(dto.getBirthday());
+        vo.setPrefer(dto.getPrefer());
+        vo.setAllegyId(dto.getAllegyId());
+        vo.setIuser(dto.getIuser());
 
-        return BabyInsVo.builder()
-                .birthday(entity.getBirthday())
-                .prefer(entity.getPrefer())
-                .iuser(userEntity.getIuser())
-                //.babyId(userBabyalleEntity.getBabyallergy())
-                .build();
+        return vo;
     }
 
 
