@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Component
@@ -20,22 +21,25 @@ public class MyFileUtils {
     }
 
     //랜덤 파일명 만들기
-    public String getRandomFileNm() {
+    public static String getRandomFileNm() {
         return UUID.randomUUID().toString();
     }
 
-    //랜덤 파일명 만들기 (with 확장자)
-    public String getRandomFileNm(String originFileNm) {
-        return getRandomFileNm() + getExt(originFileNm);
+    // 랜덤 파일명 만들기 (with 확장자)
+    public static String getRandomFileNm(String originFileNm) {
+        String randomFileName = getRandomFileNm(); // 랜덤 파일명 생성
+        String extension = getExt(originFileNm); // 확장자 추출
+        return randomFileName + extension;
     }
 
-    //랜덤 파일명 만들기
-    public String getRandomFileNm(MultipartFile file) {
-        return getRandomFileNm(file.getOriginalFilename());
+    // 랜덤 파일명 만들기
+    public static String getRandomFileNm(MultipartFile file) {
+        String originFileNm = file.getOriginalFilename();
+        return getRandomFileNm(originFileNm);
     }
 
     //확장자 얻기               "aaa.jpg"
-    public String getExt(String fileNm) {
+    public static String getExt(String fileNm) {
         return fileNm.substring(fileNm.lastIndexOf("."));
     }
 
@@ -51,4 +55,29 @@ public class MyFileUtils {
             return null;
         }
     }
+
+
+    //절대경로 리턴
+    public static String getAbsolutePath(String src) {
+        return Paths.get(src).toFile().getAbsolutePath(); // 내가 실행하는 드라이버를 자동으로 찍어주는 구문이다 (ex: C: , D:)
+    }
+
+
+    public static void delFolder(String path){
+        File file=new File(path);
+        if(file.exists() && file.isDirectory()){
+            File[] fileArr=file.listFiles(); //폴더안에 파일들을 배열로 받는다
+            for (File f:fileArr) {
+                if(f.isDirectory()){
+                    delFolder(f.getPath());
+                }else {
+                    f.delete();
+                }
+            }
+        }
+        file.delete(); //마지막으로 첫번재폴더를 삭제한다
+    }
+
+
+
 }

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.babymeal.admin.AdminMapper">
+    <insert id="productIns">
+        insert into product
+        SET p_name = #{name}
+        , p_price = #{price}
+        , p_quantity = #{quantity}
+        , description = #{description}
+        , allergy = #{allergy}
+        , is_delete = 0
+    </insert>
+
+<!--    <select id="productAll">-->
+<!--        select p_name name, p_price price, p_quantity quantity, description-->
+<!--        from product-->
+<!--        order by product_id desc-->
+<!--    </select>-->
+
+    <select id="getProduct">
+        SELECT A.p_price price, A.p_quantity quantity, A.description,
+        B.img, B.thumbnail
+        from product A
+        INNER JOIN product_image B
+        ON A.product_id = B.product_id
+        INNER JOIN product_thumbnail C
+        ON A.product_id = C.product_id
+        WHERE A.product_id = #{product_ID}
+        GROUP BY A.product_id
+    </select>
+
+
+    <update id="updAdminProduct">
+        update product A
+        inner join product_category_relation B
+        ON A.product_id = B.product_id
+        SET A.p_name = #{name}
+        , A.p_price = #{price}
+        , A.p_quantity = #{quantity}
+        , A.description = #{description}
+        , A.sale_volume = #{saleVolume}
+        , A.allergy = #{allergy}
+        , A.created_at = current_timestamp()
+        , B.cate_id = #{category}
+        where A.product_id = #{productId}
+    </update>
+
+    <insert id="insProductCateRelation">
+        insert into product_category_relation
+        (product_id,cate_id,cate_detail_id)
+        values
+        <foreach collection="cateDetailId" item="item" separator=",">
+            (#{productId},#{cateId},#{item})
+        </foreach>
+    </insert>
+
+    <update id="insThumbnail">
+        insert into product_thumbnail
+        (product_id,thumbnail)
+        values
+        <foreach collection="img" item="item" separator=",">
+            (#{productId},#{item})
+        </foreach>
+    </update>
+
+    <update id="changeAdminProduct">
+        update product
+        SET p_name = #{name}
+        , p_price = #{price}
+        , p_quantity = #{quantity}
+        , description = #{description}
+        , sale_volume = #{saleVolume}
+        , allergy = #{allergy}
+        , updated_at = current_timestamp()
+        where product_id = #{productId}
+    </update>
+
+    <select id="updProductInfo">
+        select p_name name, p_price price, p_quantity quantity, description,
+        sale_volume saleVolume
+        from product
+        where product_iD = #{productId}
+    </select>
+
+    <select id="updProductInfoCate">
+        SELECT
+        cate_detail_id
+        FROM
+        product_category_relation
+        WHERE
+        product_id = #{productId}
+    </select>
+
+
+    <insert id="categorySel">
+        INSERT INTO product_category_relation (product_id, cate_id, cate_detail_id)
+        VALUES
+        <foreach collection="cateDetail" item="detailId" separator=",">
+            (#{productId}, #{category}, #{detailId})
+        </foreach>
+    </insert>
+
+    <update id="delAdminProduct">
+        update product
+        SET is_delete = 1
+        where product_id = #{productId}
+    </update>
+
+
+
+
+
+    <insert id="insPk" useGeneratedKeys="true" keyProperty="productId">
+        insert into product
+        (p_name,p_price,p_quantity,description,created_at,updated_at)
+        values
+        ('',0,0,'',null,null);
+    </insert>
+
+
+    <insert id="insWebEditorImg" useGeneratedKeys="true"  keyProperty="pImgId">
+        insert into product_image
+        (product_id,img)
+        values
+        (#{productId},#{randomName})
+    </insert>
+
+    <insert id="insWebEditorImgList" useGeneratedKeys="true" keyProperty="pImgId">
+        insert into product_image
+        (product_id,img)
+        values
+        (#{productId},#{randomName})
+    </insert>
+
+    <insert id="insImgList" useGeneratedKeys="true" keyProperty="pImgId">
+        insert into product_image
+        (product_id,thumbnail)
+        values
+        (#{productId},#{randomName})
+    </insert>
+
+    <update id="updProduct">
+        update product
+        set p_name=#{name}
+        ,p_price=#{price}
+        ,p_quantity=#{quantity}
+        ,description=#{description}
+        ,allergy=#{allergy}
+        , category = #{category}
+        , cateDetail = #{category_detail};
+        where product_id=#{productId}
+    </update>
+
+    <delete id="delImg">
+        delete from product_image
+        where product_id=#{productId}
+    </delete>
+
+
+    <delete id="delProduct">
+        delete from product
+        where product_id=#{productId}
+    </delete>
+
+    <update id="insImgTest">
+        insert into product_image
+        set product_id = #{productId}
+    </update>
+
+    <insert id="updPicTest">
+        insert into product_image
+        set img = #{img},
+        product_id = #{productId}
+    </insert>
+    <delete id="delWebEditorCancel">
+        delete from product_image
+        where p_img_id=#{pImgId}
+    </delete>
+
+
+    <select id="selProductImgPk">
+        select product_id productId,img
+        from product_image
+        where p_img_id=#{pImgId}
+    </select>
+
+
+    <!--검색-->
+    <select id="selproduct">
+        SELECT  A.product_id productid,A.p_name NAME,D.thumbnail thumbnail,A.p_price price
+        FROM product A
+        left JOIN product_allergy B
+        ON A.product_id = B.product_id
+        left JOIN allergy C
+        on C.allergy_id = B.allergy_id
+        LEFT JOIN product_img D
+        ON D.product_id = A.product_id
+        WHERE p_name REGEXP #{msg}
+        AND A.is_delete = 0
+        AND D.thumbnail is not null
+        GROUP BY A.product_id
+        LIMIT #{startIdx}, #{row}
+    </select>
+
+    <!--검색결과  최대페이지 -->
+    <select id="maxpage">
+        SELECT count(DISTINCT A.product_id)
+        FROM product A
+        left join product_allergy B
+        on A.product_id=B.product_id
+        LEFT JOIN product_img C
+        ON A.product_id = C.product_id
+        where A.p_quantity!=0 AND A.is_delete=0
+        AND A.p_name REGEXP #{msg}
+        AND C.p_img_id IS NOT NULL
+        <if test="allergy!=''">
+            AND A.product_id NOT IN(SELECT product_id FROM product_allergy WHERE allergy_id in(${allergy}))
+        </if>
+
+    </select>
+</mapper>
