@@ -41,7 +41,7 @@ public class MainServiceImpl implements MainService {
         int startIdx = (dto.getPage() - 1) * dto.getRow();
 
         if (dto.getCheck() == 1) {
-
+            //기본으로 보여줄 상품
 
             List<MainSelVo> fetch = jpaQueryFactory
                     .select(getBean(qProductEntity, qProductThumbnailEntity))
@@ -67,12 +67,14 @@ public class MainServiceImpl implements MainService {
 
 
             return MainSelPaging.builder()
-                    .maxPage((int) Math.ceil((double) count / dto.getRow()))
+                    .maxPage((int) Math.ceil((double) fetch.size() / dto.getRow()))
                     .maxCount(count)
                     .list(fetch)
                     .build();
 
         } else if (dto.getCheck() == 2) {
+            //회원 자녀의 개월에 따라 상품 추천
+
             Object userBabyBirth = em.createQuery("select u.birthday from UserEntity u where u.id=:iuser ")
                     .setParameter("iuser", USERPK.getLoginUser().getIuser()).getSingleResult();
             LocalDate userBabyBirthday = (LocalDate) userBabyBirth;
@@ -116,9 +118,8 @@ public class MainServiceImpl implements MainService {
                     .build();
 
 
-        }
-
-        if (dto.getCheck() == 3) {
+        } else if (dto.getCheck() == 3) {
+            //램덤으로 상품 추천
             List<MainSelVo> fetch = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
                     .from(qProductEntity)
                     .leftJoin(qProductThumbnailEntity)
@@ -136,10 +137,51 @@ public class MainServiceImpl implements MainService {
                     .build();
 
 
+        } else if(dto.getCheck()==4){
+            //제일 많이 팔린 상품 추천
+            List<MainSelVo> fetch = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .orderBy(qProductEntity.saleVolume.desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                    .limit(dto.getRow())
+                    .fetch();
+
+            productNmCateId(fetch);
+
+        return    MainSelPaging.builder()
+                    .maxCount(Long.valueOf(fetch.size()))
+                    .list(fetch)
+                    .build();
+
         }
-        return null;
+        else {
+            //제일 많이 팔린 상품 추천 더보기(전체)
+
+            List<MainSelVo> fetch = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .orderBy(qProductEntity.saleVolume.desc())
+                    .offset(startIdx)
+                    .limit(dto.getRow())
+                    .fetch();
+
+            productNmCateId(fetch);
+
+        return    MainSelPaging.builder()
+                    .maxPage((int) Math.ceil((double) fetch.size() / dto.getRow()))
+                    .maxCount(Long.valueOf(fetch.size()))
+                    .list(fetch)
+                    .build();
+
+        }
     }
 
+
+    //상품에 단계를 붙히는 메소드
     private void productNmCateId(List<MainSelVo> fetch) {
         for (MainSelVo vo : fetch) {
             ProductEntity productEntity = new ProductEntity();
@@ -149,6 +191,7 @@ public class MainServiceImpl implements MainService {
             vo.setName("[" + productCateId + "단계]" + vo.getName());
         }
     }
+
 
 
     private static QBean<MainSelVo> getBean(QProductEntity qProductEntity, QProductThumbnailEntity qProductThumbnailEntity) {
@@ -161,79 +204,11 @@ public class MainServiceImpl implements MainService {
                 qProductEntity.saleVolume.as("saleVoumn"),
                 qProductEntity.pointRate);
     }
-
 }
-//
-//          Long aLong = jpaQueryFactory
-//                  .select(qProductEntity.count())
-//                  .from(qProductEntity)
-//                  .fetchOne();
-//          int maxPage = ;
 
 
-//      }
-//      return null;
-
-///       if(dto.getCheck()==2){
-///
-///       }
-//       return null;
-//}
 
 
-//    public MainSelPaging mainSel(SelDto dto){
-//        if(dto.getCheck()==1){
-////            int selMaxPageCount = mapper.selMainCount();
-////            int maxPage=(int)Math.ceil((double)selMaxPageCount/dto.getRow());
-////            int startIdx=(dto.getPage()-1)*dto.getRow();
-////            List<MainSelVo> mainSelVos = mapper.selMainVo(startIdx,dto.getRow());
-////            thumbnailNm(mainSelVos);
-////
-////            MainSelPaging mainSelPaging=MainSelPaging.builder()
-////                            .maxPage(maxPage)
-////                            .maxCount(selMaxPageCount)
-////                            .list(mainSelVos)
-////                            .build();
-////
-////            return mainSelPaging;
-//            QProductEntity qProductEntity=new QProductEntity("productEntity");
-//            List<ProductEntity> fetch = jpaQueryFactory
-//                    .selectFrom(qProductEntity).fetch();
-//           return MainSelPaging.builder()
-//                    .entities(fetch)
-//                    .build();
-//
-//
-//        }
-//
-//        else if(dto.getCheck()==2){
-//
-//            int month = mapper.birth(USERPK.getLoginUser().getIuser());
-//            log.info("{}:",month);
-//            int cate = 0;
-//            if (month <= 4) {
-//                return null;
-//            }
-//            if (month > 4 && month <= 6) {
-//                cate = 1;
-//            } else if (month > 6 && month <= 10) {
-//                cate = 2;
-//            } else if (month > 10 && month <= 13) {
-//                cate = 3;
-//            } else if (month > 13) {
-//                cate = 4;
-//            }
-//            log.info("{}:",USERPK.getLoginUser().getIuser());
-//            List<MainSelVo> mainSelVos = mapper.birthRecommendFilter(cate, dto.getRow());
-//            thumbnailNm(mainSelVos);
-//            log.info("{}:",mainSelVos);
-//            MainSelPaging mainSelPaging=MainSelPaging.builder()
-//                    .list(mainSelVos)
-//                    .build();
-//
-//            return mainSelPaging;
-//
-//        }
 //
 //
 //        else if(dto.getCheck()==3){

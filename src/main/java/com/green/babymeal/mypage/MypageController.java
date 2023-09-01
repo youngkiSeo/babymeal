@@ -1,6 +1,5 @@
 package com.green.babymeal.mypage;
 
-import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import com.green.babymeal.common.entity.SaleVolumnEntity;
 import com.green.babymeal.mypage.model.*;
@@ -21,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/mypage")
 public class MypageController {
-    private final MypageService service;
+    private final MypageServicelmpl service;
 
     @GetMapping("/orderlist")
     @Operation(summary = "주문내역조회",description = ""+

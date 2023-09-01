@@ -1,8 +1,7 @@
-package com.green.babymeal.Buy.model;
+package com.green.babymeal.buy.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @Builder

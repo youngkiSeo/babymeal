@@ -10,8 +10,10 @@ import java.util.List;
 
 public interface SaleVolumnRepository extends JpaRepository <SaleVolumnEntity, Long> {
 
-    @Query("select new com.green.babymeal.mypage.model.SaleVolumnVo(sum(A.count),A.productId.productId,A.productId.pName)"+
+    @Query("select new com.green.babymeal.mypage.model.SaleVolumnVo(sum(A.count),A.productId.productId,A.productId.pName,B.pPrice)"+
             " from SaleVolumnEntity A" +
+            " join ProductEntity B"+
+            " on A.productId.productId = B.productId"+
             " group by A.productId.productId")
     List<SaleVolumnVo>find();
 
