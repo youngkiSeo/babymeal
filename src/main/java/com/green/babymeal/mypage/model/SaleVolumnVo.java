@@ -8,17 +8,15 @@ import lombok.Setter;
 @Setter
 @Builder
 public class SaleVolumnVo {
-    //private Long salevolumnId;
-    //private LocalDateTime createdAt;
-    private Long count;
     private Long productId;
+    private int count;
     private String pName;
-    private int price;
+    private int pPrice;
 
-    public SaleVolumnVo(Long count, Long productId, String pName, int price) {
-        this.count = count;
+    public SaleVolumnVo(Long productId, int count, String pName, int pPrice) {
         this.productId = productId;
+        this.count = count;
         this.pName = pName;
-        this.price = price;
+        this.pPrice = pPrice;
     }
 }
