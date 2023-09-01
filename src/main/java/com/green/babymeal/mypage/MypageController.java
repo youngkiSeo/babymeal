@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -93,7 +94,8 @@ public class MypageController {
         return service.Inssalevolumn(dto);
     }
     @GetMapping("/salevolum")
-    public List<SaleVolumnVo> select(){
-        return service.Selectsale();
+    @Operation(summary = "판매량 조회",description ="")
+    public List<SaleVolumnVo> select(@RequestParam LocalDate start, @RequestParam LocalDate end){
+        return service.Selectsale(start,end);
     }
 }
