@@ -2,8 +2,8 @@ package com.green.babymeal.baby;
 
 import com.green.babymeal.baby.model.*;
 import com.green.babymeal.common.entity.AllergyEntity;
-import com.green.babymeal.common.entity.BabyalleEntity;
-import com.green.babymeal.common.entity.BabyinfoEntity;
+import com.green.babymeal.common.entity.UserBabyalleEntity;
+import com.green.babymeal.common.entity.UserBabyinfoEntity;
 import com.green.babymeal.common.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class BabyService {
     public BabyInsVo insBaby(BabyInsDto dto){
 
 
-           BabyinfoEntity entity = new BabyinfoEntity();
+           UserBabyinfoEntity entity = new UserBabyinfoEntity();
            UserEntity userEntity = new UserEntity();
            entity.setBirthday(dto.getBirthday());
            entity.setPrefer(dto.getPrefer());
@@ -39,12 +39,12 @@ public class BabyService {
         String[] split = ss.split(",");
 
         for (int i = 0; i < split.length; i++) {
-            BabyalleEntity babyalleEntity = new BabyalleEntity();
-            babyalleEntity.setBabyinfoEntity(entity);
+            UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
+            userBabyalleEntity.setUserBabyinfoEntity(entity);
             AllergyEntity allergyEntity = new AllergyEntity();
             allergyEntity.setAllergyId(Long.valueOf(split[i]));
-            babyalleEntity.setAllergyEntity(allergyEntity);
-            repository.save(babyalleEntity);
+            userBabyalleEntity.setAllergyEntity(allergyEntity);
+            repository.save(userBabyalleEntity);
         }
 
         BabyInsVo vo = new BabyInsVo();
