@@ -119,7 +119,7 @@ public class SearchService {
             redisTemplate.opsForZSet().incrementScore("babymeal", finalMsg, -1);
         };
 
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(10, ChronoUnit.SECONDS)));
+        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
 
         CharSequence normalized = TwitterKoreanProcessorJava.normalize(msg);
 
