@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicInsert;
 @NoArgsConstructor
 @DynamicInsert
 @ToString(callSuper = true)
-public class UserBabyalleEntity {
+public class BabyalleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class UserBabyalleEntity {
     @ManyToOne
     @JoinColumn(name = "baby_id")
     @ToString.Exclude
-    private UserBabyinfoEntity userBabyinfoEntity;
+    private BabyinfoEntity babyinfoEntity;
 
 
     @ManyToOne

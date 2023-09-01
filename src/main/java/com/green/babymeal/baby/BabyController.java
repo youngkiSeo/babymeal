@@ -1,9 +1,7 @@
 package com.green.babymeal.baby;
 
-import com.green.babymeal.baby.model.BabyInfoVo;
 import com.green.babymeal.baby.model.BabyInsDto;
 import com.green.babymeal.baby.model.BabyInsVo;
-import com.green.babymeal.baby.model.BabySelDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +26,7 @@ public class BabyController {
     }
 
     @GetMapping("/{iuser}")
-    public BabyInfoVo babyinfo(@PathVariable Long iuser){
-        BabySelDto dto = new BabySelDto();
-        dto.setIuser(iuser);
-       return service.search(dto);
+    public List selBaby(@PathVariable Long iuser){
+        return service.sel(iuser);
     }
 }

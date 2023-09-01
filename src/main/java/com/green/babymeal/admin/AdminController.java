@@ -2,9 +2,13 @@ package com.green.babymeal.admin;
 
 
 import com.green.babymeal.admin.model.OrderlistRes;
+import com.green.babymeal.admin.model.ProductAdminDto;
+import com.green.babymeal.admin.model.ProductAdminSelDto;
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.common.entity.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,10 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping("/api/Admin")
 @Tag(name = "관리자 페이지")
 public class AdminController {
+
     private final AdminService service;
 
 
@@ -46,42 +49,43 @@ public class AdminController {
                                        @RequestParam(required = false) String filter2,
                                        @RequestParam(required = false) String filter3,
                                        @RequestParam(required = false) String filter4,
-                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                        Pageable pageable) {
-
-        Date startDate;
-        Date endDate;
-
-        // 시작날짜, 마지막날짜가 null값이면 올해 1월 1일 / 오늘 자정까지로 시간 세팅함
-        if (start == null) {
-            startDate = Date.from(LocalDate.now().withDayOfYear(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        } else {
-            startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if (startDate == null) {
+            // 올해 1월 1일부터 오늘까지
+            LocalDate today = LocalDate.now();
+            startDate = LocalDate.of(today.getYear(), Month.JANUARY, 1);
+            endDate = today;
         }
-        if (end == null) {
-            endDate = Date.from(LocalDateTime.now().with(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
-        } else {
-            endDate = Date.from(end.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
-        }
-
         return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, pageable);
     }
 
 
     @GetMapping("/order/{orderCode}")
-    @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>"+
-    "예시 주문번호 : 202308301651 입니다")
-    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode){
+    @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>" +
+            "예시 주문번호 : 202308301651 입니다")
+    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode) {
         return service.selOrder(orderCode);
     }
 
 
+    @GetMapping("/product")
+    @Operation(summary = "상품정보조회(데이터뿌리기) > 관리자용 <br>", description = "<br>" +
+            "예시 : { <br>" +
+            "  \"page\": 0,<br>" +
+            "  \"size\": 100,<br>" +
+            "  \"sort\": \"productId,asc\"<br>" +
+            "} <br>" )
+    public Page<ProductAdminDto> allProduct(Pageable pageable){
+        return service.allProduct(pageable);
+    }
 
+    @GetMapping("/product/{productId}")
+    @Operation(summary = "특정상품데이터조회 > 관리자용")
+    public ProductAdminSelDto selProduct(Long productId){
+        return service.selProduct(productId);
+    }
 
 }
-
-
-//    @GetMapping("/order/search")
-//    @Operation(summary = "주문내역 조회 - 검색기능")
 

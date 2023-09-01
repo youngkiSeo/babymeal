@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @DynamicInsert
 @ToString(callSuper = true)
-public class UserBabyinfoEntity {
+public class BabyinfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class UserBabyinfoEntity {
     private String prefer;
 
     @OneToMany(mappedBy = "userBabyinfoEntity", cascade = CascadeType.REMOVE) // mappedBy 컬럼이 안생기는 조인
-    private List<UserBabyalleEntity> userBabyalleEntity;
+    private List<BabyalleEntity> babyalleEntity;
 
     @ManyToOne
     @JoinColumn(name = "iuser")

@@ -33,7 +33,7 @@ public class MypageServicelmpl implements MypageService{
     private final AuthenticationFacade USERPK;
     private final ThumbnailRepository thumbnailRep;
     private final ProductCategoryRelationRepository productcategoryRep;
-
+    private final ProductCategoryRelationRepository productcaterelationRep;
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
 
@@ -41,24 +41,49 @@ public class MypageServicelmpl implements MypageService{
 
     @Override
     public  List<OrderlistSelVo> orderlist (){
-
         QOrderlistEntity orderlist = QOrderlistEntity.orderlistEntity;
         QOrderDetailEntity orderDetail = QOrderDetailEntity.orderDetailEntity;
         QProductEntity product = QProductEntity.productEntity;
         QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
         UserEntity loginUser = USERPK.getLoginUser();
 
-
+        Byte delYn = 0;
 
         List<OrderlistSelVo> order = jpaQueryFactory
                 .select(Projections.constructor(OrderlistSelVo.class, orderlist.orderId,orderlist.orderCode,orderlist.createdAt
-                        ,orderDetail.totalPrice))
+                        ,orderDetail.totalPrice,orderDetail.productId.pName,thumbnail.img,orderlist.shipment))
                 .from(orderlist)
                 .leftJoin(orderDetail)
                 .on(orderDetail.orderId.orderId.eq(orderlist.orderId))
-                .where(orderlist.iuser.iuser.eq(loginUser.getIuser()))
+                .leftJoin(thumbnail)
+                .on(orderDetail.productId.productId.eq(thumbnail.productId.productId))
+                .where(orderlist.iuser.iuser.eq(loginUser.getIuser()),orderlist.delYn.eq(delYn))
+                .groupBy(orderlist.orderId)
                 .fetch();
 
+        for (int i = 0; i <order.size(); i++) {
+            List<OrderlistDetailVo> orderDetailEntity = orderDetailRep.findByOrderId(order.get(i).getOrderId());
+            int totalprice  = 0;
+
+            Long catenum = 0L;
+            for (int j = 0; j <orderDetailEntity.size(); j++) {
+                int price= orderDetailEntity.get(j).getTotalPrice();
+                totalprice += price;
+
+                //카테고리 아이디 찾기
+                Long productId = orderDetailEntity.get(j).getProductId();
+                ProductEntity productEntity = ProductEntity.builder().productId(productId).build();
+                ProductCateRelationEntity cate = productcaterelationRep.findByProductEntity(productEntity);
+                Long cateId = cate.getCategoryEntity().getCateId();
+                log.info("cateId:{}",cateId);
+                catenum = cateId;
+            }
+            String pName = order.get(i).getPName();
+            pName = "["+catenum+"단계] "+ pName;
+            order.get(i).setPName(pName);
+
+            order.get(i).setTotalprice(totalprice);
+        }
 
         return order;
     }
@@ -108,7 +133,6 @@ public class MypageServicelmpl implements MypageService{
         if (!dto.getNickNm().equals("")){
             entity.setNickNm(dto.getNickNm());
         }
-
         if (!dto.getPassword().equals("")){
             String encode = PW_ENCODER.encode(dto.getPassword());
             entity.setPassword(encode);
@@ -178,7 +202,6 @@ public class MypageServicelmpl implements MypageService{
         }else return 0;
     }
 
-
     private final ProductRepository productRep;
     private final SaleVolumnRepository saleRep;
     public SaleVolumnEntity Inssalevolumn(SaleVolumnDto dto){
@@ -189,24 +212,15 @@ public class MypageServicelmpl implements MypageService{
 
         return save;
     }
-    public List<SaleVolumnVo> Selectsale(){
+    public List<SaleVolumnVo> Selectsale(LocalDate start, LocalDate end){
+        QSaleVolumnEntity saleVolumn = QSaleVolumnEntity.saleVolumnEntity;
 
+        List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,saleVolumn.productId.productId,saleVolumn.count.sum(),  saleVolumn.productId.pName, saleVolumn.productId.pPrice))
+                .from(saleVolumn)
+                .where(saleVolumn.createdAt.between(start, end))
+                .groupBy(saleVolumn.productId.productId)
+                .fetch();
 
-        LocalDate start = LocalDate.parse("2020-01-01");
-        LocalDate end = LocalDate.parse("2023-08-31");
-        List<SaleVolumnVo> saleVolumnVos = saleRep.find();
-        //List<SaleVolumnVo> allByCreatedAtBetween = saleRep.findAllByCreatedAtBetween(start, end);
-
-        for (int i = 0; i <saleVolumnVos.size(); i++) {
-            int price = saleVolumnVos.get(i).getPrice();
-            Long count = saleVolumnVos.get(i).getCount();
-            long result = price * count;
-            saleVolumnVos.get(i).setPrice((int) result);
-        }
-
-        return saleVolumnVos;
-
+        return fetch;
     }
-
-
 }

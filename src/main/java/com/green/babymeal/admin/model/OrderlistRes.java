@@ -34,5 +34,9 @@ public class OrderlistRes {
     private String addressDetail;
     private Byte delYn;
     private int usepoint;
-    private List<OrderDetailEntity> orderDetails;
+    private List<OrderDetailVo> orderDetailVo;
+    //private List<ProductVo> productVo;
+    private UserVo userVo;
 }
+
+
