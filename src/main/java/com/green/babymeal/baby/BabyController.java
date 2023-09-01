@@ -27,6 +27,6 @@ public class BabyController {
 
     @GetMapping
     public List selBaby(){
-        return service.sel();
+        return service.selBabyInfo();
     }
 }
