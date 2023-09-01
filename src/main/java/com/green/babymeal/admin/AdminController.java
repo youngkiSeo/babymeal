@@ -70,13 +70,12 @@ public class AdminController {
 
 
     @GetMapping("/product")
-    @Operation(summary = "상품정보조회 > 관리자용 <br>" +
-    "예시 : { <br>" +
+    @Operation(summary = "상품정보조회(데이터뿌리기) > 관리자용 <br>", description = "<br>" +
+            "예시 : { <br>" +
             "  \"page\": 0,<br>" +
             "  \"size\": 100,<br>" +
             "  \"sort\": \"productId,asc\"<br>" +
-            "} <br>" +
-    "size는 페이지당 출력갯수 sort는 정렬방식, 변수이름/asc 또는 desc등으로 사용하면 됩니다")
+            "} <br>" )
     public Page<ProductAdminDto> allProduct(Pageable pageable){
         return service.allProduct(pageable);
     }

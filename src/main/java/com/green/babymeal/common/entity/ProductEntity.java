@@ -55,9 +55,10 @@ public class ProductEntity {
     @Column(name = "saleVolume",length=11)
     private int saleVolume;
 
-    @ColumnDefault("0")
-    @Column(name = "allergy",length=4)
-    private Byte allergy;
+//    @ColumnDefault("0")
+//    @Column(name = "allergy",length=4)
+//    private Byte allergy;
+    // 사용하지 않는 테이블임 !!
 
     @Column(name = "point_rate")
     private float pointRate;

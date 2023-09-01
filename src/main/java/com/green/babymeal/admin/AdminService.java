@@ -1,14 +1,8 @@
 package com.green.babymeal.admin;
 
 import com.green.babymeal.admin.model.*;
-import com.green.babymeal.common.entity.OrderDetailEntity;
-import com.green.babymeal.common.entity.OrderlistEntity;
-import com.green.babymeal.common.entity.ProductAllergyEntity;
-import com.green.babymeal.common.entity.ProductEntity;
-import com.green.babymeal.common.repository.OrderDetailRepository;
-import com.green.babymeal.common.repository.OrderlistRepository;
-import com.green.babymeal.common.repository.ProductAllergyRepository;
-import com.green.babymeal.common.repository.ProductRepository;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public class AdminService {
 
@@ -38,6 +33,9 @@ public class AdminService {
 
     @Autowired
     private ProductAllergyRepository productAllergyRepository;
+
+    @Autowired
+    private ProductCategoryRelationRepository productCateRelationRepository;
 
 
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
@@ -97,9 +95,6 @@ public class AdminService {
     }
 
 
-
-
-
 //        // 필터2 : 주문번호 기준 필터링
 //        if (filter2 != null) {
 //            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
@@ -133,7 +128,7 @@ public class AdminService {
 //        }
 
 
-//        if (filter2 != null) {
+    //        if (filter2 != null) {
 //            // 주문번호 필터 적용
 //            Long orderCode = Long.parseLong(filter2);
 //            List<OrderDetailEntity> filteredByOrderCode = orderDetailRepository.findByOrderId_OrderCode(orderCode);
@@ -144,27 +139,65 @@ public class AdminService {
         return orderlistRepository.findOrderById(orderCode);
     }
 
+
     public Page<ProductAdminDto> allProduct(Pageable pageable) {
-        return productRepository.findAll(pageable).map(productEntity -> {
-            List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
+        Page<ProductEntity> productEntities = productRepository.findAll(pageable);
+        List<ProductAdminDto> productAdminDtos = new ArrayList<>();
 
-            return ProductAdminDto.builder()
-                    .productId(productEntity.getProductId())
-                    .name(productEntity.getPName())
-                    .price(productEntity.getPPrice())
-                    .description(productEntity.getDescription())
-                    .quantity(productEntity.getPQuantity())
-                    .allegyName(allergyName)// 알러지 정보 추가
-                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 썸네일 이미지 추가
-                    .build();
-        });
-    }
+        for (ProductEntity productEntity : productEntities) {
+            // 알러지 정보 가져오기
+            List<ProductAllergyEntity> productAllergies = productAllergyRepository.findByProductId_ProductId(productEntity.getProductId());
+            List<Long> allergyIds = productAllergies.stream()
+                    .map(productAllergy -> productAllergy.getAllergyId().getAllergyId())
+                    .collect(Collectors.toList());
 
-    public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름
-        List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
+            //카테고리 정보 가져오기
+            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll(); // 예시로 findAll() 메서드를 사용한 것으로 가정
 
-        return productAllergyEntities.stream()
-                .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
-                .collect(Collectors.toList());
+            for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
+                ProductAdminDto productAdminDto2 = ProductAdminDto.builder()
+                        .productId(relationEntity.getProductEntity().getProductId())
+                        .name(productEntity.getPName())
+                        .price(productEntity.getPPrice())
+                        .cate(relationEntity.getCategoryEntity().getCateId()) // categoryEntity의 ID 값 설정
+                        .cateDetail(relationEntity.getCateDetailEntity().getCateDetailId()) // cateDetailEntity의 ID 값 설정
+                        .allegyName(allergyIds)
+                        .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg()))
+                        .build();
+
+                productAdminDtos.add(productAdminDto2);
+            }
+        }
+        return new PageImpl<>(productAdminDtos, pageable, productEntities.getTotalElements());
     }
 }
+
+//    public Page<ProductAdminDto> allProduct(Pageable pageable) {
+//        return productRepository.findAll(pageable).map(productEntity -> {
+//            List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
+//
+//            //카테고리 정보 불러오기
+//            CategoryEntity category = productEntity.getProductCateRelationEntity().getCategoryEntity();
+//            CateDetailEntity cateDetail = productEntity.getProductCateRelationEntity().getCateDetailEntity();
+//
+//            return ProductAdminDto.builder()
+//                    .productId(productEntity.getProductId())
+//                    .name(productEntity.getPName())
+//                    .price(productEntity.getPPrice())
+//                    //.description(productEntity.getDescription())
+//                    //.quantity(productEntity.getPQuantity())
+//                    .cate()
+//                    .cateDetail()
+//                    .allegyName(allergyName) //알러지 정보 추가
+//                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 썸네일 이미지 추가
+//                    .build();
+//        });
+//    }
+
+//    public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름으로 파싱
+//        List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
+//
+//        return productAllergyEntities.stream()
+//                .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
+//                .collect(Collectors.toList());
+//    }

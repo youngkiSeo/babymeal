@@ -15,9 +15,11 @@ public class ProductAdminDto {
     private Long productId;
     private String name;
     private int price;
-    private String description; // 본문 (본문이미지 포함된 태그임)
-    private int quantity; // 재고
-    private List<String> allegyName; // 알러지
+//    private String description; // 본문 (본문이미지 포함된 태그임)
+//    private int quantity; // 재고
+    private Long cate; // 1차카테
+    private Long cateDetail; // 2차카테
+    private List<Long> allegyName; // 알러지
     private List<String> thumbnail; // 썸네일
 
 }
