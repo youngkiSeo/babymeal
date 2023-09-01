@@ -95,7 +95,7 @@ public class MypageController {
     }
     @GetMapping("/salevolum")
     @Operation(summary = "판매량 조회",description ="")
-    public List<SaleVolumnVo> select(@RequestParam LocalDate start, @RequestParam LocalDate end){
-        return service.Selectsale(start,end);
+    public List<SaleVolumnVo> select(@RequestParam String year, @RequestParam String month){
+        return service.Selectsale(year,month);
     }
 }
