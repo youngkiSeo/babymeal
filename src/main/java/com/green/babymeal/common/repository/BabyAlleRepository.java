@@ -1,4 +1,4 @@
-package com.green.babymeal.baby;
+package com.green.babymeal.common.repository;
 
 import com.green.babymeal.common.entity.UserBabyalleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

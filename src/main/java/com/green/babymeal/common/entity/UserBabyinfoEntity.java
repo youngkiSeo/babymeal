@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class UserBabyinfoEntity {
     private Long babyId;
 
     @Column(length = 20)
-    private String birthday;
+    private LocalDate birthday;
 
     @Column(length = 100)
     private String prefer;

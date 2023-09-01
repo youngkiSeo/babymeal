@@ -1,17 +1,19 @@
 package com.green.babymeal.baby;
 
 import com.green.babymeal.baby.model.*;
+import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.AllergyEntity;
 import com.green.babymeal.common.entity.UserBabyalleEntity;
 import com.green.babymeal.common.entity.UserBabyinfoEntity;
 import com.green.babymeal.common.entity.UserEntity;
+import com.green.babymeal.common.repository.BabyAlleRepository;
+import com.green.babymeal.common.repository.BabyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,6 +23,7 @@ public class BabyService {
     private final BabyMapper mapper;
     private final BabyRepository rep;
     private final BabyAlleRepository repository;
+    private final AuthenticationFacade USERPK;
 
     public BabyInsVo insBaby(BabyInsDto dto){
 
@@ -60,8 +63,8 @@ public class BabyService {
 
 
 
-    public List sel(Long iuser){
-        List<BaByInfoVo> baByInfoVos = mapper.selBaby(iuser);
+    public List sel(){
+        List<BaByInfoVo> baByInfoVos = mapper.selBaby(USERPK.getLoginUser().getIuser());
         List list=new ArrayList();
         for (int i = 0; i < baByInfoVos.size(); i++) {
             BabyAllergyTotalVo vo=new BabyAllergyTotalVo();

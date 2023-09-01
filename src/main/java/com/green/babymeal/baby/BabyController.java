@@ -27,8 +27,8 @@ public class BabyController {
         return 1;
     }
 
-    @GetMapping("/{iuser}")
-    public List selBaby(@PathVariable Long iuser){
-        return service.sel(iuser);
+    @GetMapping
+    public List selBaby(){
+        return service.sel();
     }
 }
