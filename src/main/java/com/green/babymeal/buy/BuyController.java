@@ -2,6 +2,7 @@ package com.green.babymeal.buy;
 
 import com.green.babymeal.buy.model.BuyInsDto;
 import com.green.babymeal.buy.model.BuyProductVo;
+import com.green.babymeal.buy.model.BuySelVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Buy")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/Buy")
+@RequestMapping("/api/buy")
 public class BuyController {
 
     @Autowired
@@ -39,10 +40,10 @@ public class BuyController {
         return service.BuyProduct(dto);
     }
 
-//    @GetMapping("/product")
-//    @Operation(summary = "상품 보여주기")
-//    public BuySelProductDto getProduct(@RequestParam Long productId, @RequestParam int count){
-//        BuySelProductDto buySelProductDto = SERVICE.selProduct(productId,count);
-//        return buySelProductDto;
-//    }
+    @GetMapping("/product")
+    @Operation(summary = "상품 보여주기")
+    public BuySelVo getProduct(@RequestParam Long productId, @RequestParam int count){
+        BuySelVo buySelVo = service.selProduct(productId, count);
+        return buySelVo;
+    }
 }

@@ -30,10 +30,10 @@ public class MypageController {
        return service.orderlist();
     }
 
-    @GetMapping("/orderlist/{orderId}")
+    @GetMapping("/orderlist/{ordercode}")
     @Operation(summary = "상세 주문내역",description = "")
-    OrderlistDetailUserVo getOrderlistDetail(@PathVariable Long orderId){
-        return service.orderDetail(orderId);
+    OrderlistDetailUserVo getOrderlistDetail(@PathVariable Long ordercode){
+        return service.orderDetail(ordercode);
     }
 
     @DeleteMapping("/orderlist")
@@ -56,10 +56,11 @@ public class MypageController {
     ProfileVo patchprofile(@RequestBody ProfileUpdDto dto){
         return service.profileupdate(dto);
     }
+
     @GetMapping("/profile/nickname")
     @Operation(summary = "닉네임 중복체크" ,
-            description = "return : 0 이면 중복이 아닙니다<br>"+
-                    "return : 2 이면 유저의 닉네임 입니다<br>")
+            description = "return : 0 이면 사용가능한 닉네임<br>" +
+                    "return: 1 이면 중복된 닉네임입니다")
     public int getNickNamecheck(@RequestParam String nickname){
         return service.nicknmcheck(nickname);
     }
@@ -94,7 +95,8 @@ public class MypageController {
         return service.Inssalevolumn(dto);
     }
     @GetMapping("/salevolum")
-    @Operation(summary = "판매량 조회",description ="")
+    @Operation(summary = "판매량 조회",description ="year:년도 ex)2022<br>"+
+            "month: ex)01,02,03..11,12")
     public List<SaleVolumnVo> select(@RequestParam String year, @RequestParam String month){
         return service.Selectsale(year,month);
     }
