@@ -93,7 +93,7 @@ public class SearchService {
 
 
         String msg = "";
-
+        //영한 변환
         boolean isEnglish = true;
 
         Pattern p = Pattern.compile("[a-zA-Z0-9]");
@@ -118,6 +118,8 @@ public class SearchService {
         Runnable task = () -> {
             redisTemplate.opsForZSet().incrementScore("babymeal", finalMsg, -1);
         };
+
+        //트위터 형태소 분석기
 
         taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
 

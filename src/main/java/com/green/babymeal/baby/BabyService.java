@@ -72,8 +72,8 @@ public class BabyService {
         List<BaByInfoVo> baByInfoVos = mapper.selBaby(USERPK.getLoginUser().getIuser()); //유저의 아기정보를 가져온다
         List list=new ArrayList(); //최종적으로 리턴 되는 리스트
         for (int i = 0; i < baByInfoVos.size(); i++) {
-            BabyAllergyTotalVo vo=new BabyAllergyTotalVo();
-            BaByInfoVo baByInfoVo = baByInfoVos.get(i);     //아기정보와 아기알러지를 하나의 객체에 담는다
+            BabyAllergyTotalVo vo=new BabyAllergyTotalVo();//아기정보와 아기알러지를 하나의 객체에 담는다
+            BaByInfoVo baByInfoVo = baByInfoVos.get(i);
             Long babyId = baByInfoVos.get(i).getBabyId(); //아기의 PK값 가져옴
             List<BabyAllergyInfoVo> babyAllergyInfoVos = mapper.selBabyAllergy(babyId); //아기의 알러지 정보를 가져온다
             vo.setBaByInfoVo(baByInfoVo);

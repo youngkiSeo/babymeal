@@ -88,16 +88,18 @@ public class MypageServicelmpl implements MypageService{
         return order;
     }
 
-    public OrderlistDetailUserVo orderDetail(Long orderId){
-        List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(orderId);
-        OrderlistEntity orderlistEntity = orderlistRep.findByOrderId(orderId);
+    public OrderlistDetailUserVo orderDetail(Long ordercode){
+        OrderlistEntity byOrderCode = orderlistRep.findByOrderCode(ordercode);
+
+        List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(byOrderCode.getOrderId());
+        //OrderlistEntity orderlistEntity = orderlistRep.findByOrderId(orderId);
         OrderlistUserVo vo = new OrderlistUserVo();
-        vo.setReciever(orderlistEntity.getReciever());
-        vo.setAddress(orderlistEntity.getAddress());
-        vo.setAddressDetail(orderlistEntity.getAddressDetail());
-        vo.setPhoneNm(orderlistEntity.getPhoneNm());
-        vo.setRequest(orderlistEntity.getRequest());
-        vo.setUsepoint(orderlistEntity.getUsepoint());
+        vo.setReciever(byOrderCode.getReciever());
+        vo.setAddress(byOrderCode.getAddress());
+        vo.setAddressDetail(byOrderCode.getAddressDetail());
+        vo.setPhoneNm(byOrderCode.getPhoneNm());
+        vo.setRequest(byOrderCode.getRequest());
+        vo.setUsepoint(byOrderCode.getUsepoint());
         return OrderlistDetailUserVo.builder().list(byOrderId).user(vo).build();
 
     }
