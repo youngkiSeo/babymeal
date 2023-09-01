@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.babymeal.baby.BabyMapper">
+
+    <select id="selBaby">
+        select baby_id babyId,birthday,prefer
+        from baby
+        where iuser=#{iuser}
+    </select>
+
+
+    <select id="selBabyAllergy">
+        SELECT C.allergy_id allergyId,C.allergy_name allergyName
+        from baby A
+        inner join baby_table B
+        ON A.baby_id=B.baby_id
+        INNER JOIN allergy C
+        ON B.allergy_id=C.allergy_id
+        WHERE A.baby_id=#{babyId};
+    </select>
+</mapper>

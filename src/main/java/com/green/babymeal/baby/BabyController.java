@@ -7,6 +7,8 @@ import com.green.babymeal.common.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/baby")
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class BabyController {
     public Integer deleteBaby(@RequestParam Long babyId){
         service.delete(babyId);
         return 1;
+    }
+
+    @GetMapping("/{iuser}")
+    public List selBaby(@PathVariable Long iuser){
+        return service.sel(iuser);
     }
 }

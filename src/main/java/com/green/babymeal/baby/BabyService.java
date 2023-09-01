@@ -1,7 +1,6 @@
 package com.green.babymeal.baby;
 
-import com.green.babymeal.baby.model.BabyInsDto;
-import com.green.babymeal.baby.model.BabyInsVo;
+import com.green.babymeal.baby.model.*;
 import com.green.babymeal.common.entity.AllergyEntity;
 import com.green.babymeal.common.entity.UserBabyalleEntity;
 import com.green.babymeal.common.entity.UserBabyinfoEntity;
@@ -10,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BabyService {
 
+    private final BabyMapper mapper;
     private final BabyRepository rep;
     private final BabyAlleRepository repository;
 
@@ -57,4 +58,21 @@ public class BabyService {
         rep.deleteById(babyId);
     }
 
+
+
+    public List sel(Long iuser){
+        List<BaByInfoVo> baByInfoVos = mapper.selBaby(iuser);
+        List list=new ArrayList();
+        for (int i = 0; i < baByInfoVos.size(); i++) {
+            BabyAllergyTotalVo vo=new BabyAllergyTotalVo();
+            BaByInfoVo baByInfoVo = baByInfoVos.get(i);
+            Long babyId = baByInfoVos.get(i).getBabyId();
+            List<BabyAllergyInfoVo> babyAllergyInfoVos = mapper.selBabyAllergy(babyId);
+            vo.setBaByInfoVo(baByInfoVo);
+            vo.setBabyAllergyList(babyAllergyInfoVos);
+            list.add(vo);
+        }
+        return list;
+
+    }
 }
