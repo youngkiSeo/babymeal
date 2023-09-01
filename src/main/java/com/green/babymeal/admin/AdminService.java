@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +31,7 @@ public class AdminService {
 
     @Autowired
     private ProductAllergyRepository productAllergyRepository;
+
 
     @Autowired
     private ProductCategoryRelationRepository productCateRelationRepository;
@@ -140,6 +139,9 @@ public class AdminService {
     }
 
 
+
+    // -------------------------------- 상품
+
     public Page<ProductAdminDto> allProduct(Pageable pageable) {
         Page<ProductEntity> productEntities = productRepository.findAll(pageable);
         List<ProductAdminDto> productAdminDtos = new ArrayList<>();
@@ -169,6 +171,42 @@ public class AdminService {
             }
         }
         return new PageImpl<>(productAdminDtos, pageable, productEntities.getTotalElements());
+    }
+
+    public ProductAdminSelDto selProduct(Long productId){
+        ProductEntity productEntity = productRepository.findById(productId).orElse(null);
+        if (productEntity != null) {
+            // 알러지 정보 가져오기
+            List<ProductAllergyEntity> productAllergies = productAllergyRepository.findByProductId_ProductId(productEntity.getProductId());
+            List<Long> allergyIds = productAllergies.stream()
+                    .map(productAllergy -> productAllergy.getAllergyId().getAllergyId())
+                    .collect(Collectors.toList());
+
+            //카테고리 정보 가져오기
+            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll();
+
+            Long categoryId = null;
+            List<Long> cateDetailIds = new ArrayList<>();
+
+            for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
+                categoryId = relationEntity.getCategoryEntity().getCateId();
+                cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
+            }
+
+             ProductAdminSelDto dto = ProductAdminSelDto.builder()
+                    .productId(productEntity.getProductId())
+                    .name(productEntity.getPName())
+                    .price(productEntity.getPPrice())
+                    .cate(categoryId)
+                    .cateDetail(cateDetailIds)
+                    .allegyId(allergyIds)
+                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg()))
+                    .build();
+
+            return dto;
+        } else {
+            return null;
+        }
     }
 }
 

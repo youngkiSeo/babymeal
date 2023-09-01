@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
@@ -17,6 +18,12 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
             "WHERE YEAR(p.createdAt) = :year AND MONTH(p.createdAt) = :month " +
             "GROUP BY p.pName")
     List<ProductVolumeDto> findSaleVolume(@Param("year") int year, @Param("month") int month);// 월별 데이터 추출을 위함
+
+
+
+    //----------------- 관리자페이지 사용메서드
+    //ProductEntity findAllById(Long productId);
+    Optional<ProductEntity> findById(Long productId);
 
     /*
     @Query("select new com.green.babymeal.search.model.SearchSelVo(A.productId,A.pName,D.img,A.price)"+
