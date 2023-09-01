@@ -212,7 +212,29 @@ public class MypageServicelmpl implements MypageService{
 
         return save;
     }
-    public List<SaleVolumnVo> Selectsale(LocalDate start, LocalDate end){
+    public List<SaleVolumnVo> Selectsale(String year, String month){
+
+        LocalDate start = null;
+        LocalDate end ;
+
+
+
+        if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
+            end = LocalDate.parse(year + "-" + month + "-31");
+        } else if (month.equals("02")) {
+             end = LocalDate.parse(year+"-"+month+"-28");
+         } else
+            end = LocalDate.parse(year+"-"+month+"-30");
+
+        if (month.equals("0")){
+            start = LocalDate.parse(year+"-01-01");
+            end = LocalDate.parse(year+"-12-31");
+        }else {
+            start = LocalDate.parse(year+"-"+month+"-01");
+        }
+        log.info("start:{}",start);
+        log.info("end:{}",end);
+
         QSaleVolumnEntity saleVolumn = QSaleVolumnEntity.saleVolumnEntity;
 
         List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,saleVolumn.productId.productId,saleVolumn.count.sum(),  saleVolumn.productId.pName, saleVolumn.productId.pPrice))
@@ -220,6 +242,26 @@ public class MypageServicelmpl implements MypageService{
                 .where(saleVolumn.createdAt.between(start, end))
                 .groupBy(saleVolumn.productId.productId)
                 .fetch();
+
+        for (int i = 0; i <fetch.size(); i++) {
+
+            // 상품 가격 가져오기
+            Long productId = fetch.get(i).getProductId();
+            ProductEntity productEntity = productRep.findById(productId).get();
+            int pPrice = productEntity.getPPrice();
+            int count = fetch.get(i).getCount();
+            int totalprice = count * pPrice;
+            fetch.get(i).setPPrice(totalprice);
+
+            //카테고리 단계 붙이기
+            ProductCateRelationEntity cate = productcaterelationRep.findByProductEntity(productEntity);
+
+            CategoryEntity categoryEntity = cate.getCategoryEntity();
+            Long cateId = categoryEntity.getCateId();
+            String name = "[" + cateId + "단계] "+productEntity.getPName();
+            fetch.get(i).setPName(name);
+
+        }
 
         return fetch;
     }

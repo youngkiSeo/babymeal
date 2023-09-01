@@ -62,7 +62,6 @@ public class SearchService {
         ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
         Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 9);  //score순으로 10개 보여줌
         return typedTuples.stream().map(item-> SearchPopularVo.builder().product(item.getValue()).count(item.getScore()).build()).toList();
-        //typedTuples.stream().map(SearchRankResponseDto::convertToResponseRankingDto).collect(Collectors.toList());
     }
 
     public SearchSelRes selfilter(String product, int page, int row, int sorter, List<String>filter){
@@ -120,7 +119,7 @@ public class SearchService {
             redisTemplate.opsForZSet().incrementScore("babymeal", finalMsg, -1);
         };
 
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(10, ChronoUnit.SECONDS)));
+        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
 
         CharSequence normalized = TwitterKoreanProcessorJava.normalize(msg);
 
