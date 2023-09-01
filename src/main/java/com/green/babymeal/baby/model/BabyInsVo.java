@@ -4,9 +4,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Data
 public class BabyInsVo {
-    private String birthday;
+    private LocalDate birthday;
     private String prefer;
     private Long iuser;
     private String allegyId;

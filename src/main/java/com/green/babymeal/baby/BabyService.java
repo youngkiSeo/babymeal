@@ -68,7 +68,7 @@ public class BabyService {
 
 
 
-    public List sel(){
+    public List selBabyInfo(){
         List<BaByInfoVo> baByInfoVos = mapper.selBaby(USERPK.getLoginUser().getIuser());
         List list=new ArrayList();
         for (int i = 0; i < baByInfoVos.size(); i++) {
