@@ -3,6 +3,7 @@ package com.green.babymeal.admin;
 
 import com.green.babymeal.admin.model.OrderlistRes;
 import com.green.babymeal.admin.model.ProductAdminDto;
+import com.green.babymeal.admin.model.ProductAdminSelDto;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import com.green.babymeal.common.entity.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,6 +79,12 @@ public class AdminController {
             "} <br>" )
     public Page<ProductAdminDto> allProduct(Pageable pageable){
         return service.allProduct(pageable);
+    }
+
+    @GetMapping("/product/{productId}")
+    @Operation(summary = "특정상품데이터조회 > 관리자용")
+    public ProductAdminSelDto selProduct(Long productId){
+        return service.selProduct(productId);
     }
 
 }
