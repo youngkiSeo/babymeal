@@ -87,5 +87,11 @@ public class AdminController {
         return service.selProduct(productId);
     }
 
+
+    @PostMapping("/webeditor")
+    @Operation(summary = "웹에디터 PK반환")
+    public Long webEditor(){
+       return service.webEditor();
+    }
 }
 

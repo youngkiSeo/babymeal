@@ -37,6 +37,7 @@ public class AdminService {
     private ProductCategoryRelationRepository productCateRelationRepository;
 
 
+
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4,
                                        Pageable pageable) {
@@ -208,6 +209,21 @@ public class AdminService {
             return null;
         }
     }
+
+
+
+    public Long webEditor(){
+        ProductEntity entity=new ProductEntity();
+        entity.setPName("");
+        entity.setPPrice(0);
+        ProductEntity save = productRepository.save(entity);
+        if(save!=null){
+            return entity.getProductId();
+        }
+        return 0L;
+    }
+
+
 }
 
 //    public Page<ProductAdminDto> allProduct(Pageable pageable) {

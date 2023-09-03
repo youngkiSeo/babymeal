@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.babymeal.kakaopay.KakaoMapper">
+
+    <select id="insProductId">
+        select product_id productId,p_name itemName,p_price price
+        FROM product
+        WHERE product_id=#{productId}
+    </select>
+
+<!--
+    <select id="selProductInfo">
+        SELECT B.product_id,A.p_name itemName,A.p_price price,B.count count,A.p_quantity quantity
+        from product A
+        inner join order_basket B
+        ON A.product_id=B.product_id
+        WHERE B.iuser=#{iuser}
+    </select>
+-->
+
+    <insert id="insOrderList" useGeneratedKeys="true" keyProperty="orderId">
+        insert into order_list
+        ( iuser,payment,phone_nm,reciever,request,address,address_detail,usepoint,order_code)
+        values
+        (#{iuser},#{payment},#{phoneNm},#{reciever},#{request},#{address},#{addressDetail},#{point},#{code})
+    </insert>
+
+    <insert id="insOrderDetail">
+        insert into orderdetail
+        (order_id,product_id,count,total_price)
+        values
+        (#{orderId},#{productId},#{count},#{totalPrice})
+    </insert>
+
+
+
+
+
+
+
+</mapper>
