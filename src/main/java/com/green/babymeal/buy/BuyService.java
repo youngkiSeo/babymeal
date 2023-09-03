@@ -2,6 +2,7 @@ package com.green.babymeal.buy;
 
 import com.green.babymeal.buy.model.BuyInsDto;
 import com.green.babymeal.buy.model.BuyProductVo;
+import com.green.babymeal.buy.model.BuySelVo;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
@@ -22,17 +23,12 @@ import java.util.Random;
 public class BuyService {
 
     private final AuthenticationFacade USERPK;
-    @Autowired
     private final OrderBasketRepository orderBasketRep;
-    @Autowired
     private final OrderlistRepository orderlistRep;
-    @Autowired
     private final OrderDetailRepository orderDetailRep;
-    @Autowired
     private final SaleVolumnRepository saleVolumnRep;
-    @Autowired
+    private final ThumbnailRepository thumbnailRep;
     private final ProductRepository productRep;
-    @Autowired
     private final UserRepository userRep;
 
 
@@ -115,13 +111,13 @@ public class BuyService {
         return build;
     }
 
-    public static String getDate(String format) {
+    public String getDate(String format) {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return currentDate.format(formatter);
     }
 
-    public static String getRandomCode(int length) {
+    public String getRandomCode(int length) {
         Random random = new Random();
         StringBuilder codeBuilder = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -130,6 +126,21 @@ public class BuyService {
         }
 
         return codeBuilder.toString();
+    }
+
+    public BuySelVo selProduct(Long productId, int count){
+        ProductEntity productEntity = productRep.findById(productId).get();
+        ProductThumbnailEntity allByProductId = thumbnailRep.findAllByProductId(productEntity);
+
+
+        return BuySelVo.builder().productId(productEntity.getProductId())
+                .name(productEntity.getPName())
+                .count(count)
+                .price(productEntity.getPPrice())
+                .thumbnail(allByProductId.getImg())
+                .build();
+
+
     }
 
 }

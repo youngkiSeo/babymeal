@@ -1,24 +1,20 @@
 package com.green.babymeal.admin;
 
 
-import com.green.babymeal.admin.model.OrderlistRes;
-import com.green.babymeal.admin.model.ProductAdminDto;
-import com.green.babymeal.admin.model.ProductAdminSelDto;
+import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.OrderlistEntity;
-import com.green.babymeal.common.entity.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.*;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -88,10 +84,78 @@ public class AdminController {
     }
 
 
-    @PostMapping("/webeditor")
-    @Operation(summary = "웹에디터 PK반환")
-    public Long webEditor(){
-       return service.webEditor();
+    // 웹에디터 -----------------------------
+    @PostMapping("/webeditor/product")
+    @Operation(summary = "웹에디터 pk가져오는 메소드 상품 등록 할 때 바로 pk를 반환한다")
+    public Long insPk(@RequestBody PkVo pkVo){
+        return service.insPk(pkVo);
     }
+
+
+    @PostMapping(value = "/webeditor/product/img",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "웹에디터 이미지 넣기",description = ""+
+            "img : 이미지 풀 경로<br>"+
+            "pimgId : 웹에디터 이미지의 pk값")
+    public ProductImgPkFull insWebEditorImg(@RequestPart MultipartFile img, @RequestParam Long productId){
+        return service.insWebEditorImg(img,productId);
+    }
+
+    @PostMapping(value = "/webeditor/product/imglist",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "웹에디터 이미지 리스트로 넣기",description = ""+
+            "img : 이미지 풀 경로<br>"+
+            "pimgId : 웹에디터 이미지의 pk값")
+    public List<ProductImgPkFull> insWebEditorImgList(@RequestPart List<MultipartFile> img, @RequestParam Long productId){
+        return service.insWebEditorImgList(img,productId);
+    }
+
+    @GetMapping("/webeditor/product/modification")
+    @Operation(summary = "상품 수정 버튼 메소드", description = "수정 버튼 클릭 시 기존 상품의 정보를 가져온다<br>"+
+            "상품코드(pk) 입력해주세요")
+    public AdminProductUpdDto updProductInfo(@RequestParam int productId){
+        return service.updProductInfo(productId);
+    }
+
+    @PatchMapping("/webeditor/product/modification")
+    @Operation(summary = "상품 수정 메소드", description = "수정할 내역 입력 후 클릭하면, 업데이트 됩니다")
+    public int updProduct(@RequestBody AdminProductUpdDto dto){
+        return service.changeProduct(dto);
+    }
+
+    @DeleteMapping("/webeditor/product/cancelation")
+    @Operation(summary = "웹에디터 에서 취소를 하면 테이블에서 이미지 데이터와 빈 값의 상품 테이블 데이터를 삭제")
+    public int delProductImg(@RequestParam Long product){
+        return service.delProductImg(product);
+    }
+
+    @DeleteMapping("/webeditor/product/cancelation/editor")
+    @Operation(summary = "웹에디터 등록 하기 전 이미지 삭제")
+    public int delProductWebImg(@RequestParam Long pImgId){
+        return service.delWebEditorCancel(pImgId);
+    }
+
+    @PostMapping(value = "/webeditor/product/imglist/thumbnail", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "썸네일 이미지 리스트로 넣기", description = "본문 등록할 때 함께 보내주세요"+
+            "img : 이미지<br>"+
+            "pimgId : 웹에디터 이미지의 pk값<br>" +
+            "productId : 등록할 상품 pk값" )
+    public List<ProductImgPkFull> insImgList(@RequestPart List<MultipartFile> img, @RequestParam Long productId){
+        return service.insImgList(img,productId);
+    }
+
+    @PatchMapping("/webeditor/product/registration")
+    @Operation(summary = "최종상품 등록할 때 저장하는 메소드", description = "상품등록 마지막 단계 <br>" +
+            "상품 내용이 DB에 등록됩니다")
+    public int insProduct(@RequestBody AdminProductUpdDto dto){
+        if(0 < service.updProduct(dto)) return 1;
+        else return 0;
+
+    }
+
+    @DeleteMapping ("/product/productId")
+    @Operation(summary = "등록된 상품 삭제")
+    public int delAdminProduct(@RequestParam int productId){
+        return service.delAdminProduct(productId);
+    }
+
 }
 
