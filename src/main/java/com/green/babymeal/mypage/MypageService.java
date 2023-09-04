@@ -5,5 +5,5 @@ import com.green.babymeal.mypage.model.OrderlistSelVo;
 import java.util.List;
 
 public interface MypageService {
-    List<OrderlistSelVo> orderlist();
+    List<OrderlistSelVo> orderlist(int month);
 }

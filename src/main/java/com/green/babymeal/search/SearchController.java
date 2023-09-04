@@ -19,30 +19,34 @@ import java.util.List;
 public class SearchController {
     private final SearchService service;
 
-    @PostMapping("/popular")
-    @Operation(summary = "인기검색어", description = "30초뒤에 count값 감소됨")
-    public Double searchRankList(@RequestParam String product){
-        return service.search(product);
-    }
 
     @GetMapping("/popular")
     @Operation(summary = "인기검색어", description = "")
     public List<SearchPopularVo> searchRankList(){
         return service.list();
     }
+    @GetMapping("/recent")
+    @Operation(summary = "최근검색어", description = "")
+    public List<String> recentSearch(){
+        return service.GetRecentSearch();
+    }
 
-    @GetMapping("/filter")
+    @DeleteMapping("/recent")
+    @Operation(summary = "최근검색어 삭제", description = "삭제하고싶은 상품")
+    public Long removeRecent(String product){
+        return service.deleteRecentSearch(product);
+    }
+
+    @GetMapping()
     @Operation(summary = "필터",description = ""+
             " sorter: 0이면 판매량 많은 순서 1이면 판매량 적은 순서 <br> "+
             "sorter: 2이면 가격 높은 순서 3이면 가격 낮은 순서<br>")
     public SearchSelRes filterAllergy(@RequestParam String product,
                                       @RequestParam(defaultValue = "1") int page,
                                       @RequestParam(defaultValue = "10") int row,
-                                      @RequestParam int sorter,
-                                      @RequestParam List<String>filter){
+                                      @RequestParam (required = false)String sorter,
+                                      @RequestParam (required = false)List<String>filter){
         SearchSelRes selfilter = service.selfilter(product,page,row,sorter,filter);
         return selfilter;
     }
-
-
 }

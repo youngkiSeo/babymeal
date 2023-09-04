@@ -1,6 +1,8 @@
 package com.green.babymeal.search;
 
 import com.green.babymeal.common.config.EnToKo.EnToKo;
+import com.green.babymeal.common.config.security.AuthenticationFacade;
+import com.green.babymeal.common.entity.UserEntity;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.search.model.*;
 import com.twitter.penguin.korean.TwitterKoreanProcessorJava;
@@ -16,10 +18,8 @@ import scala.collection.Seq;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ScheduledFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,32 +30,10 @@ import java.util.regex.Pattern;
 public class SearchService {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final AuthenticationFacade USERPK;
     private final TaskScheduler taskScheduler;
     private final ProductRepository productRep;
     private final SearchMapper mapper;
-
-    public Double search(String product){
-
-        Double babymeal = null;
-        try{
-            babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", product, 1);
-            //redisTemplate.opsForZSet().incrementScore("ranking", keyword, 1, TimeUnit.MILLISECONDS);
-        }catch (Exception e) {
-            System.out.println(e.toString());
-        }
-
-        Runnable task = () -> {
-            redisTemplate.opsForZSet().incrementScore("babymeal", product, -1);
-        };
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(30, ChronoUnit.SECONDS)));
-
-        //scheduledTask = taskScheduler.schedule(this::executeTask, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
-        return babymeal;
-    }
-
-
-
-
 
     public List<SearchPopularVo> list(){
         String key = "babymeal";
@@ -64,7 +42,34 @@ public class SearchService {
         return typedTuples.stream().map(item-> SearchPopularVo.builder().product(item.getValue()).count(item.getScore()).build()).toList();
     }
 
-    public SearchSelRes selfilter(String product, int page, int row, int sorter, List<String>filter){
+    public List<String> GetRecentSearch() {
+        final int keysize = 5;
+        UserEntity loginUser = USERPK.getLoginUser();
+        String key = "babymeal" +loginUser.getIuser();
+        int start = 0;
+        List<String> range = redisTemplate.opsForList().range(key, start, keysize);
+        return range;
+    }
+
+    public Long deleteRecentSearch(String product){
+        UserEntity loginUser = USERPK.getLoginUser();
+        String key = "babymeal" +loginUser.getIuser();
+        Long remove = redisTemplate.opsForList().remove(key, 0, product);
+        return remove;
+    }
+
+
+
+    public SearchSelRes selfilter(String product, int page, int row, String sorter, List<String>filter){
+
+        if (sorter==null){
+            sorter="1";
+        }
+        if (null==filter){
+            filter = new ArrayList<>();
+            filter.add("1");
+        }
+
         StringBuffer allergy = new StringBuffer();
         String strallergy = "";
         String plus="";
@@ -84,7 +89,7 @@ public class SearchService {
         dto.setPage(page);
         dto.setRow(row);
         dto.setAllergy(strallergy);
-        dto.setSorter(sorter);
+        dto.setSorter(Integer.parseInt(sorter));
 
 
         int startIdx = (dto.getPage() - 1) * dto.getRow();
@@ -107,26 +112,19 @@ public class SearchService {
         }
 
         //인기검색어 - 레디스저장
+        redispopular(msg);
 
-        try{
-             redisTemplate.opsForZSet().incrementScore("babymeal", msg, 1);
-        }catch (Exception e) {
-            e.printStackTrace();
+        //최근검색어 - 레디스저장
+        UserEntity loginUser = USERPK.getLoginUser();
+        if (loginUser!=null){
+            redisrecent(msg);
         }
 
-        String finalMsg = msg;
-        Runnable task = () -> {
-            redisTemplate.opsForZSet().incrementScore("babymeal", finalMsg, -1);
-        };
 
         //트위터 형태소 분석기
 
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
-
         CharSequence normalized = TwitterKoreanProcessorJava.normalize(msg);
-
         Seq<KoreanTokenizer.KoreanToken> tokens = TwitterKoreanProcessorJava.tokenize(normalized);
-
         Seq<KoreanTokenizer.KoreanToken> stemmed = TwitterKoreanProcessorJava.stem(tokens);
         List<String> text = TwitterKoreanProcessorJava.tokensToJavaStringList(stemmed);
 
@@ -181,5 +179,56 @@ public class SearchService {
     }
 
 
+    //인기검색어 저장하는 메소드
+    public Double redispopular(String msg){
+        Double babymeal = null;
+        try{
+             babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", msg, 1);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Runnable task = () -> {
+            redisTemplate.opsForZSet().incrementScore("babymeal", msg, -1);
+        };
+
+        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
+
+        return babymeal;
+    }
+
+    //최근검색어 저장하는 메소드
+    public List<String> redisrecent(String product) {
+        final int keysize = 5;
+        UserEntity loginUser = USERPK.getLoginUser();
+        String key = "babymeal" +loginUser.getIuser();
+
+        //레디스에 중복된 단어를 저장 하지 못하도록 하자
+
+        List<String> check = redisTemplate.opsForList().range(key, 0, keysize);
+
+        for (int i = 0; i <check.size(); i++) {
+            String redisproduct = check.get(i);
+            if (redisproduct.equals(product)){
+                return check;
+            }
+        }
+
+        //레디스에 5개 이상 저장 하지 못하도록 하자
+        Long size = redisTemplate.opsForList().size(key);
+        if (size == keysize) {
+            redisTemplate.opsForList().rightPop(key);
+        }
+
+
+        Long result = redisTemplate.opsForList().leftPush(key, product);
+        log.info("result:{}",result);
+
+        //검색
+        List<String> list = redisTemplate.opsForList().range(key, 0, keysize);
+
+        return list;
+
+    }
 
 }

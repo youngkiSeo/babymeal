@@ -13,10 +13,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.misc.Interval;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,14 +43,19 @@ public class MypageServicelmpl implements MypageService{
 
 
     @Override
-    public  List<OrderlistSelVo> orderlist (){
+    public  List<OrderlistSelVo> orderlist (int month){
         QOrderlistEntity orderlist = QOrderlistEntity.orderlistEntity;
         QOrderDetailEntity orderDetail = QOrderDetailEntity.orderDetailEntity;
         QProductEntity product = QProductEntity.productEntity;
         QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
         UserEntity loginUser = USERPK.getLoginUser();
 
+        //날짜 계산
+        LocalDate today = LocalDate.now();
+        LocalDate Month = today.minusMonths(month);
+
         Byte delYn = 0;
+        int num = 10;
 
         List<OrderlistSelVo> order = jpaQueryFactory
                 .select(Projections.constructor(OrderlistSelVo.class, orderlist.orderId,orderlist.orderCode,orderlist.createdAt
@@ -57,7 +65,8 @@ public class MypageServicelmpl implements MypageService{
                 .on(orderDetail.orderId.orderId.eq(orderlist.orderId))
                 .leftJoin(thumbnail)
                 .on(orderDetail.productId.productId.eq(thumbnail.productId.productId))
-                .where(orderlist.iuser.iuser.eq(loginUser.getIuser()),orderlist.delYn.eq(delYn))
+                .where(orderlist.iuser.iuser.eq(loginUser.getIuser()),orderlist.delYn.eq(delYn)
+                ,orderlist.createdAt.between(Month, today))
                 .groupBy(orderlist.orderId)
                 .fetch();
 
@@ -113,25 +122,26 @@ public class MypageServicelmpl implements MypageService{
     }
     public ProfileVo profile(){
         UserEntity loginUser = USERPK.getLoginUser();
-        Optional<UserEntity> byId = userRep.findById(loginUser.getIuser());
+        UserEntity userEntity = userRep.findById(loginUser.getIuser()).get();
         return ProfileVo.builder()
-                .iuser(byId.get().getIuser())
-                .address(byId.get().getAddress())
-                .addressDetail(byId.get().getAddressDetail())
-                .birthday(byId.get().getBirthday())
-                .email(byId.get().getEmail())
-                .image(byId.get().getImage())
-                .mobileNb(byId.get().getMobile_nb())
-                .name(byId.get().getName())
-                .nickNm(byId.get().getNickNm())
-                .zipcode(byId.get().getZipCode())
-                .point(byId.get().getPoint())
+                .iuser(userEntity.getIuser())
+                .address(userEntity.getAddress())
+                .addressDetail(userEntity.getAddressDetail())
+                .birthday(userEntity.getBirthday())
+//                .email(userEntity.getEmail())
+                .image(userEntity.getImage())
+                .mobileNb(userEntity.getMobile_nb())
+                .name(userEntity.getName())
+                .nickNm(userEntity.getNickNm())
+                .zipcode(userEntity.getZipCode())
+                .point(userEntity.getPoint())
                 .build();
     }
     public ProfileVo profileupdate(ProfileUpdDto dto){
         UserEntity loginUser = USERPK.getLoginUser();
         UserEntity entity = userRep.findById(loginUser.getIuser()).get();
 
+        // "" 이 들어오지 못하도록함
         if (!dto.getNickNm().equals("")){
             entity.setNickNm(dto.getNickNm());
         }
@@ -164,7 +174,7 @@ public class MypageServicelmpl implements MypageService{
                 .address(entity.getAddress())
                 .addressDetail(entity.getAddressDetail())
                 .birthday(entity.getBirthday())
-                .email(entity.getEmail())
+//                .email(entity.getEmail())
                 .image(entity.getImage())
                 .mobileNb(entity.getMobile_nb())
                 .name(entity.getName())
