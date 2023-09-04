@@ -40,7 +40,6 @@ public class SearchService {
         Double babymeal = null;
         try{
             babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", product, 1);
-            //redisTemplate.opsForZSet().incrementScore("ranking", keyword, 1, TimeUnit.MILLISECONDS);
         }catch (Exception e) {
             System.out.println(e.toString());
         }
