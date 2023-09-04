@@ -29,15 +29,19 @@ public class CateService {
         List<CategoryEntity> all = cateRepository.findAll();
         List list=new ArrayList();
 
-        for (int i = 1; i < all.size(); i++) {
-            Category category=new Category();
-            category.setCateId(all.get(i).getCateId());
-            category.setCateName(all.get(i).getCateName());
-            Cate cate=new Cate();
-            cate.setCategory(category);
+        for (int i = 0; i < all.size(); i++) {
+            Category category = Category.builder()
+                    .cateId(all.get(i).getCateId())
+                    .cateName(all.get(i).getCateName())
+                    .build();
+
             List<CateViewRepositoryDetail> byCategoryEntityCateId = cateViewRepository.findByCategoryEntity_CateId(all.get(i).getCateId());
-            cate.setCateDetail(byCategoryEntityCateId);
-            list.add(cate);
+            Cate build = Cate.builder()
+                    .category(category)
+                    .cateDetail(byCategoryEntityCateId)
+                    .build();
+
+            list.add(build);
         }
         return list;
     }
