@@ -157,7 +157,7 @@ public class MypageServicelmpl implements MypageService{
                 .birthday(userEntity.getBirthday())
                 .image(userEntity.getImage())
                 .mobileNb(userEntity.getMobile_nb())
-                .name(userEntity.getName())
+                .unm(userEntity.getName())
                 .nickNm(userEntity.getNickNm())
                 .zipcode(userEntity.getZipCode())
                 .point(userEntity.getPoint())
@@ -179,8 +179,8 @@ public class MypageServicelmpl implements MypageService{
         if (!dto.getPhoneNumber().equals("")) {
             entity.setMobile_nb(dto.getPhoneNumber());
         }
-        if (!dto.getUmn().equals("")) {
-            entity.setName(dto.getUmn());
+        if (!dto.getUpw().equals("")) {
+            entity.setName(dto.getUpw());
         }
         if (!dto.getBirthday().equals("")){
             entity.setBirthday(dto.getBirthday());
@@ -201,10 +201,9 @@ public class MypageServicelmpl implements MypageService{
                 .address(entity.getAddress())
                 .addressDetail(entity.getAddressDetail())
                 .birthday(entity.getBirthday())
-//                .email(entity.getEmail())
                 .image(entity.getImage())
                 .mobileNb(entity.getMobile_nb())
-                .name(entity.getName())
+                .unm(entity.getName())
                 .nickNm(entity.getNickNm())
                 .zipcode(entity.getZipCode())
                 .point(entity.getPoint())

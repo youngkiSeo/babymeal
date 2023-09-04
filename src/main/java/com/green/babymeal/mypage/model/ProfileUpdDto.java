@@ -9,7 +9,7 @@ public class ProfileUpdDto {
     private String nickNm;
     private String upw;
     private String phoneNumber;
-    private String umn;
+    private String unm;
     private LocalDate birthday;
     private String zipcode;
     private String address;

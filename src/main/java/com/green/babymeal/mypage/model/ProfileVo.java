@@ -16,7 +16,7 @@ public class ProfileVo {
     private LocalDate birthday;
     private String image;
     private String mobileNb;
-    private String name;
+    private String unm;
     private String nickNm;
     private String zipcode;
     private int point;
