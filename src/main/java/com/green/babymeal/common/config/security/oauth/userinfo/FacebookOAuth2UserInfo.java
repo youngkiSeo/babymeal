@@ -17,10 +17,10 @@ public class FacebookOAuth2UserInfo extends OAuth2UserInfo {
         return (String) attributes.get("name");
     }
 
-    @Override
+    /*@Override
     public String getEmail() {
         return (String) attributes.get("email");
-    }
+    }*/
 
     @Override
     public String getImageUrl() {

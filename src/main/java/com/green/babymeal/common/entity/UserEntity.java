@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @SuperBuilder
 @Data
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nick_nm"})})
+@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"uid","nick_nm"})})
 @NoArgsConstructor
 
 public class UserEntity {
@@ -26,10 +26,6 @@ public class UserEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private Long iuser;
-
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "password")
     private String password;

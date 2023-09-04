@@ -23,10 +23,10 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
         return (String) properties.get("nickname");
     }
 
-    @Override
-    public String getEmail() {
-        return (String) attributes.get("account_email");
-    }
+//    @Override
+//    public String getEmail() {
+//        return (String) attributes.get("account_email");
+//    }
 
     @Override
     public String getImageUrl() {

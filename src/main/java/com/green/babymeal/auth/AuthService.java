@@ -51,7 +51,7 @@ public class AuthService {
                 .uid(dto.getUid())
                 .password(passwordEncoder.encode(dto.getUpw()))
                 .name(dto.getUnm())
-                .email(dto.getEmail())
+//                .email(dto.getEmail())
                 .providerType(ProviderType.LOCAL)
                 .roleType(RoleType.USER)
                 .address(dto.getAddress())
