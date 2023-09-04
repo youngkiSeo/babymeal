@@ -3,6 +3,7 @@ package com.green.babymeal.orderbasket;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.OrderBasketRepository;
+import com.green.babymeal.common.repository.ProductCategoryRelationRepository;
 import com.green.babymeal.common.repository.ThumbnailRepository;
 import com.green.babymeal.orderbasket.model.OrderBasketCount;
 import com.green.babymeal.orderbasket.model.OrderBasketInsDto;
@@ -24,6 +25,7 @@ public class OrderBasketService {
     private final OrderBasketRepository repository;
     private final ThumbnailRepository thumbnailRepository;
     private final AuthenticationFacade USERPK;
+    private final ProductCategoryRelationRepository productCategoryRelationRepository;
 
 
     public Long post(OrderBasketInsDto dto) {
@@ -62,15 +64,18 @@ public class OrderBasketService {
         List<OrderBasketVo> list=new ArrayList<>();
         for (OrderBasketEntity orderBasketEntity : byUserEntityIuser) {
             Long productId = orderBasketEntity.getProductEntity().getProductId();
+            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findByProductEntity(byUserEntityIuser.listIterator().next().getProductEntity());
             ProductThumbnailEntity productThumbnailEntity = thumbnailRepository.findById(productId).get();
+            String fullName="["+byProductEntity.getCategoryEntity().getCateId()+"단계]"+orderBasketEntity.getProductEntity().getPName();
+
             OrderBasketVo vo=OrderBasketVo.builder()
                     .cartId(orderBasketEntity.getCartId())
                     .productId(orderBasketEntity.getProductEntity().getProductId())
-                    .productName(orderBasketEntity.getProductEntity().getPName())
+                    .productName(fullName)
                     .price(orderBasketEntity.getProductEntity().getPPrice())
                     .createdAt(orderBasketEntity.getCreateAt())
                     .count(orderBasketEntity.getCount())
-                    .thumbnail("http://192.168.0.144:5001/img/product/" + productId + "/" + productThumbnailEntity.getImg())
+                    .thumbnail("/img/product/" + productId + "/" + productThumbnailEntity.getImg())
                     .build();
             list.add(vo);
         }

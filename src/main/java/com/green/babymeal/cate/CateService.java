@@ -58,7 +58,7 @@ public class CateService {
                 Long productCateId = productCateRelationEntity.getProductCateId();
                 System.out.println("productCateId = " + productCateId);
                 by.get(i).setName("[" + productCateId + "단계]" + by.get(i).getName());
-                by.get(i).setThumbnail("http://192.168.0.144:5001/img/product/" + productId + "/" + by.get(i).getThumbnail());
+                by.get(i).setThumbnail("/img/product/" + productId + "/" + by.get(i).getThumbnail());
 
             }
             return by;
@@ -70,7 +70,7 @@ public class CateService {
                 ProductCateRelationEntity productCateRelationEntity = prr.findById(productId).get();
                 Long productCateId = productCateRelationEntity.getProductCateId();
                 bySel.get(i).setName("[" + productCateId + "단계]" + bySel.get(i).getName());
-                bySel.get(i).setThumbnail("http://192.168.0.144:5001/img/product/" + productId + "/" + bySel.get(i).getThumbnail());
+                bySel.get(i).setThumbnail("/img/product/" + productId + "/" + bySel.get(i).getThumbnail());
             }
             return bySel;
         }
