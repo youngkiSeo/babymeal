@@ -33,12 +33,12 @@ public class BabyService {
         entity.setChildBirth(dto.getChildBirth());
         entity.setPrefer(dto.getPrefer());
         userEntity.setIuser(USERPK.getLoginUser().getIuser());
-        //userEntity.setIuser(dto.getIuser());
+//        userEntity.setIuser(dto.getIuser());
         entity.setUserEntity(userEntity);
 
-//        if(rep.findById(dto.getIuser()) == null){
+
         rep.save(entity);
-//        }
+
 
         String ss= dto.getAllegyId();
         String[] split = ss.split(",");
@@ -83,6 +83,5 @@ public class BabyService {
             list.add(vo);
         }
         return list;
-
     }
 }
