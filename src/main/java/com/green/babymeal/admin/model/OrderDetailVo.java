@@ -17,6 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class OrderDetailVo {
     private Long orderDetailId;
     private Long productId;
+    private String productName;
     private int count;
     private int totalPrice;
 }

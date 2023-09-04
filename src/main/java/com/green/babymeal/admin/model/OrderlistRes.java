@@ -34,6 +34,7 @@ public class OrderlistRes {
     private String addressDetail;
     private Byte delYn;
     private int usepoint;
+    private String productName; // 대표상품이름
     private List<OrderDetailVo> orderDetailVo;
     //private List<ProductVo> productVo;
     private UserVo userVo;
