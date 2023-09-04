@@ -7,7 +7,7 @@ import lombok.Data;
 public class BabySelDto {
     private Long babyId;
     private Long iuser;
-    private String birthday;
+    private String childBirth;
     private String prefer;
 
 }

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 public class BabyInsVo {
-    private LocalDate birthday;
+    private LocalDate childBirth;
     private String prefer;
     private Long iuser;
     private String allegyId;

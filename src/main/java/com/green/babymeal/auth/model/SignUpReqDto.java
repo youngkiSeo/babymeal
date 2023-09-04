@@ -15,4 +15,5 @@ public class SignUpReqDto {
     private LocalDate birthday;
     private String mobileNb;
     private String nickNm;
+    private String zipCode;
 }

@@ -2,6 +2,7 @@ package com.green.babymeal.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -13,8 +14,9 @@ public class ProductImageEntity {
     @Column(name = "imgId", updatable = false,nullable = false, columnDefinition = "BIGINT UNSIGNED") //
     private Long p_img_id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id",nullable = false)
+    @ToString.Exclude
     private ProductEntity productId;
 
     @Column
