@@ -19,17 +19,22 @@ import java.util.List;
 public class SearchController {
     private final SearchService service;
 
-    @PostMapping("/popular")
-    @Operation(summary = "인기검색어", description = "30초뒤에 count값 감소됨")
-    public Double searchRankList(@RequestParam String product){
-        return service.search(product);
-    }
 
     @GetMapping("/popular")
     @Operation(summary = "인기검색어", description = "")
     public List<SearchPopularVo> searchRankList(){
         return service.list();
     }
+    @GetMapping("/recent")
+    @Operation(summary = "최근검색어", description = "")
+    public List<String> recentSearch(){
+        return service.GetRecentSearch();
+    }
+
+//    @DeleteMapping("/recent")
+//    public Long removeRecent(String product){
+//        return service.deleteRecentSearch(product);
+//    }
 
     @GetMapping("/filter")
     @Operation(summary = "필터",description = ""+
@@ -38,11 +43,9 @@ public class SearchController {
     public SearchSelRes filterAllergy(@RequestParam String product,
                                       @RequestParam(defaultValue = "1") int page,
                                       @RequestParam(defaultValue = "10") int row,
-                                      @RequestParam int sorter,
-                                      @RequestParam List<String>filter){
+                                      @RequestParam (required = false)String sorter,
+                                      @RequestParam (required = false)List<String>filter){
         SearchSelRes selfilter = service.selfilter(product,page,row,sorter,filter);
         return selfilter;
     }
-
-
 }
