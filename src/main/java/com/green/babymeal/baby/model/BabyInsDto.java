@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class BabyInsDto {
-    private LocalDate birthday;
+    private LocalDate childBirth;
     private String prefer;
-    private Long iuser;
+    //    private Long iuser;
     private String allegyId;
 
 }

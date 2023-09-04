@@ -23,7 +23,7 @@ public class UserBabyinfoEntity {
     private Long babyId;
 
     @Column(length = 20)
-    private LocalDate birthday;
+    private LocalDate childBirth;
 
     @Column(length = 100)
     private String prefer;
