@@ -6,6 +6,7 @@ import com.green.babymeal.mypage.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +39,9 @@ public class MypageController {
 
     @DeleteMapping("/orderlist")
     @Operation(summary = "주문내역삭제",description = ""+
-            "orderId: 주문내역PK <br>")
-    public OrderlistEntity delorderlist(Long orderId){
-        return service.delorder(orderId);
+            "orderCode: 주문내역코드 <br>")
+    public OrderlistEntity delorderlist(Long orderCode){
+        return service.delorder(orderCode);
     }
 
     @GetMapping("/profile")
@@ -67,8 +68,9 @@ public class MypageController {
 
     @DeleteMapping("/profile")
     @Operation(summary = "회원탈퇴")
-    public ResponseEntity<Integer> delprofile(HttpServletRequest req){
-        service.deluser(req);
+    public ResponseEntity<Integer> delprofile(HttpServletRequest req
+            , HttpServletResponse res){
+        service.deluser(req,res);
         return ResponseEntity.ok(1);
 
     }
@@ -85,8 +87,8 @@ public class MypageController {
     @PostMapping("/checkpw")
     @Operation(summary = "비밀번호체크",description = "return:1 이면 비밀번호 맞음," +
             "return:0이면 비밀번호 틀림")
-    int checkPw(@RequestParam String password){
-        return service.selpw(password);
+    int checkPw(@RequestParam String upw){
+        return service.selpw(upw);
     }
 
 
