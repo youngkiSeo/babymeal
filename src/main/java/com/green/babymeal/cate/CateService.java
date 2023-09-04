@@ -1,6 +1,7 @@
 package com.green.babymeal.cate;
 
 import com.green.babymeal.cate.model.*;
+import com.green.babymeal.common.entity.CateDetailEntity;
 import com.green.babymeal.common.entity.CategoryEntity;
 import com.green.babymeal.common.entity.ProductCateRelationEntity;
 import com.green.babymeal.common.repository.*;
@@ -25,21 +26,20 @@ public class CateService {
 
 
     public List selCate() {
-        List list1 = new ArrayList();
         List<CategoryEntity> all = cateRepository.findAll();
-        CategoryEntity entity = new CategoryEntity();
-        for (int i = 1; i <= all.size(); i++) {
-            entity.setCateId(Long.valueOf(i));
-            CateViewRepositoryCate byCategoryEntity = cateViewRepository.findDistinctByCategoryEntity(entity);
-            List<CateViewRepositoryDetail> byCategoryEntity1 = cateViewRepository.findAllByCategoryEntity(entity);
-            CateDetail cateDetail=new CateDetail();
-            cateDetail.setCateDetail(byCategoryEntity1);
-            list1.add(byCategoryEntity);
-            list1.add(cateDetail);
+        List list=new ArrayList();
 
-
+        for (int i = 1; i < all.size(); i++) {
+            Category category=new Category();
+            category.setCateId(all.get(i).getCateId());
+            category.setCateName(all.get(i).getCateName());
+            Cate cate=new Cate();
+            cate.setCategory(category);
+            List<CateViewRepositoryDetail> byCategoryEntityCateId = cateViewRepository.findByCategoryEntity_CateId(all.get(i).getCateId());
+            cate.setCateDetail(byCategoryEntityCateId);
+            list.add(cate);
         }
-        return list1;
+        return list;
     }
 
     public List<CateSelVo> selCateList(CateSelList cateSelList) {

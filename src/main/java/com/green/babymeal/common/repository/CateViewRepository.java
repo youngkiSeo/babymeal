@@ -13,5 +13,5 @@ import java.util.List;
 public interface CateViewRepository extends JpaRepository<CateViewEntity,Long> {
 
     CateViewRepositoryCate findDistinctByCategoryEntity(CategoryEntity entity);
-    List<CateViewRepositoryDetail> findAllByCategoryEntity(CategoryEntity entity);
+    List<CateViewRepositoryDetail> findByCategoryEntity_CateId(Long cateId);
 }
