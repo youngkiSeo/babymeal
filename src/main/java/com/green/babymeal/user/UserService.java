@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -52,7 +53,10 @@ public class UserService {
         return vo;
     }
 
-    public void delUser(String email){
+    public void delUser(String uid){
+        UserEntity opt = rep.findByUid(uid);
+        opt.setDelYn((byte)1);
+        rep.save(opt);
 
     }
 
