@@ -80,6 +80,7 @@ public class AdminService {
                                 .productId(detail.getProductId().getProductId())
                                 .count(detail.getCount())
                                 .totalPrice(detail.getTotalPrice())
+                                .productName(detail.getProductId().getPName())
                                 .build())
                         .collect(Collectors.toList());
             }
@@ -100,6 +101,7 @@ public class AdminService {
                         .delYn(order.getDelYn())
                         .usepoint(order.getUsepoint())
                         .orderDetailVo(orderDetailVoList)
+                        .productName(orderDetails.get(1).getProductId().getPName())
                         .build();
                 resultList.add(orderlistRes); // 기본 데이터 조회 완료
             }
