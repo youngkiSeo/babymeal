@@ -229,6 +229,11 @@ public class AdminService {
                 productAdminDtos.add(productAdminDto2);
             }
         }
+
+        // size가 총 갯수보다 크면 max고정
+        if (pageable.getPageSize() > productEntities.getTotalElements()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), (int) productEntities.getTotalElements());
+        }
         return new PageImpl<>(productAdminDtos, pageable, productEntities.getTotalElements());
     }
 
