@@ -22,11 +22,13 @@ public class UserController {
     }*/
 
     @GetMapping("/{uid}")
+    @Operation(summary = "유저ID로 찾기",description = "ID : 회원의 아이디 입력<br>")
     public UserEntity GetUser(@PathVariable String uid){
         return service.selUser(uid);
     }
 
     @GetMapping("/search")
+    @Operation(summary = "전체 유저보기",description = "※ 버튼을 누르면 전체유저가 나옴")
     public List<UserEntity> GetUserAll(){
         return service.selUserAll();
     }

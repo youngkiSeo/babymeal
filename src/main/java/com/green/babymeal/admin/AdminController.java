@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/Admin")
+@RequestMapping("/api/admin")
 @Tag(name = "관리자 페이지")
 public class AdminController {
 

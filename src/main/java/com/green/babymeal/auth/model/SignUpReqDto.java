@@ -9,7 +9,7 @@ public class SignUpReqDto {
     private String uid;
     private String upw;
     private String unm;
-    private String email;
+//    private String email;
     private String address;
     private String addressDetail;
     private LocalDate birthday;

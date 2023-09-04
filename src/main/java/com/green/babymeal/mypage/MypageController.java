@@ -26,8 +26,8 @@ public class MypageController {
     @GetMapping("/orderlist")
     @Operation(summary = "주문내역조회",description = ""+
             "month: 조회하고싶은 기간(개월) <br>")
-    public List<OrderlistSelVo> orderlist(){
-       return service.orderlist();
+    public List<OrderlistSelVo> orderlist(@RequestParam int month){
+       return service.orderlist(month);
     }
 
     @GetMapping("/orderlist/{orderCode}")
