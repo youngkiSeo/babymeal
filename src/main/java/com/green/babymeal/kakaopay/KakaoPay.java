@@ -21,11 +21,9 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-import static com.green.babymeal.buy.BuyService.getDate;
+
+
 
 
 @Service
@@ -128,18 +126,18 @@ public class KakaoPay {
 
 
 
-        int idx = 0;
-        Long code = 0L;
-        //바로구매
-        if(productId!=null){
-            String formattedDate = getDate("yyyyMMdd");
-            String randomCode = BuyService.getRandomCode(4);
-            code = Long.valueOf(formattedDate + randomCode);
+//       int idx = 0;
+//       Long code = 0L;
+//       //바로구매
+//       if(productId!=null){
+//           String formattedDate = getDate("yyyyMMdd");
+//           String randomCode = BuyService.getRandomCode(4);
+//           code = Long.valueOf(formattedDate + randomCode);
 
-            dto10.setOrderCode(code);
-            dto10.setIuser(2L);
-            mapper.insOrderList(dto10);
-        }
+//           dto10.setOrderCode(code);
+//           dto10.setIuser(2L);
+//           mapper.insOrderList(dto10);
+//       }
 
 
 

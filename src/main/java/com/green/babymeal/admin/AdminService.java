@@ -53,6 +53,9 @@ public class AdminService {
     @Autowired
     private ProductCategoryRelationRepository productCateRelationRepository;
 
+    @Autowired
+    private ProductImageRepository productImageRepository;
+
 
 
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
@@ -231,10 +234,16 @@ public class AdminService {
 
     // 웹에디터
 
-    public Long insPk(PkVo pkVo) {
+    public Long webEditorPk() {
         //웹에디터 시작 > 상품 pk번호 생성하여 반환 , ok
-        adminMapper.insPk(pkVo);
-        return pkVo.getProductId();
+        ProductEntity entity=new ProductEntity();
+        entity.setPPrice(0);
+        entity.setPName("");
+        ProductEntity save = productRepository.save(entity);
+        if(save!=null){
+           return save.getProductId();
+        }
+        return 0L;
     }
 
     public ProductImgPkFull insWebEditorImg(MultipartFile img, Long productId) {
@@ -255,9 +264,16 @@ public class AdminService {
         AdminProductImgDto dto=new AdminProductImgDto();
         dto.setProductId(productId);
         dto.setRandomName(randomName);
-        adminMapper.insWebEditorImg(dto);
+
+        ProductImageEntity productImageEntity=new ProductImageEntity();
+        ProductEntity productEntity=new ProductEntity();
+        productEntity.setProductId(productId);
+        productImageEntity.setImg(randomName);
+        productImageEntity.setProductId(productEntity);
+
+        ProductImageEntity save = productImageRepository.save(productImageEntity);
         ProductImgPkFull full=new ProductImgPkFull();
-        full.setPImgId(dto.getPImgId());
+        full.setPImgId(save.getP_img_id());
         //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
         String fullPath="/webeditor/"+productId+"/"+randomName;
         full.setImg(fullPath);
@@ -287,7 +303,8 @@ public class AdminService {
             AdminProductImgDto dto=new AdminProductImgDto();
             dto.setProductId(productId);
             dto.setRandomName(randomName);
-            adminMapper.insWebEditorImgList(dto);
+
+            productImageRepository.save()
             ProductImgPkFull full=new ProductImgPkFull();
             full.setPImgId(dto.getPImgId());
             //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;

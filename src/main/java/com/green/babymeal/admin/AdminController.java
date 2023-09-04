@@ -84,11 +84,12 @@ public class AdminController {
     }
 
 
+
     // 웹에디터 -----------------------------
     @PostMapping("/webeditor/product")
     @Operation(summary = "웹에디터 pk가져오는 메소드 상품 등록 할 때 바로 pk를 반환한다")
-    public Long insPk(@RequestBody PkVo pkVo){
-        return service.insPk(pkVo);
+    public Long webEditorPk(){
+        return service.webEditorPk();
     }
 
 
