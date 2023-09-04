@@ -140,6 +140,31 @@ public class AdminService {
             }
         }
 
+        // 필터2 : 주문번호 기준 필터링
+        if (filter2 != null) {
+            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
+        }
+
+        // 필터3 : 상품번호 , 주문 정보를 필터링할 때 filter3 값과 일치하는 상품 번호가 있는 경우 해당 주문 정보를 유지, 그렇지 않은 경우에만 제거
+        if (filter3 != null) {
+            resultList.removeIf(orderRes -> {
+                boolean filterTemp = false;
+                for (OrderDetailVo orderDetail : orderRes.getOrderDetailVo()) {
+                    if (orderDetail.getProductId().equals(Long.parseLong(filter3))) {
+                        filterTemp = true;
+                        break;
+                    }
+                }
+                return !filterTemp;
+            });
+        }
+
+        //필터4 : 주문상태
+        if (filter4 != null){
+            resultList.removeIf(orderRes -> !orderRes.getShipment().equals(Long.parseLong(filter4)));
+        }
+
+
         // size가 총 항목 수보다 큰 경우 size를 총 항목 수로 조정
         if (pageable.getPageSize() > outputOrderlist.getTotalElements()) {
             pageable = PageRequest.of(pageable.getPageNumber(), (int) outputOrderlist.getTotalElements());
@@ -149,46 +174,10 @@ public class AdminService {
     }
 
 
-//        // 필터2 : 주문번호 기준 필터링
-//        if (filter2 != null) {
-//            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
-//        }
-//
-//        if (filter3 != null) {
-//            resultList.removeIf(orderRes -> {
-//                for (OrderDetailEntity orderDetail : orderRes.getOrderDetails()) {
-//                    if (!orderDetail.getProductId().getProductId().equals(Long.parseLong(filter3))) {
-//                        return true; // 상품번호가 일치하지 않으면 해당 주문 정보를 리스트에서 제거
-//                    }
-//                }
-//                return false;
-//            });
-//        }
-//
-//        if (filter4 != null) {
-//            resultList.removeIf(orderRes -> !orderRes.getPayment().equals(Long.parseLong(filter4)));
-//        }
-
-//        // Page 객체로 변환
-//        Page<OrderlistRes> resultPage = new PageImpl<>(resultList, pageable, resultList.size());
-//
-//        return null;
-//    }
 
 
-//        if (filter1 != null) {
-//            //검색어
-//            filterOrderlist = applyFilter1(filterOrderlist, filter1);
-//        }
 
 
-    //        if (filter2 != null) {
-//            // 주문번호 필터 적용
-//            Long orderCode = Long.parseLong(filter2);
-//            List<OrderDetailEntity> filteredByOrderCode = orderDetailRepository.findByOrderId_OrderCode(orderCode);
-//            filterOrderlist.removeIf(order -> !order.getOrdercode().equals(orderCode));
-//        }
-//
     public List<OrderlistEntity> selOrder(Long orderCode) {
         return orderlistRepository.findOrderById(orderCode);
     }
