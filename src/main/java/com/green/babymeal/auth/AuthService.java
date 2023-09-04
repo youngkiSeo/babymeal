@@ -1,10 +1,7 @@
 package com.green.babymeal.auth;
 
 import com.green.babymeal.CommonRes;
-import com.green.babymeal.auth.model.AuthResVo;
-import com.green.babymeal.auth.model.SignInReqDto;
-import com.green.babymeal.auth.model.SignUpReqDto;
-import com.green.babymeal.auth.model.SignUpResultDto;
+import com.green.babymeal.auth.model.*;
 import com.green.babymeal.common.config.exception.AuthErrorCode;
 import com.green.babymeal.common.config.exception.RestApiException;
 import com.green.babymeal.common.config.properties.AppProperties;
@@ -27,6 +24,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.REFRESH_TOKEN;
 
@@ -39,10 +37,11 @@ public class AuthService {
     private final AuthTokenProvider authTokenProvider;
     private final AppProperties appProperties;
     private final PasswordEncoder passwordEncoder;
+    private final SignMapper SIGN_MAPPER; // 비번찾기용
 
     public SignUpResultDto signUp(SignUpReqDto dto
-                        , HttpServletRequest req
-                        , HttpServletResponse res) {
+            , HttpServletRequest req
+            , HttpServletResponse res) {
 
         String ip = req.getRemoteAddr();
         log.info("local-login ip : {}", ip);
@@ -59,6 +58,7 @@ public class AuthService {
                 .birthday(dto.getBirthday())
                 .mobile_nb(dto.getMobileNb())
                 .nickNm(dto.getNickNm())
+                .zipCode(dto.getZipCode())
                 .build();
         userRep.save(p);
 
@@ -87,6 +87,34 @@ public class AuthService {
 
         if(!passwordEncoder.matches(dto.getUpw(), r.getPassword())) {
             throw new RestApiException(AuthErrorCode.VALID_PW);
+        }
+
+        // RT가 이미 있을 경우
+        String redisRefreshTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisRefreshKey(), r.getIuser());
+        if(redisService.getValues(redisRefreshTokenKey) != null) {
+            redisService.deleteValues(redisRefreshTokenKey); // 삭제
+        }
+
+        return processAuth(r, req, res);
+
+    }
+
+    public AuthResVo adminSignIn(SignInReqDto dto, HttpServletRequest req, HttpServletResponse res) {
+        String ip = req.getRemoteAddr();
+        log.info("local-login ip : {}", ip);
+
+        UserEntity r = userRep.findByProviderTypeAndUid(ProviderType.LOCAL, dto.getUid());
+        if(r == null) {
+            throw new RestApiException(AuthErrorCode.NOT_FOUND_ID);
+        }
+
+        if(!passwordEncoder.matches(dto.getUpw(), r.getPassword())) {
+            throw new RestApiException(AuthErrorCode.VALID_PW);
+        }
+
+        UserEntity p = userRep.findByRoleTypeAndUid(RoleType.ADMIN, dto.getUid());
+        if (p == null){
+            throw new RestApiException(AuthErrorCode.NOT_FOUND_ID);
         }
 
         // RT가 이미 있을 경우
@@ -173,5 +201,24 @@ public class AuthService {
         result.setSuccess(false);
         result.setCode(CommonRes.FAIL.getCode());
         result.setMsg(CommonRes.FAIL.getMsg());
+    }
+
+    //------------------------------------------------
+
+    public int uidCheck(String uid){
+        String result= SIGN_MAPPER.uidCheck(uid);
+        if(uid.equals(result)){
+            return 1;
+        }
+        return 0;
+    }
+
+    public int nicknmcheck(String nickNm){
+        String result = SIGN_MAPPER.selNickNm(nickNm);
+        if (nickNm.equals(result)){
+            return 1;
+        }
+        return 0;
+
     }
 }

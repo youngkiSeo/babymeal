@@ -28,15 +28,16 @@ public class BabyService {
     public BabyInsVo insBaby(BabyInsDto dto){
 
 
-           UserBabyinfoEntity entity = new UserBabyinfoEntity();
-           UserEntity userEntity = new UserEntity();
-           entity.setBirthday(dto.getBirthday());
-           entity.setPrefer(dto.getPrefer());
-           userEntity.setIuser(dto.getIuser());
-           entity.setUserEntity(userEntity);
+        UserBabyinfoEntity entity = new UserBabyinfoEntity();
+        UserEntity userEntity = new UserEntity();
+        entity.setChildBirth(dto.getChildBirth());
+        entity.setPrefer(dto.getPrefer());
+        userEntity.setIuser(USERPK.getLoginUser().getIuser());
+        //userEntity.setIuser(dto.getIuser());
+        entity.setUserEntity(userEntity);
 
 //        if(rep.findById(dto.getIuser()) == null){
-            rep.save(entity);
+        rep.save(entity);
 //        }
 
         String ss= dto.getAllegyId();
@@ -52,10 +53,11 @@ public class BabyService {
         }
 
         BabyInsVo vo = new BabyInsVo();
-        vo.setBirthday(dto.getBirthday());
+        vo.setChildBirth(dto.getChildBirth());
         vo.setPrefer(dto.getPrefer());
         vo.setAllegyId(dto.getAllegyId());
-        vo.setIuser(dto.getIuser());
+        vo.setIuser(USERPK.getLoginUser().getIuser());
+//        vo.setIuser(dto.getIuser());
 
         return vo;
     }
