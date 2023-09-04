@@ -32,9 +32,12 @@ public class CateService {
             entity.setCateId(Long.valueOf(i));
             CateViewRepositoryCate byCategoryEntity = cateViewRepository.findDistinctByCategoryEntity(entity);
             List<CateViewRepositoryDetail> byCategoryEntity1 = cateViewRepository.findAllByCategoryEntity(entity);
-            System.out.println(byCategoryEntity1);
+            CateDetail cateDetail=new CateDetail();
+            cateDetail.setCateDetail(byCategoryEntity1);
             list1.add(byCategoryEntity);
-            list1.add(byCategoryEntity1);
+            list1.add(cateDetail);
+
+
         }
         return list1;
     }

@@ -1,11 +1,13 @@
 package com.green.babymeal.cate.model;
 
 import com.green.babymeal.common.entity.CategoryEntity;
+import lombok.Data;
 
 import java.util.List;
 
-public interface CateViewRepositoryCate {
+@Data
+public class CateDetail {
 
-    CategoryEntity getCategoryEntity();
 
+    private List<CateViewRepositoryDetail> cateDetail;
 }
