@@ -7,9 +7,9 @@ import java.time.LocalDate;
 @Data
 public class ProfileUpdDto {
     private String nickNm;
-    private String password;
+    private String upw;
     private String phoneNumber;
-    private String name;
+    private String unm;
     private LocalDate birthday;
     private String zipcode;
     private String address;

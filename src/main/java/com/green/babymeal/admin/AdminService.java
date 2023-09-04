@@ -140,6 +140,31 @@ public class AdminService {
             }
         }
 
+        // 필터2 : 주문번호 기준 필터링
+        if (filter2 != null) {
+            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
+        }
+
+        // 필터3 : 상품번호 , 주문 정보를 필터링할 때 filter3 값과 일치하는 상품 번호가 있는 경우 해당 주문 정보를 유지, 그렇지 않은 경우에만 제거
+        if (filter3 != null) {
+            resultList.removeIf(orderRes -> {
+                boolean filterTemp = false;
+                for (OrderDetailVo orderDetail : orderRes.getOrderDetailVo()) {
+                    if (orderDetail.getProductId().equals(Long.parseLong(filter3))) {
+                        filterTemp = true;
+                        break;
+                    }
+                }
+                return !filterTemp;
+            });
+        }
+
+        //필터4 : 주문상태
+        if (filter4 != null){
+            resultList.removeIf(orderRes -> !orderRes.getShipment().equals(Long.parseLong(filter4)));
+        }
+
+
         // size가 총 항목 수보다 큰 경우 size를 총 항목 수로 조정
         if (pageable.getPageSize() > outputOrderlist.getTotalElements()) {
             pageable = PageRequest.of(pageable.getPageNumber(), (int) outputOrderlist.getTotalElements());
@@ -149,46 +174,10 @@ public class AdminService {
     }
 
 
-//        // 필터2 : 주문번호 기준 필터링
-//        if (filter2 != null) {
-//            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
-//        }
-//
-//        if (filter3 != null) {
-//            resultList.removeIf(orderRes -> {
-//                for (OrderDetailEntity orderDetail : orderRes.getOrderDetails()) {
-//                    if (!orderDetail.getProductId().getProductId().equals(Long.parseLong(filter3))) {
-//                        return true; // 상품번호가 일치하지 않으면 해당 주문 정보를 리스트에서 제거
-//                    }
-//                }
-//                return false;
-//            });
-//        }
-//
-//        if (filter4 != null) {
-//            resultList.removeIf(orderRes -> !orderRes.getPayment().equals(Long.parseLong(filter4)));
-//        }
-
-//        // Page 객체로 변환
-//        Page<OrderlistRes> resultPage = new PageImpl<>(resultList, pageable, resultList.size());
-//
-//        return null;
-//    }
 
 
-//        if (filter1 != null) {
-//            //검색어
-//            filterOrderlist = applyFilter1(filterOrderlist, filter1);
-//        }
 
 
-    //        if (filter2 != null) {
-//            // 주문번호 필터 적용
-//            Long orderCode = Long.parseLong(filter2);
-//            List<OrderDetailEntity> filteredByOrderCode = orderDetailRepository.findByOrderId_OrderCode(orderCode);
-//            filterOrderlist.removeIf(order -> !order.getOrdercode().equals(orderCode));
-//        }
-//
     public List<OrderlistEntity> selOrder(Long orderCode) {
         return orderlistRepository.findOrderById(orderCode);
     }
@@ -207,27 +196,41 @@ public class AdminService {
                     .map(productAllergy -> productAllergy.getAllergyId().getAllergyId())
                     .collect(Collectors.toList());
 
-            //카테고리 정보 가져오기
-            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll(); // 예시로 findAll() 메서드를 사용한 것으로 가정
+            // 카테고리 정보 가져오기
+            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll();
+            List<Long> cateDetailIds = new ArrayList<>();
+
+            List<ProductCateRelationEntity> productCateRelationEntities = productCateRelationRepository.findByProductEntity_ProductId(productEntity.getProductId());
+
+            for (ProductCateRelationEntity relationEntity : productCateRelationEntities) {
+                cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
+            }
+
 
             for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
-                String thumbnailImg = (productEntity.getProductThumbnailEntityList() != null)
-                        // 이미지가 없으면 경로 대신 no data라고 띄워주는 예외처리
-                        ? productEntity.getProductThumbnailEntityList().getImg()
-                        : "no data";
+
 
                 ProductAdminDto productAdminDto2 = ProductAdminDto.builder()
                         .productId(relationEntity.getProductEntity().getProductId())
                         .name(productEntity.getPName())
                         .price(productEntity.getPPrice())
                         .cate(relationEntity.getCategoryEntity().getCateId())
-                        .cateDetail(relationEntity.getCateDetailEntity().getCateDetailId())
+                        .cateDetail(cateDetailIds) // cateDetailIds 리스트를 cateDetail에 설정
                         .allegyName(allergyIds)
-                        .thumbnail(Collections.singletonList(thumbnailImg))
+                        .thumbnail(Collections.singletonList(
+                                (productEntity.getProductThumbnailEntityList() != null)
+                                        ? productEntity.getProductThumbnailEntityList().getImg()
+                                        : "no data"
+                        ).toString())
                         .build();
 
                 productAdminDtos.add(productAdminDto2);
             }
+        }
+
+        // size가 총 갯수보다 크면 max고정
+        if (pageable.getPageSize() > productEntities.getTotalElements()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), (int) productEntities.getTotalElements());
         }
         return new PageImpl<>(productAdminDtos, pageable, productEntities.getTotalElements());
     }
@@ -242,13 +245,13 @@ public class AdminService {
                     .collect(Collectors.toList());
 
             //카테고리 정보 가져오기
-            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll();
 
             Long categoryId = null;
             List<Long> cateDetailIds = new ArrayList<>();
 
-            for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
-                categoryId = relationEntity.getCategoryEntity().getCateId();
+            List<ProductCateRelationEntity> productCateRelationEntities = productCateRelationRepository.findByProductEntity_ProductId(productEntity.getProductId());
+
+            for (ProductCateRelationEntity relationEntity : productCateRelationEntities) {
                 cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
             }
 
@@ -259,7 +262,7 @@ public class AdminService {
                     .cate(categoryId)
                     .cateDetail(cateDetailIds)
                     .allegyId(allergyIds)
-                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg()))
+                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 리스트
                     .build();
 
             return dto;

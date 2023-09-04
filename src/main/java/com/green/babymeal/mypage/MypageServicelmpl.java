@@ -1,5 +1,7 @@
 package com.green.babymeal.mypage;
 
+import com.green.babymeal.common.config.properties.AppProperties;
+import com.green.babymeal.common.config.redis.RedisService;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
@@ -11,6 +13,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.misc.Interval;
@@ -18,7 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +39,13 @@ public class MypageServicelmpl implements MypageService{
     private final UserRepository userRep;
     private final PasswordEncoder PW_ENCODER;
     private final AuthenticationFacade USERPK;
-    private final ThumbnailRepository thumbnailRep;
-    private final ProductCategoryRelationRepository productcategoryRep;
     private final ProductCategoryRelationRepository productcaterelationRep;
     private final JPAQueryFactory jpaQueryFactory;
-    private final EntityManager em;
+    private final AppProperties appProperties;
+    private final RedisService redisService;
+    private final BabyAlleRepository babyAlleRep;
+    private final BabyRepository babyRep;
+
 
 
 
@@ -123,18 +130,38 @@ public class MypageServicelmpl implements MypageService{
     public ProfileVo profile(){
         UserEntity loginUser = USERPK.getLoginUser();
         UserEntity userEntity = userRep.findById(loginUser.getIuser()).get();
+
+        List<UserBabyinfoEntity> babyentity = babyRep.findByUserEntity_Iuser(loginUser.getIuser());
+
+        // 아기 정보 받아오기
+        List<BabyVo> vo = new ArrayList<>();
+        for (int i = 0; i <babyentity.size(); i++) {
+
+            List<UserBabyalleEntity> babyallergyentity = babyAlleRep.findByUserBabyinfoEntity_BabyId(babyentity.get(i).getBabyId());
+            List<String>allergyname = new ArrayList<>();
+            for (int j = 0; j <babyallergyentity.size(); j++) {
+                String allergy = babyallergyentity.get(j).getAllergyEntity().getAllergyName();
+                allergyname.add(allergy);
+            }
+            BabyVo build = BabyVo.builder().babyId(babyentity.get(i).getBabyId())
+                    .childBirth(babyentity.get(i).getChildBirth())
+                    .allergyname(allergyname).build();
+            vo.add(build);
+        }
+
         return ProfileVo.builder()
+                .uid(userEntity.getUid())
                 .iuser(userEntity.getIuser())
                 .address(userEntity.getAddress())
                 .addressDetail(userEntity.getAddressDetail())
                 .birthday(userEntity.getBirthday())
-//                .email(userEntity.getEmail())
                 .image(userEntity.getImage())
                 .mobileNb(userEntity.getMobile_nb())
-                .name(userEntity.getName())
+                .unm(userEntity.getName())
                 .nickNm(userEntity.getNickNm())
                 .zipcode(userEntity.getZipCode())
                 .point(userEntity.getPoint())
+                .baby(vo)
                 .build();
     }
     public ProfileVo profileupdate(ProfileUpdDto dto){
@@ -145,15 +172,15 @@ public class MypageServicelmpl implements MypageService{
         if (!dto.getNickNm().equals("")){
             entity.setNickNm(dto.getNickNm());
         }
-        if (!dto.getPassword().equals("")){
-            String encode = PW_ENCODER.encode(dto.getPassword());
+        if (!dto.getUpw().equals("")){
+            String encode = PW_ENCODER.encode(dto.getUpw());
             entity.setPassword(encode);
         }
         if (!dto.getPhoneNumber().equals("")) {
             entity.setMobile_nb(dto.getPhoneNumber());
         }
-        if (!dto.getName().equals("")) {
-            entity.setName(dto.getName());
+        if (!dto.getUpw().equals("")) {
+            entity.setName(dto.getUpw());
         }
         if (!dto.getBirthday().equals("")){
             entity.setBirthday(dto.getBirthday());
@@ -174,10 +201,9 @@ public class MypageServicelmpl implements MypageService{
                 .address(entity.getAddress())
                 .addressDetail(entity.getAddressDetail())
                 .birthday(entity.getBirthday())
-//                .email(entity.getEmail())
                 .image(entity.getImage())
                 .mobileNb(entity.getMobile_nb())
-                .name(entity.getName())
+                .unm(entity.getName())
                 .nickNm(entity.getNickNm())
                 .zipcode(entity.getZipCode())
                 .point(entity.getPoint())
@@ -196,13 +222,26 @@ public class MypageServicelmpl implements MypageService{
         }
         return 0;
     }
-    public void deluser(HttpServletRequest req) {
+    public void deluser(HttpServletRequest rep,HttpServletResponse res) {
+//        String type = appProperties.getAuth().getTokenType();
+//        String accessToken = resolveToken(req,type);
+//
+//        String blackAccessTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisAccessBlackKey(), accessToken);
+//        long expiration = authToken.getTokenExpirationTime() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+//        if(expiration > 0) {
+//            redisService.setValuesWithTimeout(blackAccessTokenKey, "logout", expiration);
+//        }
+//
+
         UserEntity user = USERPK.getLoginUser();
         Long iuser = user.getIuser();
         UserEntity userentity = userRep.findById(iuser).get();
-        log.info("user: {}",userentity.getName());
         userentity.setDelYn((byte) 1);
         userRep.save(userentity);
+    }
+    public String resolveToken(HttpServletRequest req, String type) {
+        String headerAuth = req.getHeader("authorization");
+        return headerAuth != null && headerAuth.startsWith(String.format("%s ", type)) ? headerAuth.substring(type.length()).trim() : null;
     }
 
     public int selpw(String password){

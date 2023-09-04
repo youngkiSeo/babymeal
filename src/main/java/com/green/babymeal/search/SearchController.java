@@ -21,18 +21,18 @@ public class SearchController {
 
 
     @GetMapping("/popular")
-    @Operation(summary = "인기검색어", description = "")
+    @Operation(summary = "인기 검색어", description = "")
     public List<SearchPopularVo> searchRankList(){
         return service.list();
     }
     @GetMapping("/recent")
-    @Operation(summary = "최근검색어", description = "")
+    @Operation(summary = "최근 검색어", description = "")
     public List<String> recentSearch(){
         return service.GetRecentSearch();
     }
 
     @DeleteMapping("/recent")
-    @Operation(summary = "최근검색어 삭제", description = "삭제하고싶은 상품")
+    @Operation(summary = "최근 검색어 삭제", description = "삭제하고 싶은 상품")
     public Long removeRecent(String product){
         return service.deleteRecentSearch(product);
     }

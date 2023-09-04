@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ProductCategoryRelationRepository extends JpaRepository<ProductCateRelationEntity, Long> {
    ProductCateRelationEntity findByProductEntity(ProductEntity entity);
@@ -14,4 +17,5 @@ public interface ProductCategoryRelationRepository extends JpaRepository<Product
    // 상품과 관련된 categoryEntity > cateDetailEntity >  cateDetailId를 가져오는 메소드
 //   @Query("SELECT r.categoryEntity.cateId FROM ProductCateRelationEntity r WHERE r.productEntity = :productEntity")
 //   Long findCateIdByProductEntity(Long productId);
+   List<ProductCateRelationEntity> findByProductEntity_ProductId(Long productId);
 }
