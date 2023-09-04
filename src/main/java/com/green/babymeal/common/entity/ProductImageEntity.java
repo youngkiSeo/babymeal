@@ -13,7 +13,7 @@ public class ProductImageEntity {
     @Column(name = "imgId", updatable = false,nullable = false, columnDefinition = "BIGINT UNSIGNED") //
     private Long p_img_id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id",nullable = false)
     private ProductEntity productId;
 

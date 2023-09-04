@@ -3,8 +3,7 @@ package com.green.babymeal.admin;
 import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +15,7 @@ import com.green.babymeal.common.utils.MyFileUtils;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.File;
 import java.time.LocalDate;
@@ -300,17 +300,25 @@ public class AdminService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            AdminProductImgDto dto=new AdminProductImgDto();
-            dto.setProductId(productId);
-            dto.setRandomName(randomName);
 
-            productImageRepository.save()
+            ProductImageEntity productImageEntity=new ProductImageEntity();
+            productImageEntity.setImg(randomName);
+            ProductEntity productEntity=new ProductEntity();
+            productEntity.setProductId(productId);
+            productImageEntity.setProductId(productEntity);
+            System.out.println("==============================================================================");
+            System.out.println("randomName = " + randomName);
+            System.out.println("productId = " + productId);
+            System.out.println("==============================================================================");
+            ProductImageEntity save = productImageRepository.save(productImageEntity);
+            System.out.println("save = " + save);
             ProductImgPkFull full=new ProductImgPkFull();
-            full.setPImgId(dto.getPImgId());
+            full.setPImgId(save.getP_img_id());
             //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
             String fullPath="/webeditor/"+productId+"/"+randomName;
             full.setImg(fullPath);
             list.add(full);
+
         }
         return list;
 
@@ -340,6 +348,8 @@ public class AdminService {
         return adminMapper.changeAdminProduct(dto);
     }
 
+
+    //상품 등록을 취소할 때 상품 레코드와 사진 파일을 삭제한다
     public int delProductImg(Long productId) {
         String path = getAbsolutePath(fileDir) + "/webeditor/" + productId;
         MyFileUtils.delFolder(path);
@@ -363,6 +373,7 @@ public class AdminService {
         adminProductUpdDto.setCateDetail(cateDetailList); // 카테고리 정보를 AdminProductUpdDto에 설정
         return adminProductUpdDto;
     }
+
 
     public int delWebEditorCancel(Long pImgId){
         ProductImgPk productImgPk = adminMapper.selProductImgPk(pImgId);
