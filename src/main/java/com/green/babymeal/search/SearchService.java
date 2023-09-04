@@ -63,11 +63,11 @@ public class SearchService {
     public SearchSelRes selfilter(String product, int page, int row, String sorter, List<String>filter){
 
         if (sorter==null){
-            sorter="1";
+            sorter="0";
         }
         if (null==filter){
             filter = new ArrayList<>();
-            filter.add("1");
+            filter.add("0");
         }
 
         StringBuffer allergy = new StringBuffer();
