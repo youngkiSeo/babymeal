@@ -35,34 +35,30 @@ public class SearchService {
     private final ProductRepository productRep;
     private final SearchMapper mapper;
 
-    public Double search(String product){
-
-        Double babymeal = null;
-        try{
-            babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", product, 1);
-        }catch (Exception e) {
-            System.out.println(e.toString());
-        }
-
-        Runnable task = () -> {
-            redisTemplate.opsForZSet().incrementScore("babymeal", product, -1);
-        };
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(30, ChronoUnit.SECONDS)));
-
-        //scheduledTask = taskScheduler.schedule(this::executeTask, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
-        return babymeal;
-    }
-
-
-
-
-
     public List<SearchPopularVo> list(){
         String key = "babymeal";
         ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
         Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 9);  //score순으로 10개 보여줌
         return typedTuples.stream().map(item-> SearchPopularVo.builder().product(item.getValue()).count(item.getScore()).build()).toList();
     }
+
+    public List<String> GetRecentSearch() {
+        final int keysize = 5;
+        UserEntity loginUser = USERPK.getLoginUser();
+        String key = "babymeal" +loginUser.getIuser();
+        int start = 0;
+        List<String> range = redisTemplate.opsForList().range(key, start, keysize);
+        return range;
+    }
+
+    public Long deleteRecentSearch(String product){
+        UserEntity loginUser = USERPK.getLoginUser();
+        String key = "babymeal" +loginUser.getIuser();
+        Long remove = redisTemplate.opsForList().remove(key, 0, product);
+        return remove;
+    }
+
+
 
     public SearchSelRes selfilter(String product, int page, int row, String sorter, List<String>filter){
 
@@ -181,15 +177,7 @@ public class SearchService {
         return selres;
 
     }
-    public List<String> GetRecentSearch() {
-        final int keysize = 5;
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "babymeal" +loginUser.getIuser();
-        int start = 0;
-        List<String> range = redisTemplate.opsForList().range(key, start, keysize);
 
-        return range;
-    }
 
     //인기검색어 저장하는 메소드
     public Double redispopular(String msg){

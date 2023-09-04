@@ -31,10 +31,11 @@ public class SearchController {
         return service.GetRecentSearch();
     }
 
-//    @DeleteMapping("/recent")
-//    public Long removeRecent(String product){
-//        return service.deleteRecentSearch(product);
-//    }
+    @DeleteMapping("/recent")
+    @Operation(summary = "최근검색어 삭제", description = "삭제하고싶은 상품")
+    public Long removeRecent(String product){
+        return service.deleteRecentSearch(product);
+    }
 
     @GetMapping()
     @Operation(summary = "필터",description = ""+
