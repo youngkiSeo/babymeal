@@ -181,14 +181,29 @@ public class MainServiceImpl implements MainService {
 
 
 
-    //상품에 단계를 붙히는 메소드
+//    //상품에 단계를 붙히는 메소드
+//    private void productNmCateId(List<MainSelVo> fetch) {
+//        for (MainSelVo vo : fetch) {
+//            ProductEntity productEntity = new ProductEntity();
+//            productEntity.setProductId(vo.getProductId());
+//            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findByProductEntity(productEntity);
+//            Long productCateId = byProductEntity.getProductCateId();
+//            vo.setName("[" + productCateId + "단계]" + vo.getName());
+//        }
+//    }
+
+    // 1개만 반환하도록 수정하여 추가 - 09-04 // 에러나면 이 코드 삭제해주세요
+    // 상품에 단계를 붙히는 메소드
+
     private void productNmCateId(List<MainSelVo> fetch) {
         for (MainSelVo vo : fetch) {
             ProductEntity productEntity = new ProductEntity();
             productEntity.setProductId(vo.getProductId());
-            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findByProductEntity(productEntity);
-            Long productCateId = byProductEntity.getProductCateId();
-            vo.setName("[" + productCateId + "단계]" + vo.getName());
+            Optional<ProductCateRelationEntity> relationOptional = productCategoryRelationRepository.findFirstByProductEntity(productEntity);
+            if (relationOptional.isPresent()) {
+                Long productCateId = relationOptional.get().getProductCateId();
+                vo.setName("[" + productCateId + "단계]" + vo.getName());
+            }
         }
     }
 
