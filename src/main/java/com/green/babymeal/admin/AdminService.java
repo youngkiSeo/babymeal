@@ -358,28 +358,28 @@ public class AdminService {
     }
 
 
-     public int updProduct(AdminProductUpdDto dto) {
-         // 최종 상품 등록할때 사용되는 메소드
-         if (dto.getCategory() > 4 && dto.getCategory() > 0) {
-             log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
-             return 0;
-         }
-         AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
-         apcd.setProductId(dto.getProductId());
-         apcd.setCateId(dto.getCategory());
-         apcd.setCateDetailId(dto.getCateDetail());
-         adminMapper.insProductCateRelation(apcd);
-         return adminMapper.updAdminProduct(dto);
-     }
+    public int updProduct(AdminProductUpdDto dto) {
+        // 최종 상품 등록할때 사용되는 메소드
+        if (dto.getCategory() > 4 && dto.getCategory() > 0) {
+            log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
+            return 0;
+        }
+        AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
+        apcd.setProductId(dto.getProductId());
+        apcd.setCateId(dto.getCategory());
+        apcd.setCateDetailId(dto.getCateDetail());
+        adminMapper.insProductCateRelation(apcd);
+        return adminMapper.updAdminProduct(dto);
+    }
 
-     public int changeProduct(AdminProductUpdDto dto) {
-         // 상품 정보 수정
-         if (dto.getCategory() > 4 && dto.getCategory() > 0) {
-             log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
-             return 0;
-         }
-         return adminMapper.changeAdminProduct(dto);
-     }
+    public int changeProduct(AdminProductUpdDto dto) {
+        // 상품 정보 수정
+        if (dto.getCategory() > 4 && dto.getCategory() > 0) {
+            log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
+            return 0;
+        }
+        return adminMapper.changeAdminProduct(dto);
+    }
 
 
     //상품 등록을 취소할 때 상품 레코드와 사진 파일을 삭제한다
@@ -407,7 +407,6 @@ public class AdminService {
         adminProductUpdDto.setCateDetail(cateDetailList); // 카테고리 정보를 AdminProductUpdDto에 설정
         return adminProductUpdDto;
     }
-
 
 
     //최종상품 등록전에 이미지 삭제를 할 때
@@ -452,34 +451,33 @@ public class AdminService {
     }
 
 
-
-
-//   public Page<ProductAdminDto> allProduct(Pageable pageable) {
-//       return productRepository.findAll(pageable).map(productEntity -> {
-//           List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
-
-//           //카테고리 정보 불러오기
-//           CategoryEntity category = productEntity.getProductCateRelationEntity().getCategoryEntity();
-//           CateDetailEntity cateDetail = productEntity.getProductCateRelationEntity().getCateDetailEntity();
-
-//           return ProductAdminDto.builder()
-//                   .productId(productEntity.getProductId())
-//                   .name(productEntity.getPName())
-//                   .price(productEntity.getPPrice())
-//                   //.description(productEntity.getDescription())
-//                   //.quantity(productEntity.getPQuantity())
-//                   .cate()
-//                   .cateDetail()
-//                   .allegyName(allergyName) //알러지 정보 추가
-//                   .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 썸네일 이미지 추가
-//                   .build();
-//       });
-//   }
-
-//   public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름으로 파싱
-//       List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
-
-//       return productAllergyEntities.stream()
-//               .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
-//               .collect(Collectors.toList());
-   }
+//    public Page<ProductAdminDto> allProduct(Pageable pageable) {
+//        return productRepository.findAll(pageable).map(productEntity -> {
+//            List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
+//
+//            //카테고리 정보 불러오기
+//            CategoryEntity category = productEntity.getProductCateRelationEntity().getCategoryEntity();
+//            CateDetailEntity cateDetail = productEntity.getProductCateRelationEntity().getCateDetailEntity();
+//
+//            return ProductAdminDto.builder()
+//                    .productId(productEntity.getProductId())
+//                    .name(productEntity.getPName())
+//                    .price(productEntity.getPPrice())
+//                    //.description(productEntity.getDescription())
+//                    //.quantity(productEntity.getPQuantity())
+//                    .cate()
+//                    .cateDetail()
+//                    .allegyName(allergyName) //알러지 정보 추가
+//                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 썸네일 이미지 추가
+//                    .build();
+//        });
+//    }
+//
+//    public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름으로 파싱
+//        List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
+//
+//        return productAllergyEntities.stream()
+//                .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
+//                .collect(Collectors.toList());
+//    }
+}
