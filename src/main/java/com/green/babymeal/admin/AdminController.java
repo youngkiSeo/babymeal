@@ -71,7 +71,7 @@ public class AdminController {
             "예시 : { <br>" +
             "  \"page\": 0,<br>" +
             "  \"size\": 100,<br>" +
-            "  \"sort\": \"productId,asc\"<br>" +
+            "  \"sort\": \"productId\"<br>" +
             "} <br>" )
     public Page<ProductAdminDto> allProduct(Pageable pageable){
         return service.allProduct(pageable);

@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+import java.util.List;
+
 @Setter
+@Getter
 @Builder
-public class Category {
-    private Long cateId;
-    private String cateName;
-
-
+public class Cate {
+    private Category category;
+    private List<CateViewRepositoryDetail> cateDetail;
 }

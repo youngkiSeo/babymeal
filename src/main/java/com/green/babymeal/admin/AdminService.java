@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.green.babymeal.common.utils.MyFileUtils;
@@ -71,8 +72,8 @@ public class AdminService {
             List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderCode());
 
             UserVo userVoData = UserVo.builder()
-                    .name(order.getIuser().getName())
-                    .iuser(order.getIuser().getIuser())
+                    .name((order.getIuser() != null) ? order.getIuser().getName() : "no data")
+                    .iuser((order.getIuser() != null) ? order.getIuser().getIuser() : 0)
                     .build();
 
             List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
@@ -80,12 +81,21 @@ public class AdminService {
                 orderDetailVoList = orderDetails.stream()
                         .map(detail -> OrderDetailVo.builder()
                                 .orderDetailId(detail.getOrderDetailId())
-                                .productId(detail.getProductId().getProductId())
+                                .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
                                 .count(detail.getCount())
                                 .totalPrice(detail.getTotalPrice())
-                                .productName(detail.getProductId().getPName())
+                                .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
                                 .build())
                         .collect(Collectors.toList());
+            } else {
+                // OrderDetail이 없는 경우 "no data"로 처리
+                orderDetailVoList.add(OrderDetailVo.builder()
+                        .orderDetailId(0L)
+                        .productId(0L)
+                        .count(0)
+                        .totalPrice(0)
+                        .productName("no data")
+                        .build());
             }
 
             if (!orderDetails.isEmpty()) {
@@ -104,16 +114,38 @@ public class AdminService {
                         .delYn(order.getDelYn())
                         .usepoint(order.getUsepoint())
                         .orderDetailVo(orderDetailVoList)
-                        .productName(orderDetails.get(1).getProductId().getPName())
+                        .productName((orderDetails.size() > 1) ? orderDetails.get(1).getProductId().getPName() : "no data")
                         .build();
-                resultList.add(orderlistRes); // 기본 데이터 조회 완료
-            }
-
-            if (filter2 != null) {
-                resultList.removeIf(orderlistRes -> !orderlistRes.getOrdercode().equals(Long.parseLong(filter2)));
+                resultList.add(orderlistRes);
+            } else {
+                // OrderDetail이 없는 경우 "no data"로 처리
+                OrderlistRes orderlistRes = OrderlistRes.builder()
+                        .orderId(order.getOrderId())
+                        .ordercode(order.getOrderCode())
+                        .userVo(userVoData)
+                        .payment(order.getPayment())
+                        .shipment(order.getShipment())
+                        .cancel(order.getCancel())
+                        .phoneNm(order.getPhoneNm())
+                        .request(order.getRequest())
+                        .reciever(order.getReciever())
+                        .address(order.getAddress())
+                        .addressDetail(order.getAddressDetail())
+                        .delYn(order.getDelYn())
+                        .usepoint(order.getUsepoint())
+                        .orderDetailVo(orderDetailVoList)
+                        .productName("no data")
+                        .build();
+                resultList.add(orderlistRes);
             }
         }
-        return new PageImpl<>(resultList, outputOrderlist.getPageable(), outputOrderlist.getTotalElements());
+
+        // size가 총 항목 수보다 큰 경우 size를 총 항목 수로 조정
+        if (pageable.getPageSize() > outputOrderlist.getTotalElements()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), (int) outputOrderlist.getTotalElements());
+        }
+
+        return new PageImpl<>(resultList, pageable, outputOrderlist.getTotalElements());
     }
 
 
@@ -179,18 +211,28 @@ public class AdminService {
             List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll(); // 예시로 findAll() 메서드를 사용한 것으로 가정
 
             for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
+                String thumbnailImg = (productEntity.getProductThumbnailEntityList() != null)
+                        // 이미지가 없으면 경로 대신 no data라고 띄워주는 예외처리
+                        ? productEntity.getProductThumbnailEntityList().getImg()
+                        : "no data";
+
                 ProductAdminDto productAdminDto2 = ProductAdminDto.builder()
                         .productId(relationEntity.getProductEntity().getProductId())
                         .name(productEntity.getPName())
                         .price(productEntity.getPPrice())
-                        .cate(relationEntity.getCategoryEntity().getCateId()) // categoryEntity의 ID 값 설정
-                        .cateDetail(relationEntity.getCateDetailEntity().getCateDetailId()) // cateDetailEntity의 ID 값 설정
+                        .cate(relationEntity.getCategoryEntity().getCateId())
+                        .cateDetail(relationEntity.getCateDetailEntity().getCateDetailId())
                         .allegyName(allergyIds)
-                        .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg()))
+                        .thumbnail(Collections.singletonList(thumbnailImg))
                         .build();
 
                 productAdminDtos.add(productAdminDto2);
             }
+        }
+
+        // size가 총 갯수보다 크면 max고정
+        if (pageable.getPageSize() > productEntities.getTotalElements()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), (int) productEntities.getTotalElements());
         }
         return new PageImpl<>(productAdminDtos, pageable, productEntities.getTotalElements());
     }
@@ -372,7 +414,6 @@ public class AdminService {
     }
 
 
-
     //최종상품 등록전에 이미지 삭제를 할 때
     @Transactional
     public int delWebEditorCancel(Long pImgId) {
@@ -415,8 +456,6 @@ public class AdminService {
     }
 
 
-}
-
 //    public Page<ProductAdminDto> allProduct(Pageable pageable) {
 //        return productRepository.findAll(pageable).map(productEntity -> {
 //            List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
@@ -438,7 +477,7 @@ public class AdminService {
 //                    .build();
 //        });
 //    }
-
+//
 //    public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름으로 파싱
 //        List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
 //
@@ -446,3 +485,4 @@ public class AdminService {
 //                .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
 //                .collect(Collectors.toList());
 //    }
+}

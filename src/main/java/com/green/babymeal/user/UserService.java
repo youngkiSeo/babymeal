@@ -3,10 +3,14 @@ package com.green.babymeal.user;
 import com.green.babymeal.auth.AuthService;
 import com.green.babymeal.common.entity.UserEntity;
 import com.green.babymeal.user.model.UserDelDto;
+import com.green.babymeal.user.model.UserSelVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +42,14 @@ public class UserService {
         return userEntity;
     }
 
-    public List<UserEntity> selUserAll(){
-        return rep.findAll();
+    public UserSelVo selUserAll(Pageable pageable){
+        Page<UserEntity> all = rep.findAll(pageable);
+        List<UserEntity> list = all.get().toList();
+        UserSelVo vo = new UserSelVo();
+        vo.setMaxPage(all.getTotalPages());
+        vo.setCount(all.getSize());
+        vo.setList(list);
+        return vo;
     }
 
     public void delUser(String email){

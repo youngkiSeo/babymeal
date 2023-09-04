@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -79,7 +80,7 @@ public class ProductService {
 
         // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
         ProductSelDto productAllergyDto = new ProductSelDto();
-        productAllergyDto.setPName("["+"단계]"+productEntity.getPName());
+        productAllergyDto.setPName("["+getProductCategoryNameById(productId)+"단계]"+productEntity.getPName());
         productAllergyDto.setDescription(productEntity.getDescription());
         productAllergyDto.setPPrice(productEntity.getPPrice());
         productAllergyDto.setPQuantity(productEntity.getPQuantity());
@@ -94,5 +95,17 @@ public class ProductService {
             return null;
         }
         return allergyEntity.getAllergyName();
+    }
+
+    // 카테고리 추출
+    public Long getProductCategoryNameById(Long productId) {
+        Optional<ProductCateRelationEntity> productCategoryRelation = productCategoryRelationRepository.findByProductEntity_ProductId(productId);
+
+        if (productCategoryRelation.isPresent()) {
+            CategoryEntity categoryEntity = productCategoryRelation.get().getCategoryEntity();
+            return categoryEntity.getCateId();
+        } else {
+            return 0L; // 만약 카테고리가 없는 경우 처리
+        }
     }
 }
