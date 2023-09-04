@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.green.babymeal.common.utils.MyFileUtils;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -55,7 +56,6 @@ public class AdminService {
 
     @Autowired
     private ProductImageRepository productImageRepository;
-
 
 
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
@@ -160,7 +160,6 @@ public class AdminService {
     }
 
 
-
     // -------------------------------- 상품
 
     public Page<ProductAdminDto> allProduct(Pageable pageable) {
@@ -194,7 +193,7 @@ public class AdminService {
         return new PageImpl<>(productAdminDtos, pageable, productEntities.getTotalElements());
     }
 
-    public ProductAdminSelDto selProduct(Long productId){
+    public ProductAdminSelDto selProduct(Long productId) {
         ProductEntity productEntity = productRepository.findById(productId).orElse(null);
         if (productEntity != null) {
             // 알러지 정보 가져오기
@@ -214,7 +213,7 @@ public class AdminService {
                 cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
             }
 
-             ProductAdminSelDto dto = ProductAdminSelDto.builder()
+            ProductAdminSelDto dto = ProductAdminSelDto.builder()
                     .productId(productEntity.getProductId())
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
@@ -231,21 +230,20 @@ public class AdminService {
     }
 
 
-
     // 웹에디터
-
     public Long webEditorPk() {
         //웹에디터 시작 > 상품 pk번호 생성하여 반환 , ok
-        ProductEntity entity=new ProductEntity();
+        ProductEntity entity = new ProductEntity();
         entity.setPPrice(0);
         entity.setPName("");
         ProductEntity save = productRepository.save(entity);
-        if(save!=null){
-           return save.getProductId();
+        if (save != null) {
+            return save.getProductId();
         }
         return 0L;
     }
 
+    //이미지 1개만 넣기
     public ProductImgPkFull insWebEditorImg(MultipartFile img, Long productId) {
 
         String path = getAbsolutePath(fileDir) + "/webeditor/" + productId;
@@ -261,21 +259,21 @@ public class AdminService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AdminProductImgDto dto=new AdminProductImgDto();
+        AdminProductImgDto dto = new AdminProductImgDto();
         dto.setProductId(productId);
         dto.setRandomName(randomName);
 
-        ProductImageEntity productImageEntity=new ProductImageEntity();
-        ProductEntity productEntity=new ProductEntity();
+        ProductImageEntity productImageEntity = new ProductImageEntity();
+        ProductEntity productEntity = new ProductEntity();
         productEntity.setProductId(productId);
         productImageEntity.setImg(randomName);
         productImageEntity.setProductId(productEntity);
 
         ProductImageEntity save = productImageRepository.save(productImageEntity);
-        ProductImgPkFull full=new ProductImgPkFull();
+        ProductImgPkFull full = new ProductImgPkFull();
         full.setPImgId(save.getP_img_id());
         //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
-        String fullPath="/webeditor/"+productId+"/"+randomName;
+        String fullPath = "/webeditor/" + productId + "/" + randomName;
         full.setImg(fullPath);
         return full;
     }
@@ -301,21 +299,17 @@ public class AdminService {
                 e.printStackTrace();
             }
 
-            ProductImageEntity productImageEntity=new ProductImageEntity();
+            ProductImageEntity productImageEntity = new ProductImageEntity();
             productImageEntity.setImg(randomName);
-            ProductEntity productEntity=new ProductEntity();
+            ProductEntity productEntity = new ProductEntity();
             productEntity.setProductId(productId);
             productImageEntity.setProductId(productEntity);
-            System.out.println("==============================================================================");
-            System.out.println("randomName = " + randomName);
-            System.out.println("productId = " + productId);
-            System.out.println("==============================================================================");
+
             ProductImageEntity save = productImageRepository.save(productImageEntity);
-            System.out.println("save = " + save);
-            ProductImgPkFull full=new ProductImgPkFull();
+            ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(save.getP_img_id());
             //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
-            String fullPath="/webeditor/"+productId+"/"+randomName;
+            String fullPath = "/webeditor/" + productId + "/" + randomName;
             full.setImg(fullPath);
             list.add(full);
 
@@ -327,11 +321,11 @@ public class AdminService {
 
     public int updProduct(AdminProductUpdDto dto) {
         // 최종 상품 등록할때 사용되는 메소드
-        if (dto.getCategory() > 4 && dto.getCategory() > 0){
+        if (dto.getCategory() > 4 && dto.getCategory() > 0) {
             log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
             return 0;
         }
-        AdminProductCateRelationDto apcd=new AdminProductCateRelationDto();
+        AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
         apcd.setProductId(dto.getProductId());
         apcd.setCateId(dto.getCategory());
         apcd.setCateDetailId(dto.getCateDetail());
@@ -341,7 +335,7 @@ public class AdminService {
 
     public int changeProduct(AdminProductUpdDto dto) {
         // 상품 정보 수정
-        if (dto.getCategory() > 4 && dto.getCategory() > 0){
+        if (dto.getCategory() > 4 && dto.getCategory() > 0) {
             log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
             return 0;
         }
@@ -350,13 +344,14 @@ public class AdminService {
 
 
     //상품 등록을 취소할 때 상품 레코드와 사진 파일을 삭제한다
+    @Transactional
     public int delProductImg(Long productId) {
         String path = getAbsolutePath(fileDir) + "/webeditor/" + productId;
         MyFileUtils.delFolder(path);
 
-        adminMapper.delImg(productId);
-        return adminMapper.delProduct(productId);
-
+        productImageRepository.deleteByProductId_ProductId(productId);
+        productRepository.deleteById(productId);
+        return 1;
     }
 
     public List<AdminProductEntity> getProduct(int productId) {
@@ -375,14 +370,18 @@ public class AdminService {
     }
 
 
-    public int delWebEditorCancel(Long pImgId){
-        ProductImgPk productImgPk = adminMapper.selProductImgPk(pImgId);
-        System.out.println(productImgPk.getImg());
-        String path = getAbsolutePath(fileDir) + "/webeditor/" + productImgPk.getProductId()+"/"+productImgPk.getImg();
-        File file=new File(path);
+
+    //최종상품 등록전에 이미지 삭제를 할 때
+    @Transactional
+    public int delWebEditorCancel(Long pImgId) {
+        ProductImageEntity productImageEntity = productImageRepository.findById(pImgId).get();
+        String path = getAbsolutePath(fileDir) + "/webeditor/" + productImageEntity.getProductId() + "/" + productImageEntity.getImg();
+        File file = new File(path);
         file.delete();
-        return adminMapper.delWebEditorCancel(pImgId);
+        productImageRepository.deleteById(pImgId);
+        return 1;
     }
+
 
     public List<ProductImgPkFull> insImgList(List<MultipartFile> img, Long productId) {
         String path = getAbsolutePath(fileDir) + "/product/" + productId;
@@ -400,22 +399,18 @@ public class AdminService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            AdminProductImgDto dto=new AdminProductImgDto();
+            AdminProductImgDto dto = new AdminProductImgDto();
             dto.setProductId(productId);
             dto.setRandomName(randomName);
             adminMapper.insImgList(dto);
-            ProductImgPkFull full=new ProductImgPkFull();
+            ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(dto.getPImgId());
-            String fullPath="http://192.168.0.144:5001/img/product/"+productId+"/"+randomName;
+            String fullPath = "http://192.168.0.144:5001/img/product/" + productId + "/" + randomName;
             full.setImg(fullPath);
             list.add(full);
         }
         return list;
     }
-
-
-
-
 
 
 }
