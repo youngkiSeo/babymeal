@@ -315,7 +315,7 @@ public class AdminService {
         ProductImgPkFull full = new ProductImgPkFull();
         full.setPImgId(save.getP_img_id());
         //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
-        String fullPath = "/webeditor/" + productId + "/" + randomName;
+        String fullPath = "/img/webeditor/" + productId + "/" + randomName;
         full.setImg(fullPath);
         return full;
     }
@@ -351,7 +351,7 @@ public class AdminService {
             ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(save.getP_img_id());
             //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
-            String fullPath = "/webeditor/" + productId + "/" + randomName;
+            String fullPath = "/img/webeditor/" + productId + "/" + randomName;
             full.setImg(fullPath);
             list.add(full);
 
@@ -423,7 +423,7 @@ public class AdminService {
         return 1;
     }
 
-
+    //썸네일 리스트
     public List<ProductImgPkFull> insImgList(List<MultipartFile> img, Long productId) {
         String path = getAbsolutePath(fileDir) + "/product/" + productId;
         File file = new File(path);

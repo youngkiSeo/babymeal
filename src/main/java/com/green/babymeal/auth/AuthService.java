@@ -63,6 +63,7 @@ public class AuthService {
                 .build();
         userRep.save(p);
 
+
         processAuth(p, req, res);
         SignUpResultDto success = new SignUpResultDto();
 
