@@ -1,5 +1,6 @@
 package com.green.babymeal.baby;
 
+import com.green.babymeal.baby.model.BabyAllergyAddVo;
 import com.green.babymeal.baby.model.BabyInsDto;
 import com.green.babymeal.baby.model.BabyInsVo;
 import com.green.babymeal.baby.model.BabyUpdDto;
@@ -46,5 +47,12 @@ public class BabyController {
     @PutMapping
     public BabyInsVo updBaby(@RequestBody BabyUpdDto dto){
         return service.update(dto);
+    }
+
+    @PostMapping("/{babyId}")
+    @Operation(summary = "아기 알러지만 추가", description = ""+
+    "아기 pk, 아기 알러지정보 입력해주세요")
+    public int insBabyAllergy(@RequestBody BabyAllergyAddVo vo){
+        return service.insBabyAllergy(vo);
     }
 }
