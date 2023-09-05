@@ -8,12 +8,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 
@@ -27,7 +28,7 @@ public class MypageController {
     @GetMapping("/orderlist")
     @Operation(summary = "주문내역조회",description = ""+
             "month: 조회하고싶은 기간(개월) <br>")
-    public List<OrderlistSelVo> orderlist(@RequestParam int month){
+    public List<OrderlistStrVo> orderlist(@RequestParam int month){
        return service.orderlist(month);
     }
 
@@ -98,7 +99,7 @@ public class MypageController {
     @GetMapping("/salevolum")
     @Operation(summary = "판매량 조회",description ="year:년도 ex)2022<br>"+
             "month: ex)01,02,03..11,12")
-    public List<SaleVolumnVo> select(@RequestParam String year, @RequestParam String month){
-        return service.Selectsale(year,month);
+    public List<SaleVolumnVo> select(Pageable pageable, @RequestParam String year, @RequestParam String month){
+        return service.Selectsale(pageable,year,month);
     }
 }

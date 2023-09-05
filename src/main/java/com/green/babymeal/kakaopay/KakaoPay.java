@@ -263,7 +263,7 @@ public class KakaoPay {
                 orderDetailRepository.save(orderDetail);
             }
 
-            orderBasketRepository.deleteByUserEntity_Iuser(2L);
+
         }
 
 

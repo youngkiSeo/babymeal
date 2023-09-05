@@ -37,7 +37,7 @@ public class MainController {
   "quantity: 상품의 재고량<br>"+
   "saleVoumn: 상품의 판매량<br>"+
   "pointRate: 상품의 포인트 적립률<br>")
-  public MainSelPaging mainSel(@RequestBody SelDto dto){
+  public MainSelPaging mainSel(SelDto dto){
       return service.mainSel(dto);
   }
 
