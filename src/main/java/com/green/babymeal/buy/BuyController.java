@@ -21,7 +21,7 @@ public class BuyController {
     private final BuyService service;
 
     @PostMapping("/order")
-    @Operation(summary = "상품 결제",description = "사용법 <br>"+
+    @Operation(summary = "상품 구매",description = "사용법 <br>"+
             "cartId : 장바구니 PK 번호<br>"+
             "productId : 상품 PK 번호<br>"+
             "count : 상품 갯수 <br>"+

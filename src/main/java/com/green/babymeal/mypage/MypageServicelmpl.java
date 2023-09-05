@@ -1,10 +1,14 @@
 package com.green.babymeal.mypage;
 
+import com.green.babymeal.common.config.exception.AuthErrorCode;
+import com.green.babymeal.common.config.exception.RestApiException;
 import com.green.babymeal.common.config.properties.AppProperties;
 import com.green.babymeal.common.config.redis.RedisService;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
+import com.green.babymeal.common.config.security.model.AuthToken;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
+import com.green.babymeal.common.utils.MyHeaderUtils;
 import com.green.babymeal.mypage.model.*;
 import com.green.babymeal.user.UserRepository;
 import com.querydsl.core.Tuple;
@@ -12,6 +16,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +33,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.REFRESH_TOKEN;
 
 @Slf4j
 @Service
@@ -77,6 +84,7 @@ public class MypageServicelmpl implements MypageService{
                 .groupBy(orderlist.orderId)
                 .fetch();
 
+
         for (int i = 0; i <order.size(); i++) {
             List<OrderlistDetailVo> orderDetailEntity = orderDetailRep.findByOrderId(order.get(i).getOrderId());
             int totalprice  = 0;
@@ -119,8 +127,8 @@ public class MypageServicelmpl implements MypageService{
         return OrderlistDetailUserVo.builder().list(byOrderId).user(vo).build();
 
     }
-    public OrderlistEntity delorder(Long orderId){
-        OrderlistEntity entity = orderlistRep.getReferenceById(orderId);
+    public OrderlistEntity delorder(Long orderCode){
+        OrderlistEntity entity = orderlistRep.findByOrderCode(orderCode);
         Byte delYn = 1;
         //entity.setOrderid(orderId);
         entity.setDelYn(delYn);
@@ -133,19 +141,30 @@ public class MypageServicelmpl implements MypageService{
 
         List<UserBabyinfoEntity> babyentity = babyRep.findByUserEntity_Iuser(loginUser.getIuser());
 
+        String mobileNb = userEntity.getMobile_nb();
+        String first = mobileNb.substring(0, 3);
+        String second = mobileNb.substring(3, 7);
+        String thrid = mobileNb.substring(7, 11);
+        String number = first + "-" + second + "-" + thrid;
+        userEntity.setMobile_nb(number);
+
         // 아기 정보 받아오기
         List<BabyVo> vo = new ArrayList<>();
         for (int i = 0; i <babyentity.size(); i++) {
 
             List<UserBabyalleEntity> babyallergyentity = babyAlleRep.findByUserBabyinfoEntity_BabyId(babyentity.get(i).getBabyId());
-            List<String>allergyname = new ArrayList<>();
+            List<Babyallergy>babyDto = new ArrayList<>();
             for (int j = 0; j <babyallergyentity.size(); j++) {
-                String allergy = babyallergyentity.get(j).getAllergyEntity().getAllergyName();
-                allergyname.add(allergy);
+                Babyallergy babyallergy = new Babyallergy();
+                String allergyName = babyallergyentity.get(j).getAllergyEntity().getAllergyName();
+                Long allergyId = babyallergyentity.get(j).getAllergyEntity().getAllergyId();
+                babyallergy.setAllergyId(allergyId);
+                babyallergy.setAllergyName(allergyName);
+                babyDto.add(babyallergy);
             }
             BabyVo build = BabyVo.builder().babyId(babyentity.get(i).getBabyId())
                     .childBirth(babyentity.get(i).getChildBirth())
-                    .allergyname(allergyname).build();
+                    .allergyname(babyDto).build();
             vo.add(build);
         }
 
@@ -198,6 +217,7 @@ public class MypageServicelmpl implements MypageService{
 
         return ProfileVo.builder()
                 .iuser(entity.getIuser())
+                .uid(entity.getUid())
                 .address(entity.getAddress())
                 .addressDetail(entity.getAddressDetail())
                 .birthday(entity.getBirthday())
@@ -213,7 +233,6 @@ public class MypageServicelmpl implements MypageService{
     public int nicknmcheck(String nickname){
         UserEntity loginUser = USERPK.getLoginUser();
         Long iuser = loginUser.getIuser();
-        UserEntity userentity = userRep.findById(iuser).get();
 
         UserEntity NickNm = userRep.findByNickNm(nickname);
 
@@ -222,21 +241,39 @@ public class MypageServicelmpl implements MypageService{
         }
         return 0;
     }
-    public void deluser(HttpServletRequest rep,HttpServletResponse res) {
-//        String type = appProperties.getAuth().getTokenType();
-//        String accessToken = resolveToken(rep,type);
-//
-//        String blackAccessTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisAccessBlackKey(), accessToken);
-//        long expiration = authToken.getTokenExpirationTime() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-//        if(expiration > 0) {
-//            redisService.setValuesWithTimeout(blackAccessTokenKey, "logout", expiration);
-//        }
-//
-//        UserEntity user = USERPK.getLoginUser();
-//        Long iuser = user.getIuser();
-//        UserEntity userentity = userRep.findById(iuser).get();
-//        userentity.setDelYn((byte) 1);
-//        userRep.save(userentity);
+    public void deluser(HttpServletRequest req,HttpServletResponse res) {
+        String type = appProperties.getAuth().getTokenType();
+        String accessToken = resolveToken(req,type);
+
+        if(accessToken != null) {
+            AuthToken authToken = new AuthToken(accessToken, appProperties.getAccessTokenKey());
+
+            String blackAccessTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisAccessBlackKey(), accessToken);
+            long expiration = authToken.getTokenExpirationTime() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+            if(expiration > 0) {
+                redisService.setValuesWithTimeout(blackAccessTokenKey, "logout", expiration);
+            }
+        }
+        //cookie에서 값 가져오기
+        Optional<Cookie> refreshTokenCookie = MyHeaderUtils.getCookie(req, REFRESH_TOKEN);
+        if(refreshTokenCookie.isEmpty()) {
+            throw new RestApiException(AuthErrorCode.NOT_FOUND_REFRESH_TOKEN);
+        }
+
+        Optional<String> refreshToken = refreshTokenCookie.map(Cookie::getValue);
+        if(refreshToken.isPresent()) {
+            AuthToken authToken = new AuthToken(refreshToken.get(), appProperties.getRefreshTokenKey());
+            long iuser = authToken.getUserDetails().getIuser();
+            String redisRefreshTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisRefreshKey(), iuser);
+            redisService.deleteValues(redisRefreshTokenKey);
+        }
+        MyHeaderUtils.deleteCookie(req, res, REFRESH_TOKEN);
+
+        UserEntity user = USERPK.getLoginUser();
+        Long iuser = user.getIuser();
+        UserEntity userentity = userRep.findById(iuser).get();
+        userentity.setDelYn((byte) 1);
+        userRep.save(userentity);
     }
     public String resolveToken(HttpServletRequest req, String type) {
         String headerAuth = req.getHeader("authorization");
@@ -267,8 +304,6 @@ public class MypageServicelmpl implements MypageService{
         LocalDate start = null;
         LocalDate end ;
 
-
-
         if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
             end = LocalDate.parse(year + "-" + month + "-31");
         } else if (month.equals("02")) {
@@ -282,6 +317,7 @@ public class MypageServicelmpl implements MypageService{
         }else {
             start = LocalDate.parse(year+"-"+month+"-01");
         }
+
         log.info("start:{}",start);
         log.info("end:{}",end);
 
@@ -310,9 +346,7 @@ public class MypageServicelmpl implements MypageService{
             Long cateId = categoryEntity.getCateId();
             String name = "[" + cateId + "단계] "+productEntity.getPName();
             fetch.get(i).setPName(name);
-
         }
-
         return fetch;
     }
 }

@@ -192,7 +192,8 @@ public class SearchService {
             redisTemplate.opsForZSet().incrementScore("babymeal", msg, -1);
         };
 
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
+        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.SECONDS)));
+        //taskScheduler.schedule(task, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
 
         return babymeal;
     }

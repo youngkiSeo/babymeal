@@ -72,7 +72,6 @@ public class MypageController {
             , HttpServletResponse res){
         service.deluser(req,res);
         return ResponseEntity.ok(1);
-
     }
 
     @PatchMapping(value = "/profile/pic", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

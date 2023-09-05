@@ -11,6 +11,6 @@ import java.util.List;
 public class BabyVo {
     private Long babyId;
     private LocalDate childBirth;
-    private List<String> allergyname;
+    private List<Babyallergy> allergyname;
 
 }
