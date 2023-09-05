@@ -11,26 +11,26 @@ import com.green.babymeal.common.repository.*;
 import com.green.babymeal.common.utils.MyHeaderUtils;
 import com.green.babymeal.mypage.model.*;
 import com.green.babymeal.user.UserRepository;
-import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.misc.Interval;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,22 +54,21 @@ public class MypageServicelmpl implements MypageService{
     private final BabyRepository babyRep;
 
 
-
+    QOrderlistEntity orderlist = QOrderlistEntity.orderlistEntity;
+    QOrderDetailEntity orderDetail = QOrderDetailEntity.orderDetailEntity;
+    QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
 
     @Override
-    public  List<OrderlistSelVo> orderlist (int month){
-        QOrderlistEntity orderlist = QOrderlistEntity.orderlistEntity;
-        QOrderDetailEntity orderDetail = QOrderDetailEntity.orderDetailEntity;
+    public List<OrderlistStrVo> orderlist (int month){
+
         QProductEntity product = QProductEntity.productEntity;
-        QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
         UserEntity loginUser = USERPK.getLoginUser();
 
-        //날짜 계산
-        LocalDate today = LocalDate.now();
-        LocalDate Month = today.minusMonths(month);
+
 
         Byte delYn = 0;
         int num = 10;
+        String pName = null;
 
         List<OrderlistSelVo> order = jpaQueryFactory
                 .select(Projections.constructor(OrderlistSelVo.class, orderlist.orderId,orderlist.orderCode,orderlist.createdAt
@@ -80,13 +79,15 @@ public class MypageServicelmpl implements MypageService{
                 .leftJoin(thumbnail)
                 .on(orderDetail.productId.productId.eq(thumbnail.productId.productId))
                 .where(orderlist.iuser.iuser.eq(loginUser.getIuser()),orderlist.delYn.eq(delYn)
-                ,orderlist.createdAt.between(Month, today))
+                ,yearEq(month))
                 .groupBy(orderlist.orderId)
                 .fetch();
 
 
         for (int i = 0; i <order.size(); i++) {
-            List<OrderlistDetailVo> orderDetailEntity = orderDetailRep.findByOrderId(order.get(i).getOrderId());
+            Long orderId = order.get(i).getOrderId();
+
+            List<OrderlistDetailVo> orderDetailEntity = orderDetailRep.findByOrderId(orderId);
             int totalprice  = 0;
 
             Long catenum = 0L;
@@ -95,21 +96,61 @@ public class MypageServicelmpl implements MypageService{
                 totalprice += price;
 
                 //카테고리 아이디 찾기
+
                 Long productId = orderDetailEntity.get(j).getProductId();
                 ProductEntity productEntity = ProductEntity.builder().productId(productId).build();
                 List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
                 Long cateId = byProductEntity.get(0).getCategoryEntity().getCateId();
                 catenum = cateId;
+
+                String name = "";
+                //이름 찾기
+                if (byProductEntity.size()>1){
+                    name = byProductEntity.get(0).getProductEntity().getPName()+"외"+String.valueOf(byProductEntity.size()-1)+ "개";
+                }else
+                name = byProductEntity.get(0).getProductEntity().getPName();
+
+                pName = name;
             }
 
-            String pName = order.get(i).getPName();
-            pName = "["+catenum+"단계] "+ pName;
-            order.get(i).setPName(pName);
+            String name = "["+catenum+"단계] "+ pName;
+            order.get(i).setPName(name);
             order.get(i).setTotalprice(totalprice);
 
+
+        }
+        List<OrderlistStrVo> orderlist = order.stream().map(item -> OrderlistStrVo.builder()
+                .orderId(item.getOrderId())
+                .orderCode(item.getOrderCode())
+                .createdAt(item.getCreatedAt())
+                .totalprice(item.getTotalprice())
+                .pName(item.getPName())
+                .img(item.getImg())
+                .shipment(String.valueOf(item.getShipment()))
+                .build()).toList();
+
+        for (int i = 0; i <orderlist.size(); i++) {
+            String shipment = orderlist.get(i).getShipment();
+            if (shipment.equals("1")){
+                orderlist.get(i).setShipment("배송 준비중");
+            } else if (shipment.equals("2")) {
+                orderlist.get(i).setShipment("배송 중");
+            }else if (shipment.equals("3")) {
+                orderlist.get(i).setShipment("주문 취소");
+            }else
+                orderlist.get(i).setShipment("배송 완료");
         }
 
-        return order;
+        return orderlist;
+    }
+    private BooleanExpression yearEq(int month){
+        //날짜 계산
+        LocalDate today = LocalDate.now();
+        LocalDate Month = today.minusMonths(month);
+
+        com.querydsl.core.types.dsl.BooleanExpression booleanExpression = month != 0 ? orderlist.createdAt.between(Month, today) : null;
+
+        return booleanExpression;
     }
 
     public OrderlistDetailUserVo orderDetail(Long ordercode){
@@ -140,13 +181,6 @@ public class MypageServicelmpl implements MypageService{
         UserEntity userEntity = userRep.findById(loginUser.getIuser()).get();
 
         List<UserBabyinfoEntity> babyentity = babyRep.findByUserEntity_Iuser(loginUser.getIuser());
-
-        String mobileNb = userEntity.getMobile_nb();
-        String first = mobileNb.substring(0, 3);
-        String second = mobileNb.substring(3, 7);
-        String thrid = mobileNb.substring(7, 11);
-        String number = first + "-" + second + "-" + thrid;
-        userEntity.setMobile_nb(number);
 
         // 아기 정보 받아오기
         List<BabyVo> vo = new ArrayList<>();
@@ -291,44 +325,40 @@ public class MypageServicelmpl implements MypageService{
 
     private final ProductRepository productRep;
     private final SaleVolumnRepository saleRep;
+
+    QSaleVolumnEntity saleVolumn = QSaleVolumnEntity.saleVolumnEntity;
+
     public SaleVolumnEntity Inssalevolumn(SaleVolumnDto dto){
         ProductEntity productEntity = productRep.findById(dto.getProductId()).get();
         SaleVolumnEntity entity = SaleVolumnEntity.builder().count(dto.getCount()).productId(productEntity).build();
-
         SaleVolumnEntity save = saleRep.save(entity);
 
         return save;
     }
-    public List<SaleVolumnVo> Selectsale(String year, String month){
+    public List<SaleVolumnVo> Selectsale(Pageable pageable,String year, String month){
 
         LocalDate start = null;
-        LocalDate end ;
+        LocalDate end =null;
+        start = LocalDate.parse(year+"-"+month+"-01");
 
         if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
             end = LocalDate.parse(year + "-" + month + "-31");
+
         } else if (month.equals("02")) {
-             end = LocalDate.parse(year+"-"+month+"-28");
-         } else
+            end = LocalDate.parse(year+"-"+month+"-28");
+        }else
             end = LocalDate.parse(year+"-"+month+"-30");
 
-        if (month.equals("0")){
-            start = LocalDate.parse(year+"-01-01");
-            end = LocalDate.parse(year+"-12-31");
-        }else {
-            start = LocalDate.parse(year+"-"+month+"-01");
-        }
-
-        log.info("start:{}",start);
         log.info("end:{}",end);
-
-        QSaleVolumnEntity saleVolumn = QSaleVolumnEntity.saleVolumnEntity;
+        log.info("start:{}",start);
 
         List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,saleVolumn.productId.productId,saleVolumn.count.sum(),  saleVolumn.productId.pName, saleVolumn.productId.pPrice))
                 .from(saleVolumn)
                 .where(saleVolumn.createdAt.between(start, end))
                 .groupBy(saleVolumn.productId.productId)
+                .orderBy(getAllOrderSpecifiers(pageable))
+                .limit(pageable.getPageSize())
                 .fetch();
-
         for (int i = 0; i <fetch.size(); i++) {
 
             // 상품 가격 가져오기
@@ -349,4 +379,20 @@ public class MypageServicelmpl implements MypageService{
         }
         return fetch;
     }
+
+    private OrderSpecifier[] getAllOrderSpecifiers(Pageable pageable) {
+        List<OrderSpecifier> orders = new LinkedList();
+        if(!pageable.getSort().isEmpty()) {
+            for(Sort.Order order : pageable.getSort()) {
+                Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+
+                switch(order.getProperty().toLowerCase()) {
+                    case "productId": orders.add(new OrderSpecifier(direction,saleVolumn.productId.productId)); break;
+                    case "product": orders.add(new OrderSpecifier(direction, saleVolumn.productId.productId)); break;
+                }
+            }
+        }
+        return orders.stream().toArray(OrderSpecifier[]::new);
+    }
+
 }

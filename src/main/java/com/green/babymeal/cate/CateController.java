@@ -3,7 +3,6 @@ package com.green.babymeal.cate;
 
 
 
-import com.green.babymeal.cate.model.Cate;
 import com.green.babymeal.cate.model.CateSelList;
 import com.green.babymeal.cate.model.CateSelVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +28,7 @@ public class CateController {
      return service.selCate();
   }
 
-    @GetMapping
+    @GetMapping("/all")
     private List<CateSelVo> selCateList(CateSelList cateSelList){
         return service.selCateList(cateSelList);
     }

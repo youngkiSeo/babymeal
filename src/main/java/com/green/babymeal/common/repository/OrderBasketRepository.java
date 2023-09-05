@@ -15,6 +15,6 @@ public interface OrderBasketRepository extends JpaRepository<OrderBasketEntity,L
 
     List<OrderBasketEntity> findByUserEntity_Iuser(Long iuser);
 
-    void deleteByUserEntity_Iuser(Long iuser);
+    void deleteAllByUserEntity_Iuser(Long iuser);
 
 }

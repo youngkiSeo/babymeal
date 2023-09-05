@@ -58,6 +58,17 @@ public class SearchService {
         return remove;
     }
 
+    public Double deleteRedisPopular(String msg){
+        Double babymeal = null;
+        try{
+            babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", msg, -1);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return babymeal;
+
+    }
+
 
 
     public SearchSelRes selfilter(String product, int page, int row, String sorter, List<String>filter){
@@ -192,7 +203,7 @@ public class SearchService {
             redisTemplate.opsForZSet().incrementScore("babymeal", msg, -1);
         };
 
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(1, ChronoUnit.SECONDS)));
+        taskScheduler.schedule(task, Date.from(Instant.now().plus(30, ChronoUnit.SECONDS)));
         //taskScheduler.schedule(task, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
 
         return babymeal;

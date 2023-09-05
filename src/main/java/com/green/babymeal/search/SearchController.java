@@ -25,6 +25,12 @@ public class SearchController {
     public List<SearchPopularVo> searchRankList(){
         return service.list();
     }
+
+    @DeleteMapping("/popular")
+    @Operation(summary = "인기 검색어 삭제", description = "")
+    public Double deleteSearch(String product){
+        return service.deleteRedisPopular(product);
+    }
     @GetMapping("/recent")
     @Operation(summary = "최근 검색어", description = "")
     public List<String> recentSearch(){
