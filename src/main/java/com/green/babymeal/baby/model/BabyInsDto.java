@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class BabyInsDto {
     private LocalDate childBirth;
     private String prefer;
-    //    private Long iuser;
-    private String allegyId;
+//    private Long iuser;
+    private String allergyId;
 
 }

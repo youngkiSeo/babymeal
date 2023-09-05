@@ -10,4 +10,5 @@ import java.util.List;
 public interface BabyAlleRepository extends JpaRepository<UserBabyalleEntity, Long> {
 
     List<UserBabyalleEntity> findByUserBabyinfoEntity_BabyId(Long babyid);
+
 }

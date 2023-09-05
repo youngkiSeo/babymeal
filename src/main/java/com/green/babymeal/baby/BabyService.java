@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -33,14 +34,14 @@ public class BabyService {
         entity.setChildBirth(dto.getChildBirth());
         entity.setPrefer(dto.getPrefer());
         userEntity.setIuser(USERPK.getLoginUser().getIuser());
-        //userEntity.setIuser(dto.getIuser());
+//        userEntity.setIuser(dto.getIuser());
         entity.setUserEntity(userEntity);
 
-//        if(rep.findById(dto.getIuser()) == null){
-        rep.save(entity);
-//        }
 
-        String ss= dto.getAllegyId();
+        rep.save(entity);
+
+
+        String ss= dto.getAllergyId();
         String[] split = ss.split(",");
 
         for (int i = 0; i < split.length; i++) {
@@ -55,7 +56,7 @@ public class BabyService {
         BabyInsVo vo = new BabyInsVo();
         vo.setChildBirth(dto.getChildBirth());
         vo.setPrefer(dto.getPrefer());
-        vo.setAllegyId(dto.getAllegyId());
+        vo.setAllegyId(dto.getAllergyId());
         vo.setIuser(USERPK.getLoginUser().getIuser());
 //        vo.setIuser(dto.getIuser());
 
@@ -83,6 +84,41 @@ public class BabyService {
             list.add(vo);
         }
         return list;
+    }
+
+
+    public BabyInsVo update(BabyUpdDto dto){
+        List<UserBabyinfoEntity> listentity = rep.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
+//        listentity.listIterator().next(); // 인덱스값을 사용하지않아도 되게한다
+        //iter // 포이치 자동으로 만들어줌
+        for (UserBabyinfoEntity entity : listentity) {
+            UserBabyinfoEntity userBabyinfoEntity = new UserBabyinfoEntity();
+//            userBabyinfoEntity.setBabyId(dto.getBabyId());
+            userBabyinfoEntity.setBabyId(entity.getBabyId());
+            userBabyinfoEntity.setChildBirth(dto.getChildBirth());
+            userBabyinfoEntity.setPrefer(dto.getPrefer());
+            rep.save(userBabyinfoEntity);
+
+            String ss= dto.getAllergyId();
+            String[] split = ss.split(",");
+
+            for (int i = 0; i < split.length; i++) {
+                UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
+                userBabyalleEntity.setUserBabyinfoEntity(userBabyinfoEntity);
+                AllergyEntity allergyEntity = new AllergyEntity();
+                allergyEntity.setAllergyId(Long.valueOf(split[i]));
+                userBabyalleEntity.setAllergyEntity(allergyEntity);
+                repository.save(userBabyalleEntity);
+            }
+        }
+
+        BabyInsVo vo = new BabyInsVo();
+        vo.setChildBirth(dto.getChildBirth());
+        vo.setPrefer(dto.getPrefer());
+        vo.setAllegyId(dto.getAllergyId());
+        vo.setIuser(USERPK.getLoginUser().getIuser());
+
+        return vo;
 
     }
 }

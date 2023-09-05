@@ -6,6 +6,7 @@ import com.green.babymeal.user.model.UserSelVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,13 +36,17 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "전체 유저보기",description = "※ 버튼을 누르면 전체유저가 나옴")
-    public UserSelVo GetUserAll(@PageableDefault(direction = Sort.Direction.DESC) Pageable pageable){
+    @Operation(summary = "전체 유저보기",description = "" +
+            "page : 페이지 번호 (0부터 시작)<br>" +
+            "size : 정보의 갯수(Default : 10) <br>" +
+            "※ 버튼을 누르면 전체유저가 나옴")
+    public UserSelVo GetUserAll(@ParameterObject @PageableDefault(sort = "iuser",page = 0, direction = Sort.Direction.DESC) Pageable pageable){
+//        pageable.getSort();
         return service.selUserAll(pageable);
     }
 
     @DeleteMapping("/uid")
-    @Operation(summary = "유저/관리자 삭제",description = "iuser : 회원의 고유값(PK) <- 해당 유저가 삭제됨<br>")
+    @Operation(summary = "유저/관리자 삭제",description = "uid : 회원의 아이디 <- 해당 유저를 삭제한것처럼<br>")
     public ResponseEntity<Integer> delUser(@RequestParam String uid){
         service.delUser(uid);
         return ResponseEntity.ok(1);
