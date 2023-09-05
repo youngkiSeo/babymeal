@@ -21,10 +21,10 @@ import java.util.List;
 public class CateController {
 
 
-  private final CateService service;
+    private final CateService service;
 
-  @GetMapping("/list")
-  private List selCate(){
+    @GetMapping("/list")
+    private List selCate(){
      return service.selCate();
   }
 
