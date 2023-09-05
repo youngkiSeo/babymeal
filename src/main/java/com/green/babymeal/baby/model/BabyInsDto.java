@@ -11,6 +11,6 @@ public class BabyInsDto {
     private LocalDate childBirth;
     private String prefer;
 //    private Long iuser;
-    private String allegyId;
+    private String allergyId;
 
 }

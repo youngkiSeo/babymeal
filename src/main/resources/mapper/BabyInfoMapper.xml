@@ -5,7 +5,7 @@
 <mapper namespace="com.green.babymeal.baby.BabyMapper">
 
     <select id="selBaby">
-        select baby_id babyId,birthday,prefer
+        select baby_id babyId, child_birth childBirth, prefer
         from baby
         where iuser=#{iuser}
     </select>

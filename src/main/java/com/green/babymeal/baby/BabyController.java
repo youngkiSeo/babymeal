@@ -2,6 +2,7 @@ package com.green.babymeal.baby;
 
 import com.green.babymeal.baby.model.BabyInsDto;
 import com.green.babymeal.baby.model.BabyInsVo;
+import com.green.babymeal.baby.model.BabyUpdDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -42,4 +43,8 @@ public class BabyController {
         return service.selBabyInfo();
     }
 
+    @PutMapping
+    public BabyInsVo updBaby(@RequestBody BabyUpdDto dto){
+        return service.update(dto);
+    }
 }
