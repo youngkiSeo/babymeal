@@ -21,6 +21,7 @@ public class SampleController {
 
 
     @GetMapping("/kakaoPay")
+    @Operation(summary = "사용x")
     public void kakaoPayGet() {
 
     }
