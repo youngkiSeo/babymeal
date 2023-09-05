@@ -208,7 +208,7 @@ public class KakaoPay {
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
 
-       int allTotalPrice=0;
+
         if(check==1){
             OrderlistEntity entity=new OrderlistEntity();
             entity.setAddress(kakaoPayDDto.getAddress());
