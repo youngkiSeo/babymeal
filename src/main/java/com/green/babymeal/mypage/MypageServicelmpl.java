@@ -182,13 +182,6 @@ public class MypageServicelmpl implements MypageService{
 
         List<UserBabyinfoEntity> babyentity = babyRep.findByUserEntity_Iuser(loginUser.getIuser());
 
-        String mobileNb = userEntity.getMobile_nb();
-        String first = mobileNb.substring(0, 3);
-        String second = mobileNb.substring(3, 7);
-        String thrid = mobileNb.substring(7, 11);
-        String number = first + "-" + second + "-" + thrid;
-        userEntity.setMobile_nb(number);
-
         // 아기 정보 받아오기
         List<BabyVo> vo = new ArrayList<>();
         for (int i = 0; i <babyentity.size(); i++) {
@@ -346,17 +339,18 @@ public class MypageServicelmpl implements MypageService{
 
         LocalDate start = null;
         LocalDate end =null;
+        start = LocalDate.parse(year+"-"+month+"-01");
 
         if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
             end = LocalDate.parse(year + "-" + month + "-31");
+
         } else if (month.equals("02")) {
             end = LocalDate.parse(year+"-"+month+"-28");
-        } else if (month.equals("0")){
-            start = LocalDate.parse(year+"-01-01");
-            end = LocalDate.parse(year+"-12-31");
         }else
             end = LocalDate.parse(year+"-"+month+"-30");
 
+        log.info("end:{}",end);
+        log.info("start:{}",start);
 
         List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,saleVolumn.productId.productId,saleVolumn.count.sum(),  saleVolumn.productId.pName, saleVolumn.productId.pPrice))
                 .from(saleVolumn)
