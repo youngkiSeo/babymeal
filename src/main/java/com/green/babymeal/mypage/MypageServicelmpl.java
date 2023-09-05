@@ -89,16 +89,16 @@ public class MypageServicelmpl implements MypageService{
                 //카테고리 아이디 찾기
                 Long productId = orderDetailEntity.get(j).getProductId();
                 ProductEntity productEntity = ProductEntity.builder().productId(productId).build();
-                ProductCateRelationEntity cate = productcaterelationRep.findByProductEntity(productEntity);
-                Long cateId = cate.getCategoryEntity().getCateId();
-                log.info("cateId:{}",cateId);
+                List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
+                Long cateId = byProductEntity.get(0).getCategoryEntity().getCateId();
                 catenum = cateId;
             }
+
             String pName = order.get(i).getPName();
             pName = "["+catenum+"단계] "+ pName;
             order.get(i).setPName(pName);
-
             order.get(i).setTotalprice(totalprice);
+
         }
 
         return order;
@@ -224,7 +224,7 @@ public class MypageServicelmpl implements MypageService{
     }
     public void deluser(HttpServletRequest rep,HttpServletResponse res) {
 //        String type = appProperties.getAuth().getTokenType();
-//        String accessToken = resolveToken(req,type);
+//        String accessToken = resolveToken(rep,type);
 //
 //        String blackAccessTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisAccessBlackKey(), accessToken);
 //        long expiration = authToken.getTokenExpirationTime() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -232,12 +232,11 @@ public class MypageServicelmpl implements MypageService{
 //            redisService.setValuesWithTimeout(blackAccessTokenKey, "logout", expiration);
 //        }
 //
-
-        UserEntity user = USERPK.getLoginUser();
-        Long iuser = user.getIuser();
-        UserEntity userentity = userRep.findById(iuser).get();
-        userentity.setDelYn((byte) 1);
-        userRep.save(userentity);
+//        UserEntity user = USERPK.getLoginUser();
+//        Long iuser = user.getIuser();
+//        UserEntity userentity = userRep.findById(iuser).get();
+//        userentity.setDelYn((byte) 1);
+//        userRep.save(userentity);
     }
     public String resolveToken(HttpServletRequest req, String type) {
         String headerAuth = req.getHeader("authorization");
@@ -305,9 +304,9 @@ public class MypageServicelmpl implements MypageService{
             fetch.get(i).setPPrice(totalprice);
 
             //카테고리 단계 붙이기
-            ProductCateRelationEntity cate = productcaterelationRep.findByProductEntity(productEntity);
+            List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
 
-            CategoryEntity categoryEntity = cate.getCategoryEntity();
+            CategoryEntity categoryEntity = byProductEntity.get(0).getCategoryEntity();
             Long cateId = categoryEntity.getCateId();
             String name = "[" + cateId + "단계] "+productEntity.getPName();
             fetch.get(i).setPName(name);

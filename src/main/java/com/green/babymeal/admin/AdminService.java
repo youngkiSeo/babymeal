@@ -262,7 +262,7 @@ public class AdminService {
                     .cate(categoryId)
                     .cateDetail(cateDetailIds)
                     .allegyId(allergyIds)
-                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 리스트
+                    .thumbnail(productEntity.getProductThumbnailEntityList().getImg()) // 리스트
                     .build();
 
             return dto;
