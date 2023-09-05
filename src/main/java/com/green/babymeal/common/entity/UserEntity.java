@@ -8,12 +8,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @SuperBuilder
@@ -83,6 +86,9 @@ public class UserEntity {
     private Byte delYn;
 
 
+    @OneToMany(mappedBy = "userEntity")
+    @ToString.Exclude
+    private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();
 
 
 }
