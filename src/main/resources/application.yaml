@@ -2,7 +2,7 @@ app:
   auth:
     header-scheme-name: authorization
     token-type: Bearer
-    aceess-secret: DeaguGreenArtAcademyClass502ForJavaSpringBoot
+    access-secret: DeaguGreenArtAcademyClass502ForJavaSpringBoot
     accessTokenExpiry: 2000000
     refresh-secret: ForJavaSpringBootClass502DaeguGreenArtAcademy
     refreshTokenExpiry: 1296000000

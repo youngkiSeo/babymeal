@@ -24,7 +24,7 @@ public class AuthTokenProvider {
 
     @PostConstruct
     private void init() {
-        byte[] accessKeyBytes = Decoders.BASE64.decode(appProperties.getAuth().getAceessSecret());
+        byte[] accessKeyBytes = Decoders.BASE64.decode(appProperties.getAuth().getAccessSecret());
         this.appProperties.setAccessTokenKey(Keys.hmacShaKeyFor(accessKeyBytes));
 
         byte[] refreshKeyBytes = Decoders.BASE64.decode(appProperties.getAuth().getRefreshSecret());

@@ -47,6 +47,7 @@ public class UserService {
         Page<UserEntity> all = rep.findAll(pageable);
         List<UserEntity> list = all.get().toList();
         UserSelVo vo = new UserSelVo();
+        vo.setPage(pageable.getPageNumber());
         vo.setMaxPage(all.getTotalPages());
         vo.setCount(all.getSize());
         vo.setList(list);
@@ -57,7 +58,6 @@ public class UserService {
         UserEntity opt = rep.findByUid(uid);
         opt.setDelYn((byte)1);
         rep.save(opt);
-
     }
 
 
