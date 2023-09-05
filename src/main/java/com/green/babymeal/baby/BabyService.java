@@ -27,17 +27,15 @@ public class BabyService {
 
     public BabyInsVo insBaby(BabyInsDto dto){
 
-
-        UserBabyinfoEntity entity = new UserBabyinfoEntity();
+        // UserEntity에 유저pk 세팅
         UserEntity userEntity = new UserEntity();
-        entity.setChildBirth(dto.getChildBirth());
-        entity.setPrefer(dto.getPrefer());
         userEntity.setIuser(USERPK.getLoginUser().getIuser());
-//        userEntity.setIuser(dto.getIuser());
-        entity.setUserEntity(userEntity);
+        // BabyInfo 선언 및 iuser 세팅
+        UserBabyinfoEntity babyinfoEntity = new UserBabyinfoEntity();
 
 
-        rep.save(entity);
+
+        rep.save(babyinfoEntity);
 
 
         String ss= dto.getAllegyId();
@@ -45,11 +43,27 @@ public class BabyService {
 
         for (int i = 0; i < split.length; i++) {
             UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
-            userBabyalleEntity.setUserBabyinfoEntity(entity);
+            userBabyalleEntity.setUserBabyinfoEntity(babyinfoEntity);
             AllergyEntity allergyEntity = new AllergyEntity();
             allergyEntity.setAllergyId(Long.valueOf(split[i]));
             userBabyalleEntity.setAllergyEntity(allergyEntity);
             repository.save(userBabyalleEntity);
+        }
+
+        for (int i = 0; i < split.length; i++) {
+            // allergyId로 이미 저장된 데이터가 있는지 확인
+            Long allergyId = Long.valueOf(split[i]);
+            UserBabyalleEntity existingUserBabyalle = repository.findByAllergyEntityAllergyIdAndUserBabyinfoEntity(allergyId, babyinfoEntity);
+            if (existingUserBabyalle == null) {
+                // 이미 저장된 데이터가 없으면 새로운 데이터를 저장
+                // 중복있으면 저장하지 않음
+                UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
+                userBabyalleEntity.setUserBabyinfoEntity(babyinfoEntity);
+                AllergyEntity allergyEntity = new AllergyEntity();
+                allergyEntity.setAllergyId(allergyId);
+                userBabyalleEntity.setAllergyEntity(allergyEntity);
+                repository.save(userBabyalleEntity);
+            }
         }
 
         BabyInsVo vo = new BabyInsVo();
