@@ -10,4 +10,6 @@ public enum CommonRes {
 
     int code;
     String msg;
+
+
 }

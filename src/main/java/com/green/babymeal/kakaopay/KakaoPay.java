@@ -2,9 +2,11 @@ package com.green.babymeal.kakaopay;
 
 
 
-import com.green.babymeal.buy.BuyService;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
-import com.green.babymeal.common.entity.ProductEntity;
+import com.green.babymeal.common.entity.*;
+import com.green.babymeal.common.repository.OrderBasketRepository;
+import com.green.babymeal.common.repository.OrderDetailRepository;
+import com.green.babymeal.common.repository.OrderlistRepository;
 import com.green.babymeal.common.repository.ProductRepository;
 import com.green.babymeal.kakaopay.model.*;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -20,10 +23,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-
-
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @Service
@@ -32,17 +35,23 @@ import java.time.LocalDateTime;
 public class KakaoPay {
 
 
-    private final KakaoMapper mapper;
+
     private static final String HOST = "https://kapi.kakao.com";
 
     private KakaoPayReadyVO kakaoPayReadyVO;
     private KakaoPayApprovalVO kakaoPayApprovalVO;
-
+    private final KakaoPayDDto kakaoPayDDto=new KakaoPayDDto();
     private final ProductRepository productRepository;
+    private final OrderlistRepository orderlistRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final OrderBasketRepository orderBasketRepository;
+    private final AuthenticationFacade USERPK;
 
+    private int check=0;
 
-    private Long productId=0L;
-    private KakaoPayDto dto10=null;
+    List countList=new LinkedList();
+    List totalPriceList=new ArrayList();
+    List productIdList=new ArrayList();
 
 
 
@@ -56,20 +65,73 @@ public class KakaoPay {
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.add("Content-Type","application/x-www-form-urlencoded;charset=utf-8");
 
+        String productName="";
+        int totalPrice=0;
+        Long code=0L;
+        String formattedDate = getDate("yyyyMMdd");
+        String randomCode = getRandomCode(4);
+        code = Long.valueOf(formattedDate + randomCode);
 
-        dto10=dto;
+        kakaoPayDDto.setAddress(dto.getAddress());
+        kakaoPayDDto.setAddressDetail(dto.getAddressDetail());
+        kakaoPayDDto.setCount(dto.getCount());
+        kakaoPayDDto.setPayment(dto.getPayment());
+        kakaoPayDDto.setPhoneNumber(dto.getPhoneNumber());
+        kakaoPayDDto.setProductId(dto.getProductId());
+        kakaoPayDDto.setReciever(dto.getReciever());
+        kakaoPayDDto.setRequest(dto.getRequest());
+        kakaoPayDDto.setShipment(dto.getShipment());
+        kakaoPayDDto.setOrderCode(code);
+        kakaoPayDDto.setUsepoint(dto.getUsepoint());
 
-        ProductEntity productEntity=null;
+
+
+        int productCount=0;
+        int countSum=0;
         if(dto.getProductId()!=null){
-            productId=dto.getProductId();
-            productEntity = productRepository.findById(dto.getProductId()).get();
+            check=1;
+            ProductEntity productEntity = productRepository.findById(dto.getProductId()).get();
+            String pName = productEntity.getPName();
+            productName=pName;
+            int pPrice = productEntity.getPPrice();
+            totalPrice=pPrice*dto.getCount();
+            kakaoPayDDto.setTotalPrice(totalPrice);
+            productCount=dto.getCount();
         }
-        else return null;
 
-        //상품 정보를 받아온다
 
-        System.out.println("productEntity.getPName() = " + productEntity.getPName());
-        System.out.println("dto = " + dto.getCount());
+
+        else {
+            check=2;
+            List<OrderBasketEntity> byUserEntityIuser = orderBasketRepository.findByUserEntity_Iuser(2L);
+            for (int i = 0; i < byUserEntityIuser.size(); i++) {
+                OrderBasketEntity orderBasketEntity = byUserEntityIuser.get(i);
+                Long productId = orderBasketEntity.getProductEntity().getProductId();
+                ProductEntity productEntity = productRepository.findById(productId).get();
+                String pName = productEntity.getPName();
+                int count = byUserEntityIuser.get(i).getCount();
+                countSum+=count;
+                productName+=pName+count+"개\n";
+                int pPrice = productEntity.getPPrice();
+                totalPrice+=pPrice*count;
+                countList.add(count);
+                totalPriceList.add(pPrice*count);
+                productIdList.add(productId);
+
+            }
+            productCount=countSum;
+
+
+
+        }
+
+
+
+
+
+
+
+
 
 
         // 서버로 요청할 Body
@@ -77,14 +139,14 @@ public class KakaoPay {
         params.add("cid", "TC0ONETIME");
         params.add("partner_order_id", "1001");
         params.add("partner_user_id",2L);
-        params.add("item_name", productEntity.getPName()); //상품 이름
-        params.add("quantity", dto.getCount()); //상품의 수량
-        params.add("total_amount", productEntity.getPPrice()); //상품의 총가격
+        params.add("item_name", productName); //상품 이름
+        params.add("quantity", productCount); //상품의 수량
+        params.add("total_amount", totalPrice); //상품의 총가격
         params.add("tax_free_amount", "100");
         params.add("approved_at", LocalDateTime.now().toString()); //구매일자
-        params.add("approval_url", "http://localhost:8080/api/kakaoPaySuccess");
-        params.add("cancel_url", "http://localhost:8080/api/kakaoPayCancel");
-        params.add("fail_url", "http://localhost:8080/api/kakaoPaySuccessFail");
+        params.add("approval_url", "http://localhost:8080/kakaoPaySuccess");
+        params.add("cancel_url", "http://localhost:8080/kakaoPayCancel");
+        params.add("fail_url", "http://localhost:8080/kakaoPaySuccessFail");
 
         HttpEntity<MultiValueMap<String, Object>> body = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
 
@@ -108,6 +170,26 @@ public class KakaoPay {
     }
 
 
+    public String getDate(String format) {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return currentDate.format(formatter);
+    }
+
+    public String getRandomCode(int length) {
+        Random random = new Random();
+        StringBuilder codeBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int digit = random.nextInt(10); // Generates a random number between 0 and 9
+            codeBuilder.append(digit);
+        }
+
+        return codeBuilder.toString();
+    }
+
+
+
+
     public KakaoPayApprovalVO kakaoPayInfo(String pg_token) {
 
         log.info("KakaoPayInfoVO............................................");
@@ -123,21 +205,68 @@ public class KakaoPay {
 
 
 
+        if(check==1){
+            OrderlistEntity entity=new OrderlistEntity();
+            entity.setAddress(kakaoPayDDto.getAddress());
+            entity.setAddressDetail(kakaoPayDDto.getAddressDetail());
+            entity.setPayment(kakaoPayDDto.getPayment());
+            entity.setReciever(kakaoPayDDto.getReciever());
+            entity.setRequest(kakaoPayDDto.getRequest());
+            entity.setUsepoint(kakaoPayDDto.getUsepoint());
+            entity.setShipment(kakaoPayDDto.getShipment());
+            entity.setOrderCode(kakaoPayDDto.getOrderCode());
+            entity.setPhoneNm(kakaoPayDDto.getPhoneNumber());
+            UserEntity userEntity=new UserEntity();
+            userEntity.setIuser(2L);        //user pk set하는 곳
+            entity.setIuser(userEntity);
+            orderlistRepository.save(entity); //오더 리스트 저장
 
 
 
-//       int idx = 0;
-//       Long code = 0L;
-//       //바로구매
-//       if(productId!=null){
-//           String formattedDate = getDate("yyyyMMdd");
-//           String randomCode = BuyService.getRandomCode(4);
-//           code = Long.valueOf(formattedDate + randomCode);
+            OrderDetailEntity orderDetail=new OrderDetailEntity();
+            orderDetail.setCount(kakaoPayDDto.getCount());
+            orderDetail.setOrderId(entity);
+            orderDetail.setTotalPrice(kakaoPayDDto.getTotalPrice());
+            orderDetail.setDelYn((byte)0);
 
-//           dto10.setOrderCode(code);
-//           dto10.setIuser(2L);
-//           mapper.insOrderList(dto10);
-//       }
+            ProductEntity productEntity=new ProductEntity();
+            productEntity.setProductId(kakaoPayDDto.getProductId());
+            orderDetail.setProductId(productEntity);
+            orderDetailRepository.save(orderDetail); //오더 디테일 저장
+        }
+
+        else {
+            OrderlistEntity entity=new OrderlistEntity();
+            entity.setAddress(kakaoPayDDto.getAddress());
+            entity.setAddressDetail(kakaoPayDDto.getAddressDetail());
+            entity.setPayment(kakaoPayDDto.getPayment());
+            entity.setReciever(kakaoPayDDto.getReciever());
+            entity.setRequest(kakaoPayDDto.getRequest());
+            entity.setUsepoint(kakaoPayDDto.getUsepoint());
+            entity.setShipment(kakaoPayDDto.getShipment());
+            entity.setOrderCode(kakaoPayDDto.getOrderCode());
+            entity.setPhoneNm(kakaoPayDDto.getPhoneNumber());
+            UserEntity userEntity=new UserEntity();
+            userEntity.setIuser(2L); //user PK set 하는곳
+            entity.setIuser(userEntity);
+            orderlistRepository.save(entity); //오더 리스트 저장
+
+            for (int i = 0; i < countList.size(); i++) {
+                OrderDetailEntity orderDetail=new OrderDetailEntity();
+                orderDetail.setCount((int)countList.get(i));
+                ProductEntity productEntity=new ProductEntity();
+                productEntity.setProductId((Long)productIdList.get(i));
+                orderDetail.setProductId(productEntity);
+                orderDetail.setOrderId(entity);
+                orderDetail.setTotalPrice((int)totalPriceList.get(i));
+                orderDetail.setDelYn((byte)0);
+                orderDetailRepository.save(orderDetail);
+            }
+
+            orderBasketRepository.deleteByUserEntity_Iuser(2L);
+        }
+
+
 
 
 

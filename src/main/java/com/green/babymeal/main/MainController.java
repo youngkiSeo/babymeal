@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class MainController {
   "quantity: 상품의 재고량<br>"+
   "saleVoumn: 상품의 판매량<br>"+
   "pointRate: 상품의 포인트 적립률<br>")
-  public MainSelPaging mainSel(SelDto dto){
+  public MainSelPaging mainSel(@RequestBody SelDto dto){
       return service.mainSel(dto);
   }
 

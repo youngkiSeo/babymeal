@@ -24,13 +24,13 @@ public class CateController {
 
   private final CateService service;
 
-  @GetMapping("/all")
+  @GetMapping("/list")
   private List selCate(){
      return service.selCate();
   }
 
-    @GetMapping("/list")
-    private List<CateSelVo> selCateList( CateSelList cateSelList){
+    @GetMapping
+    private List<CateSelVo> selCateList(@RequestBody CateSelList cateSelList){
         return service.selCateList(cateSelList);
     }
 

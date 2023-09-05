@@ -1,25 +1,24 @@
 package com.green.babymeal.kakaopay.model;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class KakaoPayDto {
 
     private Long productId;
     private int count;
-
     private String address;
-    private String address_detail;
+    private String addressDetail;
     private Long orderCode;
-    private int payment;
-    private String phoneNm;
+    private byte payment;
+    private String phoneNumber;
     private String reciever;
     private String request;
-    private int shipment;
+    private byte shipment;
     private int usepoint;
-
-    private Long iuser;
-    private Long orderId;
-
 
 }
