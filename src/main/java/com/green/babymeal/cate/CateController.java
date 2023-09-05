@@ -30,7 +30,7 @@ public class CateController {
   }
 
     @GetMapping
-    private List<CateSelVo> selCateList(@RequestBody CateSelList cateSelList){
+    private List<CateSelVo> selCateList(CateSelList cateSelList){
         return service.selCateList(cateSelList);
     }
 
