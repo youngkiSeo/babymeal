@@ -1,7 +1,6 @@
 package com.green.babymeal.kakaopay;
 
 
-
 import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.OrderBasketRepository;
@@ -14,7 +13,6 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -122,8 +120,8 @@ public class KakaoPay {
                 totalPriceList.add(pPrice*count);
                 productIdList.add(productId);
                 allTotalPrice+=totalPrice;
-
             }
+
             productCount=countSum;
 
 

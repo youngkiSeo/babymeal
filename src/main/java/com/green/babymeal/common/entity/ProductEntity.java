@@ -64,7 +64,7 @@ public class ProductEntity {
     private float pointRate;
 
 
-    @ManyToOne
+    @OneToMany(mappedBy = "productId")
     @JsonManagedReference
-    private ProductThumbnailEntity productThumbnailEntityList;
+    private List<ProductThumbnailEntity> productThumbnailEntityList=new ArrayList<>();
 }

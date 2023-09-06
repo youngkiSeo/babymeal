@@ -22,7 +22,7 @@ public class CateService {
     private final CateRepository cateRepository;
     private final CateDetailRepository cateDetailRepository;
     private final CateViewRepository cateViewRepository;
-    private final ProductCategoryRelationRepository prr;
+    private final ProductCategoryRelationRepository productCategoryRelationRepository;
 
 
     public List selCate() {
@@ -53,10 +53,8 @@ public class CateService {
         if (null != cateSelList.getCateDetailId()) {
             for (int i = 0; i < by.size(); i++) {
                 Long productId = by.get(i).getProductId();
-                System.out.println("productId = " + productId);
-                ProductCateRelationEntity productCateRelationEntity = prr.findById(productId).get();
+                ProductCateRelationEntity productCateRelationEntity = productCategoryRelationRepository.findById(productId).get();
                 Long productCateId = productCateRelationEntity.getProductCateId();
-                System.out.println("productCateId = " + productCateId);
                 by.get(i).setName("[" + productCateId + "단계]" + by.get(i).getName());
                 by.get(i).setThumbnail("/img/product/" + productId + "/" + by.get(i).getThumbnail());
 
@@ -67,7 +65,7 @@ public class CateService {
             List<CateSelVo> bySel = cateRepository.findBySel(cateSelList.getCateId());
             for (int i = 0; i < bySel.size(); i++) {
                 Long productId = bySel.get(i).getProductId();
-                ProductCateRelationEntity productCateRelationEntity = prr.findById(productId).get();
+                ProductCateRelationEntity productCateRelationEntity = productCategoryRelationRepository.findById(productId).get();
                 Long productCateId = productCateRelationEntity.getProductCateId();
                 bySel.get(i).setName("[" + productCateId + "단계]" + bySel.get(i).getName());
                 bySel.get(i).setThumbnail("/img/product/" + productId + "/" + bySel.get(i).getThumbnail());
