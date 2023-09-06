@@ -58,6 +58,9 @@ public class AdminService {
     @Autowired
     private ProductImageRepository productImageRepository;
 
+    @Autowired
+    private ProductThumbnailRepository productThumbnailRepository;
+
 
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4,
@@ -160,7 +163,7 @@ public class AdminService {
         }
 
         //필터4 : 주문상태
-        if (filter4 != null){
+        if (filter4 != null) {
             resultList.removeIf(orderRes -> !orderRes.getShipment().equals(Long.parseLong(filter4)));
         }
 
@@ -174,13 +177,64 @@ public class AdminService {
     }
 
 
+//    public List<OrderlistDetailRes> selOrder(Long orderCode) {
+//        // 주문정보 담을 객체 생성
+//        List<OrderlistDetailRes> resultList = new ArrayList<>();
+//
+//        // OrderlistEntity 객체를 조회하여 필요한 정보 얻기
+//        List<OrderlistEntity> orderlistEntities = orderlistRepository.findByOrderCode(orderCode);
+//
+//        for (OrderlistEntity order : orderlistEntities) {
+//            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderId());
+//
+//            UserVo userVoData = UserVo.builder()
+//                    .name((order.getIuser() != null) ? order.getIuser().getName() : "no data")
+//                    .iuser((order.getIuser() != null) ? order.getIuser().getIuser() : 0)
+//                    .build();
+//
+//            List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
+//            if (!orderDetails.isEmpty()) {
+//                orderDetailVoList = orderDetails.stream()
+//                        .map(detail -> OrderDetailVo.builder()
+//                                .orderDetailId(detail.getOrderDetailId())
+//                                .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
+//                                .count(detail.getCount())
+//                                .totalPrice(detail.getTotalPrice())
+//                                .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
+//                                .build())
+//                        .collect(Collectors.toList());
+//            } else {
+//                // OrderDetail이 없는 경우 "no data"로 처리
+//                orderDetailVoList.add(OrderDetailVo.builder()
+//                        .orderDetailId(0L)
+//                        .productId(0L)
+//                        .count(0)
+//                        .totalPrice(0)
+//                        .productName("no data")
+//                        .build());
+//            }
+////
+////            // OrderlistDetailRes 객체 생성 및 결과 리스트에 추가
+////            OrderlistDetailRes orderDetailRes = OrderlistDetailRes.builder()
+////                    .orderDetailId(order.getOrderId())
+////                    .ordercode(order.getOrderCode())
+////                    .userVo(userVoData)
+////                    .payment(order.getPayment())
+////                    .shipment(order.getShipment())
+////                    .cancel(order.getCancel())
+////                    .phoneNm(order.getPhoneNm())
+////                    .request(order.getRequest())
+////                    .reciever(order.getReciever())
+////                    .address(order.getAddress())
+////                    .addressDetail(order.getAddressDetail())
+////                    .delYn(order.getDelYn())
+////                    .usepoint(order.getUsepoint())
+////                    .orderDetailVo(orderDetailVoList)
+////                    .productName((orderDetails.size() > 1) ? orderDetails.get(1).getProductId().getPName() : "no data")
+////                    .build();
+//
+//            resultList.add(orderDetailRes);
 
-
-
-
-    public List<OrderlistEntity> selOrder(Long orderCode) {
-        return orderlistRepository.findOrderById(orderCode);
-    }
 
 
     // -------------------------------- 상품
@@ -217,13 +271,8 @@ public class AdminService {
                         .cate(relationEntity.getCategoryEntity().getCateId())
                         .cateDetail(cateDetailIds) // cateDetailIds 리스트를 cateDetail에 설정
                         .allegyName(allergyIds)
-                        .thumbnail(Collections.singletonList(
-                                (productEntity.getProductThumbnailEntityList() != null)
-                                        ? productEntity.getProductThumbnailEntityList().getImg()
-                                        : "no data"
-                        ).toString())
+                        .thumbnail(productEntity.getProductThumbnailEntityList().getImg())
                         .build();
-
                 productAdminDtos.add(productAdminDto2);
             }
         }
@@ -255,21 +304,32 @@ public class AdminService {
                 cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
             }
 
-            ProductAdminSelDto dto = ProductAdminSelDto.builder()
+            List<ProductThumbnailEntity> thumbnailEntities = productThumbnailRepository.findByProductId(productEntity);
+
+            // 썸네일 URL 목록을 생성
+            List<String> thumbnailList = new ArrayList<>();
+            for (ProductThumbnailEntity thumbnailEntity : thumbnailEntities) {
+                thumbnailList.add(thumbnailEntity.getImg());
+            }
+
+            ProductAdminSelDto productAdminSelDto = ProductAdminSelDto.builder()
                     .productId(productEntity.getProductId())
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
-                    .cate(categoryId)
-                    .cateDetail(cateDetailIds)
-                    .allegyId(allergyIds)
-                    .thumbnail(productEntity.getProductThumbnailEntityList().getImg()) // 리스트
+                    .cate((productCateRelationEntities != null && !productCateRelationEntities.isEmpty())
+                            ? productCateRelationEntities.get(0).getProductCateId()
+                            : 0) // 카테고리-1차
+                    .cateDetail(cateDetailIds) // 카테고리-2차
+                    .allergyId(allergyIds)
+                    .thumbnail(thumbnailList)
                     .build();
+            return productAdminSelDto;
 
-            return dto;
         } else {
             return null;
         }
     }
+
 
 
     // 웹에디터
