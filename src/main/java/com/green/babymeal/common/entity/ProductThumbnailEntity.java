@@ -17,8 +17,8 @@ public class ProductThumbnailEntity {
     @Column(name = "p_thumbnail_id", updatable = false,nullable = false, columnDefinition = "BIGINT UNSIGNED") //
     private Long thumbnailId;
 
-    @OneToOne
-    @JoinColumn(name = "product_id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonBackReference
     private ProductEntity productId;
 
