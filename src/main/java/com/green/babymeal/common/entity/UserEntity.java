@@ -1,6 +1,7 @@
 package com.green.babymeal.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.green.babymeal.common.config.security.model.ProviderType;
 import com.green.babymeal.common.config.security.model.RoleType;
 import jakarta.persistence.*;
@@ -87,7 +88,7 @@ public class UserEntity {
 
 
     @OneToMany(mappedBy = "userEntity")
-    @ToString.Exclude
+    @JsonManagedReference
     private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();
 
 

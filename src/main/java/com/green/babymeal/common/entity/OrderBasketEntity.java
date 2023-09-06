@@ -1,8 +1,8 @@
 package com.green.babymeal.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,7 +11,8 @@ import java.time.LocalDate;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "order_basket")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
@@ -28,6 +29,7 @@ public class OrderBasketEntity {
 
     @ManyToOne
     @JoinColumn(name = "iuser")
+    @JsonBackReference
     private UserEntity userEntity;
 
     private int count;
