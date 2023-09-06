@@ -56,7 +56,7 @@ public class BabyController {
         return service.insBabyAllergy(vo);
     }
 
-    @PatchMapping("/babyUpd")
+    @PatchMapping
     public List selBabyT(@RequestBody BabyUpdDto dto){
         return service.updateBaby(dto);
     }

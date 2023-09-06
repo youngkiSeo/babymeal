@@ -147,12 +147,16 @@ public class BabyService {
 
         babyAlleRepository.deleteByUserBabyinfoEntity_BabyId(dto.getBabyId());
 
-        for (int i = 0; i < dto.getAllergyList().size(); i++) {
+
+        String[] split = dto.getAllergyId().split(",");
+
+
+        for (int i = 0; i <  split.length; i++) {
             UserBabyalleEntity userBabyalleEntity=new UserBabyalleEntity();
             UserBabyinfoEntity userBabyinfo =new UserBabyinfoEntity();
             userBabyinfo.setBabyId(dto.getBabyId());
             AllergyEntity allergyEntity=new AllergyEntity();
-            allergyEntity.setAllergyId(dto.getAllergyList().get(i));
+            allergyEntity.setAllergyId(Long.valueOf(split[i]));
             userBabyalleEntity.setAllergyEntity(allergyEntity);
             userBabyalleEntity.setUserBabyinfoEntity(userBabyinfo);
             babyAlleRepository.save(userBabyalleEntity);

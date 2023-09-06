@@ -11,5 +11,5 @@ public class BabyUpdDto {
     private LocalDate childBirth;
     private String prefer;
     private String allergyId;
-    private List<Long> allergyList;
+
 }
