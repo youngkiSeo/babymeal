@@ -1,5 +1,6 @@
 package com.green.babymeal.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.green.babymeal.common.entity.UserEntity;
 import com.green.babymeal.user.model.UserDelDto;
 import com.green.babymeal.user.model.UserSelVo;
@@ -35,7 +36,9 @@ public class UserController {
         return service.selUser(uid);
     }
 
+
     @GetMapping("/search")
+    @JsonIgnore
     @Operation(summary = "전체 유저보기",description = "" +
             "page : 페이지 번호 (0부터 시작)<br>" +
             "size : 정보의 갯수(Default : 10) <br>" +

@@ -6,6 +6,7 @@ import com.green.babymeal.common.repository.ProductCategoryRelationRepository;
 import com.green.babymeal.main.model.MainSelPaging;
 import com.green.babymeal.main.model.MainSelVo;
 import com.green.babymeal.main.model.SelDto;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.Expressions;
@@ -49,26 +50,29 @@ public class MainServiceImpl implements MainService {
                     .leftJoin(qProductEntity.productThumbnailEntityList, qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
                     .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
                     .orderBy(qProductEntity.createdAt.desc())
                     .offset(startIdx)
                     .limit(dto.getRow())
                     .fetch();
 
-            long count = jpaQueryFactory
-                    .select(qProductEntity, qProductThumbnailEntity)
+            List<MainSelVo> fetch1 = jpaQueryFactory
+                    .select(getBean(qProductEntity, qProductThumbnailEntity))
                     .from(qProductEntity)
                     .leftJoin(qProductEntity.productThumbnailEntityList, qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
                     .orderBy(qProductEntity.createdAt.desc())
-                    .fetchCount();
+                    .fetch();
 
 
             productNmCateId(fetch); //상품 이름에 단계를 붙힌다
 
 
             return MainSelPaging.builder()
-                    .maxPage((int) Math.ceil((double) fetch.size() / dto.getRow()))
-                    .maxCount(count)
+                    .maxPage((int) Math.ceil((double) fetch1.size() / dto.getRow()))
+                    .maxCount(Long.valueOf(fetch1.size()))
                     .list(fetch)
                     .build();
 
@@ -102,18 +106,31 @@ public class MainServiceImpl implements MainService {
                     .on(qProductEntity.productId.eq(qProductCateRelationEntity.productEntity.productId))
                     .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cate), qProductEntity.pQuantity.ne(0),
                             qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
                     .orderBy(qProductEntity.saleVolume.desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
                     .limit(dto.getRow())
                     .fetch();
 
-            System.out.println("fetch = " + fetch);
+            List<MainSelVo> fetch1 = jpaQueryFactory
+                    .select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .leftJoin(qProductCateRelationEntity)
+                    .on(qProductEntity.productId.eq(qProductCateRelationEntity.productEntity.productId))
+                    .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cate), qProductEntity.pQuantity.ne(0),
+                            qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
+                    .orderBy(qProductEntity.saleVolume.desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                    .fetch();
 
             for (MainSelVo vo : fetch) {
                 vo.setName("[" + cate + "단계]" + vo.getName());
+                vo.setThumbnail("/img/product/" + vo.getProductId() + "/" + vo.getThumbnail());
             }
 
             return MainSelPaging.builder()
-                    .maxCount(Long.valueOf(fetch.size()))
+                    .maxCount(Long.valueOf(fetch1.size()))
                     .list(fetch)
                     .build();
 
@@ -125,14 +142,24 @@ public class MainServiceImpl implements MainService {
                     .leftJoin(qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
                     .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
                     .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").desc())
                     .limit(dto.getRow())
                     .fetch();
 
-            productNmCateId(fetch); //상품 이름에 단계를 붙힌다
+            productNmCateId(fetch); //상품 이름에 단계를 붙힌다 //썸네일 경로
+
+            List<MainSelVo> fetch1 = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
+                    .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").desc())
+                    .fetch();
 
             return MainSelPaging.builder()
-                    .maxCount(Long.valueOf(fetch.size()))
+                    .maxCount(Long.valueOf(fetch1.size()))
                     .list(fetch)
                     .build();
 
@@ -144,14 +171,24 @@ public class MainServiceImpl implements MainService {
                     .leftJoin(qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
                     .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
                     .orderBy(qProductEntity.saleVolume.desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
                     .limit(dto.getRow())
                     .fetch();
 
+            List<MainSelVo> fetch1 = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
+                    .orderBy(qProductEntity.saleVolume.desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                    .fetch();
+
             productNmCateId(fetch);
 
-        return    MainSelPaging.builder()
-                    .maxCount(Long.valueOf(fetch.size()))
+            return    MainSelPaging.builder()
+                    .maxCount(Long.valueOf(fetch1.size()))
                     .list(fetch)
                     .build();
 
@@ -163,16 +200,30 @@ public class MainServiceImpl implements MainService {
                     .leftJoin(qProductThumbnailEntity)
                     .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
                     .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
                     .orderBy(qProductEntity.saleVolume.desc())
                     .offset(startIdx)
                     .limit(dto.getRow())
                     .fetch();
 
+
+            List<MainSelVo> fetch1 = jpaQueryFactory.select(getBean(qProductEntity, qProductThumbnailEntity))
+                    .from(qProductEntity)
+                    .leftJoin(qProductThumbnailEntity)
+                    .on(qProductEntity.productId.eq(qProductThumbnailEntity.productId.productId))
+                    .where(qProductEntity.pQuantity.ne(0), qProductEntity.isDelete.eq((byte) 0), qProductThumbnailEntity.img.isNotNull())
+                    .groupBy(qProductEntity.productId)
+                    .orderBy(qProductEntity.saleVolume.desc())
+                    .fetch();
+
             productNmCateId(fetch);
 
-        return    MainSelPaging.builder()
-                    .maxPage((int) Math.ceil((double) fetch.size() / dto.getRow()))
-                    .maxCount(Long.valueOf(fetch.size()))
+
+
+
+            return    MainSelPaging.builder()
+                    .maxPage((int) Math.ceil((double) fetch1.size() / dto.getRow()))
+                    .maxCount(Long.valueOf(fetch1.size()))
                     .list(fetch)
                     .build();
 
@@ -181,29 +232,15 @@ public class MainServiceImpl implements MainService {
 
 
 
-//    //상품에 단계를 붙히는 메소드
-//    private void productNmCateId(List<MainSelVo> fetch) {
-//        for (MainSelVo vo : fetch) {
-//            ProductEntity productEntity = new ProductEntity();
-//            productEntity.setProductId(vo.getProductId());
-//            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findByProductEntity(productEntity);
-//            Long productCateId = byProductEntity.getProductCateId();
-//            vo.setName("[" + productCateId + "단계]" + vo.getName());
-//        }
-//    }
-
-    // 1개만 반환하도록 수정하여 추가 - 09-04 // 에러나면 이 코드 삭제해주세요
-    // 상품에 단계를 붙히는 메소드
-
+    //상품에 단계를 붙히는 메소드
     private void productNmCateId(List<MainSelVo> fetch) {
         for (MainSelVo vo : fetch) {
             ProductEntity productEntity = new ProductEntity();
             productEntity.setProductId(vo.getProductId());
-            Optional<ProductCateRelationEntity> relationOptional = productCategoryRelationRepository.findFirstByProductEntity(productEntity);
-            if (relationOptional.isPresent()) {
-                Long productCateId = relationOptional.get().getProductCateId();
-                vo.setName("[" + productCateId + "단계]" + vo.getName());
-            }
+            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findFirstByProductEntity(productEntity).get();
+            Long cateId = byProductEntity.getCategoryEntity().getCateId();
+            vo.setName("[" + cateId + "단계]" + vo.getName());
+            vo.setThumbnail("/img/product/" + byProductEntity.getProductEntity().getProductId() + "/" + byProductEntity.getProductEntity().getProductThumbnailEntityList().getImg());
         }
     }
 

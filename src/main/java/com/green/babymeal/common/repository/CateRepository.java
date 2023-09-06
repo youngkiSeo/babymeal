@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
 
-    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume) " +
+    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume,A.pointRate) " +
             " from ProductEntity A" +
             " left join ProductCateRelationEntity B" +
             " on A.productId=B.productEntity.productId" +
@@ -23,7 +23,7 @@ public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
             " where B.categoryEntity.cateId=:cateId and A.pQuantity!=0 and A.isDelete=0 and C.img is not null and B.cateDetailEntity.cateDetailId=:cateDetailId ")
     List<CateSelVo> findBy(@Param("cateId") Long cateId, @Param("cateDetailId") Long cateDetailId);
 
-    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume) " +
+    @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume,A.pointRate) " +
             " from ProductEntity A" +
             " left join ProductCateRelationEntity B" +
             " on A.productId=B.productEntity.productId" +

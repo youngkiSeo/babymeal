@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -48,6 +49,7 @@ public class KakaoPay {
     private final AuthenticationFacade USERPK;
 
     private int check=0;
+     private int allTotalPrice=0;
 
     List countList=new LinkedList();
     List totalPriceList=new ArrayList();
@@ -88,6 +90,7 @@ public class KakaoPay {
 
         int productCount=0;
         int countSum=0;
+
         if(dto.getProductId()!=null){
             check=1;
             ProductEntity productEntity = productRepository.findById(dto.getProductId()).get();
@@ -97,6 +100,7 @@ public class KakaoPay {
             totalPrice=pPrice*dto.getCount();
             kakaoPayDDto.setTotalPrice(totalPrice);
             productCount=dto.getCount();
+            allTotalPrice=totalPrice;
         }
 
 
@@ -113,10 +117,11 @@ public class KakaoPay {
                 countSum+=count;
                 productName+=pName+count+"개\n";
                 int pPrice = productEntity.getPPrice();
-                totalPrice+=pPrice*count;
+                totalPrice=(pPrice*count);
                 countList.add(count);
                 totalPriceList.add(pPrice*count);
                 productIdList.add(productId);
+                allTotalPrice+=totalPrice;
 
             }
             productCount=countSum;
@@ -138,15 +143,15 @@ public class KakaoPay {
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
         params.add("cid", "TC0ONETIME");
         params.add("partner_order_id", "1001");
-        params.add("partner_user_id",2L);
+        params.add("partner_user_id",USERPK.getLoginUser().getIuser());
         params.add("item_name", productName); //상품 이름
         params.add("quantity", productCount); //상품의 수량
-        params.add("total_amount", totalPrice); //상품의 총가격
+        params.add("total_amount", allTotalPrice); //상품의 총가격
         params.add("tax_free_amount", "100");
         params.add("approved_at", LocalDateTime.now().toString()); //구매일자
-        params.add("approval_url", "http://localhost:8080/kakaoPaySuccess");
-        params.add("cancel_url", "http://localhost:8080/kakaoPayCancel");
-        params.add("fail_url", "http://localhost:8080/kakaoPaySuccessFail");
+        params.add("approval_url", "http://192.168.0.144:5001/kakaopaypayment");
+        params.add("cancel_url", "http://192.168.0.144:5001/kakaoPayCancel");
+        params.add("fail_url", "http://192.168.0.144:5001/kakaoPaySuccessFail");
 
         HttpEntity<MultiValueMap<String, Object>> body = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
 
@@ -189,7 +194,7 @@ public class KakaoPay {
 
 
 
-
+    @Transactional
     public KakaoPayApprovalVO kakaoPayInfo(String pg_token) {
 
         log.info("KakaoPayInfoVO............................................");
@@ -217,7 +222,7 @@ public class KakaoPay {
             entity.setOrderCode(kakaoPayDDto.getOrderCode());
             entity.setPhoneNm(kakaoPayDDto.getPhoneNumber());
             UserEntity userEntity=new UserEntity();
-            userEntity.setIuser(2L);        //user pk set하는 곳
+            userEntity.setIuser(USERPK.getLoginUser().getIuser());        //user pk set하는 곳
             entity.setIuser(userEntity);
             orderlistRepository.save(entity); //오더 리스트 저장
 
@@ -247,7 +252,7 @@ public class KakaoPay {
             entity.setOrderCode(kakaoPayDDto.getOrderCode());
             entity.setPhoneNm(kakaoPayDDto.getPhoneNumber());
             UserEntity userEntity=new UserEntity();
-            userEntity.setIuser(2L); //user PK set 하는곳
+            userEntity.setIuser(USERPK.getLoginUser().getIuser()); //user PK set 하는곳
             entity.setIuser(userEntity);
             orderlistRepository.save(entity); //오더 리스트 저장
 
@@ -261,10 +266,12 @@ public class KakaoPay {
                 orderDetail.setTotalPrice((int)totalPriceList.get(i));
                 orderDetail.setDelYn((byte)0);
                 orderDetailRepository.save(orderDetail);
+
             }
 
+        orderBasketRepository.deleteByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
 
-        }
+}
 
 
 
@@ -279,9 +286,9 @@ public class KakaoPay {
         params.add("cid", "TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
         params.add("partner_order_id", "1001");
-        params.add("partner_user_id", 2L);
+        params.add("partner_user_id", USERPK.getLoginUser().getIuser());
         params.add("pg_token", pg_token);
-        params.add("total_amount", "2100");
+        params.add("total_amount", allTotalPrice);
         params.add("approved_at", LocalDateTime.now().toString());
         log.info(pg_token);
         HttpEntity<MultiValueMap<String, Object>> body = new HttpEntity<MultiValueMap<String, Object>>(params, headers);

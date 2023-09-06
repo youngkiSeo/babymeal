@@ -13,13 +13,15 @@ public class CateSelVo {
     private String name;
     private int quantity;
     private int saleVoumn;
+    private float pointRate;
 
-    public CateSelVo(Long productId, String img, int price, String name, int quantity, int saleVoumn) {
+    public CateSelVo(Long productId, String img, int price, String name, int quantity, int saleVoumn,float pointRate) {
         this.productId = productId;
         this.thumbnail = img;
         this.price = price;
         this.name = name;
         this.quantity = quantity;
         this.saleVoumn = saleVoumn;
+        this.pointRate=pointRate;
     }
 }
