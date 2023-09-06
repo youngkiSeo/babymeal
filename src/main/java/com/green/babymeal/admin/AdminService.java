@@ -260,6 +260,15 @@ public class AdminService {
                 cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
             }
 
+            // 썸네일 null체크
+            List<String> thumbnailList = new ArrayList<>();
+            ProductThumbnailEntity thumbnailEntity = productEntity.getProductThumbnailEntityList();
+            if (thumbnailEntity != null) {
+                thumbnailList.add(thumbnailEntity.getImg()); // 가져온 썸네일 리스트에 추가
+            } else {
+                thumbnailList.add("no data");
+            }
+
 
             for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
 
