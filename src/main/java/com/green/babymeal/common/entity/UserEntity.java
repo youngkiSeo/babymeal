@@ -23,7 +23,6 @@ import java.util.List;
 @Data
 @Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"uid","nick_nm"})})
 @NoArgsConstructor
-
 public class UserEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +62,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     @Size(min = 10 , max = 20) // java 단 에서의 사이즈이다.
+    @ToString.Exclude
     private ProviderType providerType; // 자동으로 스네이크 기법으로 변경 해준다.
 
     @Column(name = "zip_code")
@@ -86,9 +86,9 @@ public class UserEntity {
     private Byte delYn;
 
 
-    @OneToMany(mappedBy = "userEntity")
-    @ToString.Exclude
-    private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();
+   /*@OneToMany(mappedBy = "userEntity")
+   @ToString.Exclude
+   private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();*/
 
 
 }
