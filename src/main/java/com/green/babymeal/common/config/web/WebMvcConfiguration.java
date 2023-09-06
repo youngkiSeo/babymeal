@@ -30,7 +30,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         String uploadPath = uploadDir.toFile().getAbsolutePath();
         log.info("uploadPath {}", uploadPath);
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
-        registry.addResourceHandler("/pic/**").addResourceLocations("file:"+ uploadPath + "/");
+        registry.addResourceHandler("/img/**").addResourceLocations("file:"+ uploadPath + "/");
 
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/**")
