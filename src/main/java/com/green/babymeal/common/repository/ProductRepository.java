@@ -24,20 +24,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     //----------------- 관리자페이지 사용메서드
     //ProductEntity findAllById(Long productId);
     Optional<ProductEntity> findById(Long productId);
-
-    /*
-    @Query("select new com.green.babymeal.search.model.SearchSelVo(A.productId,A.pName,D.img,A.price)"+
-            "from ProductEntity A"+
-            " left join ProductAllergyEntity B"+
-            " on A.productId = B.productId.productId"+
-            " left join AllergyEntity C"+
-            " on  C.allergyId = B.allergyId.allergyId"+
-            " left join ProductThumbnailEntity D"+
-            " on  D.productId = A.productId."+
-            " left join ProductCateRelationEntity E"+
-            " on  E.productEntity.productId = A.productId"+
-            " where A.pName like :pName and function('REGEXP_LIKE', msg) ")
-    List<SearchSelVo>findByPName(@Param("pName")String pName,@Param("msg")String msg);
-
-     */
 }
