@@ -99,7 +99,13 @@ public class MypageController {
     @GetMapping("/salevolum")
     @Operation(summary = "판매량 조회",description ="year:년도 ex)2022<br>"+
             "month: ex)01,02,03..11,12")
-    public List<SaleVolumnVo> select(Pageable pageable, @RequestParam String year, @RequestParam String month){
-        return service.Selectsale(pageable,year,month);
+    public List<SaleVolumnVo> selectSalevolum(@RequestParam String year, @RequestParam String month){
+        return service.Selectsale(year,month);
+    }
+
+    @GetMapping("/salevolum/color")
+    @Operation(summary = "판매량 조회 color")
+    public List<SaleVolumnColorVo> select(@RequestParam String year, @RequestParam String month){
+        return service.SelectsaleColor(year,month);
     }
 }

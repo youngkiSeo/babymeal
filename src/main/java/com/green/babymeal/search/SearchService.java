@@ -128,7 +128,7 @@ public class SearchService {
         //최근검색어 - 레디스저장
         UserEntity loginUser = USERPK.getLoginUser();
         if (loginUser!=null){
-            redisrecent(msg);
+            redisrecent(product);
         }
 
 
