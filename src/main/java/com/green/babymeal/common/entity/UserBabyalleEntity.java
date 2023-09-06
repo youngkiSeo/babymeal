@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "baby_table")
@@ -12,6 +13,7 @@ import org.hibernate.annotations.DynamicInsert;
 @NoArgsConstructor
 @DynamicInsert
 @ToString(callSuper = true)
+@DynamicUpdate
 public class UserBabyalleEntity {
 
     @Id

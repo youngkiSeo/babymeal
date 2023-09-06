@@ -11,8 +11,10 @@ import java.util.Optional;
 public interface BabyRepository extends JpaRepository<UserBabyinfoEntity, Long> {
 
     List<UserBabyinfoEntity> findByUserEntity_Iuser(Long iuser);
-    Optional<UserBabyinfoEntity> findById(Long babyId);
+
     // babyId로 조회하기 위한 메소드 선언
-    UserBabyinfoEntity findByBabyId(Long babyId);
+
+
+
 
 }
