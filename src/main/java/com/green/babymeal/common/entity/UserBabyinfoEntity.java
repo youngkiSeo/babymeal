@@ -17,7 +17,6 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @ToString(callSuper = true)
-@DynamicUpdate
 public class UserBabyinfoEntity {
 
     @Id

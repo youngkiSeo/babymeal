@@ -102,7 +102,7 @@ public class BabyService {
         return list;
     }
 
-    @Transactional
+    /*@Transactional
     public BabyInsVo update(BabyUpdDto dto){
         babyRepository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
 //        listentity.listIterator().next(); // 인덱스값을 사용하지않아도 되게한다
@@ -136,10 +136,10 @@ public class BabyService {
         vo.setAllegyId(dto.getAllergyId());
         vo.setIuser(USERPK.getLoginUser().getIuser());
         return vo;
-    }
+    }*/
 
     @Transactional
-    public List updateBaby(BabyUpdDto dto){
+    public BabyInsVo updateBaby(BabyUpdDto dto){
 
         UserBabyinfoEntity userBabyinfoEntity = babyRepository.findById(dto.getBabyId()).get();
         userBabyinfoEntity.setPrefer(dto.getPrefer());
@@ -169,6 +169,12 @@ public class BabyService {
             babyAlleRepository.save(userBabyalleEntity);
         }
 
-        return null;
+        BabyInsVo babyInsVo = new BabyInsVo();
+        babyInsVo.setChildBirth(dto.getChildBirth());
+        babyInsVo.setPrefer(dto.getPrefer());
+        babyInsVo.setAllegyId(dto.getAllergyId());
+        babyInsVo.setIuser(USERPK.getLoginUser().getIuser());
+
+        return babyInsVo;
     }
 }

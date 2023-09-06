@@ -44,10 +44,10 @@ public class BabyController {
         return service.selBabyInfo();
     }
 
-    @PutMapping
+    /*@PutMapping
     public BabyInsVo updBaby(@RequestBody BabyUpdDto dto){
         return service.update(dto);
-    }
+    }*/
 
     @PostMapping("/{babyId}")
     @Operation(summary = "아기 알러지만 추가", description = ""+
@@ -56,8 +56,10 @@ public class BabyController {
         return service.insBabyAllergy(vo);
     }
 
-    @PatchMapping
-    public List selBabyT(@RequestBody BabyUpdDto dto){
+    @PutMapping
+    @Operation(summary = "아기 정보수정", description = ""+
+            "아기 pk,바뀔정보를 적어주시면 됩니다.")
+    public BabyInsVo selBabyT(@RequestBody BabyUpdDto dto){
         return service.updateBaby(dto);
     }
 }
