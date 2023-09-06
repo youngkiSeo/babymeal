@@ -5,6 +5,7 @@ package com.green.babymeal.cate;
 
 import com.green.babymeal.cate.model.CateSelList;
 import com.green.babymeal.cate.model.CateSelVo;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -24,11 +25,20 @@ public class CateController {
     private final CateService service;
 
     @GetMapping("/list")
+    @Operation(summary = "카테고리 목록")
     private List selCate(){
      return service.selCate();
   }
 
-    @GetMapping("/all")
+    @GetMapping
+    @Operation(summary = "해당 카테고리 상품만 조회",description = "" +
+            "productId : 상품 번호<br>" +
+            "thumbnail : 상품 썸네일<br>" +
+            "price : 상품 1개 가격<br>" +
+            "name : 상품 이름<br>" +
+            "quantity : 상품 재고량<br>" +
+            "saleVoumn : 상품 판매량<br>" +
+            "pointRate : 적립률")
     private List<CateSelVo> selCateList(CateSelList cateSelList){
         return service.selCateList(cateSelList);
     }

@@ -44,6 +44,7 @@
         , A.allergy = #{allergy}
         , A.created_at = current_timestamp()
         , B.cate_id = #{category}
+        , A.point_rate =#{pointRate}
         where A.product_id = #{productId}
     </update>
 

@@ -14,5 +14,6 @@ public class AdminProductUpdDto {
     int saleVolume;
     int allergy;
     int category;
+    float pointRate;
     List<Integer> cateDetail;
 }

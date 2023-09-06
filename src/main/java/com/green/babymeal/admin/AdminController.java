@@ -86,14 +86,14 @@ public class AdminController {
 
 
     // 웹에디터 -----------------------------
-    @PostMapping("/webeditor/product")
+    @PostMapping("/product/webeditor")
     @Operation(summary = "웹에디터 pk가져오는 메소드 상품 등록 할 때 바로 pk를 반환한다")
     public Long webEditorPk(){
         return service.webEditorPk();
     }
 
 
-    @PostMapping(value = "/webeditor/{productId}/img",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/{productId}/img",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "웹에디터 이미지 넣기",description = ""+
             "img : 이미지 풀 경로<br>"+
             "pimgId : 웹에디터 이미지의 pk값")
@@ -101,7 +101,7 @@ public class AdminController {
         return service.insWebEditorImg(img,productId);
     }
 
-    @PostMapping(value = "/webeditor/{productId}/imglist",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/{productId}/imglist",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "웹에디터 이미지 리스트로 넣기",description = ""+
             "img : 이미지 풀 경로<br>"+
             "pimgId : 웹에디터 이미지의 pk값")
@@ -122,15 +122,15 @@ public class AdminController {
         return service.changeProduct(dto);
     }
 
-    @DeleteMapping("/webeditor/product/cancelation")
+    @DeleteMapping("/{productId}")
     @Operation(summary = "웹에디터 에서 취소를 하면 테이블에서 이미지 데이터와 빈 값의 상품 테이블 데이터를 삭제")
-    public int delProductImg(@RequestParam Long product){
-        return service.delProductImg(product);
+    public int delProductImg(@PathVariable Long productId){
+        return service.delProductImg(productId);
     }
 
-    @DeleteMapping("/webeditor/product/cancelation/editor")
+    @DeleteMapping("/{pImgId}/webeditor")
     @Operation(summary = "웹에디터 등록 하기 전 이미지 삭제")
-    public int delProductWebImg(@RequestParam Long pImgId){
+    public int delProductWebImg(@PathVariable Long pImgId){
         return service.delWebEditorCancel(pImgId);
     }
 
@@ -143,9 +143,19 @@ public class AdminController {
         return service.insImgList(img,productId);
     }
 
-    @PatchMapping("/webeditor/product/registration")
+    @PostMapping("/product")
     @Operation(summary = "최종상품 등록할 때 저장하는 메소드", description = "상품등록 마지막 단계 <br>" +
-            "상품 내용이 DB에 등록됩니다")
+            "상품 내용이 DB에 등록됩니다" +
+            "productId :상품 번호 <br>" +
+            "name : 상품 이름 <br>" +
+            "price : 상품 가격 <br>" +
+            "quantity : 상품 재고량 <br>" +
+            "description : 상품 상세 내용 <br>" +
+            "saleVolume : 상품 판매량 <br>" +
+            "allergy : 상품 알러지 여부 <br>" +
+            "category : 1차 카테고리 <br>" +
+            "pointRate : 적립률 <br>" +
+            "cateDetail : 2차 카테고리 <br>")
     public int insProduct(@RequestBody AdminProductUpdDto dto){
         if(0 < service.updProduct(dto)) return 1;
         else return 0;

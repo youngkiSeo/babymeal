@@ -424,6 +424,7 @@ public class AdminService {
         return 1;
     }
 
+
     //썸네일 리스트
     public List<ProductImgPkFull> insImgList(List<MultipartFile> img, Long productId) {
         String path = getAbsolutePath(fileDir) + "/product/" + productId;
