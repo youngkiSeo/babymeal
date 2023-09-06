@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -336,28 +337,16 @@ public class MypageServicelmpl implements MypageService{
         return save;
     }
     public List<SaleVolumnVo> Selectsale(Pageable pageable,String year, String month){
-
-        LocalDate start = null;
-        LocalDate end =null;
-        start = LocalDate.parse(year+"-"+month+"-01");
-
-        if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
-            end = LocalDate.parse(year + "-" + month + "-31");
-
-        } else if (month.equals("02")) {
-            end = LocalDate.parse(year+"-"+month+"-28");
-        }else
-            end = LocalDate.parse(year+"-"+month+"-30");
-
-        log.info("end:{}",end);
-        log.info("start:{}",start);
+        Sort sort = pageable.getSort();
+        LocalDate start = LocalDate.parse(year+"-"+month+"-01");
+        LocalDate end = end(year, month);
 
         List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,saleVolumn.productId.productId,saleVolumn.count.sum(),  saleVolumn.productId.pName, saleVolumn.productId.pPrice))
                 .from(saleVolumn)
                 .where(saleVolumn.createdAt.between(start, end))
                 .groupBy(saleVolumn.productId.productId)
-                .orderBy(getAllOrderSpecifiers(pageable))
-                .limit(pageable.getPageSize())
+                .orderBy(saleVolumn.count.desc())
+                .limit(5)
                 .fetch();
         for (int i = 0; i <fetch.size(); i++) {
 
@@ -380,19 +369,18 @@ public class MypageServicelmpl implements MypageService{
         return fetch;
     }
 
-    private OrderSpecifier[] getAllOrderSpecifiers(Pageable pageable) {
-        List<OrderSpecifier> orders = new LinkedList();
-        if(!pageable.getSort().isEmpty()) {
-            for(Sort.Order order : pageable.getSort()) {
-                Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+    public LocalDate end(String year,String month){
+        LocalDate end =null;
 
-                switch(order.getProperty().toLowerCase()) {
-                    case "productId": orders.add(new OrderSpecifier(direction,saleVolumn.productId.productId)); break;
-                    case "product": orders.add(new OrderSpecifier(direction, saleVolumn.productId.productId)); break;
-                }
-            }
-        }
-        return orders.stream().toArray(OrderSpecifier[]::new);
+        if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
+            end = LocalDate.parse(year + "-" + month + "-31");
+
+        } else if (month.equals("02")) {
+            end = LocalDate.parse(year+"-"+month+"-28");
+        }else
+            end = LocalDate.parse(year+"-"+month+"-30");
+
+        return end;
     }
 
 }
