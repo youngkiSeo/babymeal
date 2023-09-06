@@ -61,7 +61,7 @@ public class AdminController {
     @GetMapping("/order/{orderCode}")
     @Operation(summary = "주문상품정보 > 특정 주문번호에서 주문한 상품 전체조회", description = "<br>" +
             "예시 주문번호 : 202308301651 입니다")
-    public List<OrderlistEntity> selOrder(@PathVariable Long orderCode) {
+    public List<OrderlistDetailRes> selOrder(@PathVariable Long orderCode) {
         return service.selOrder(orderCode);
     }
 

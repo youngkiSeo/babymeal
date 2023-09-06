@@ -1,5 +1,7 @@
 package com.green.babymeal.common.repository;
 
+import com.green.babymeal.admin.model.OrderlistDetailRes;
+import com.green.babymeal.admin.model.OrderlistRes;
 import com.green.babymeal.common.entity.OrderDetailEntity;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import com.green.babymeal.common.entity.UserEntity;
@@ -25,8 +27,8 @@ public interface OrderlistRepository extends JpaRepository<OrderlistEntity, Long
     @Query("SELECT A " +
             "FROM OrderlistEntity A " +
             "WHERE A.orderCode = :orderCode")
-    List<OrderlistEntity> findOrderById(Long orderCode);
-    OrderlistEntity findByOrderCode(Long orderCode); // 주문번호로 데이터 조회
+    List<OrderlistDetailRes> findOrderById(Long orderCode);
+    List<OrderlistEntity> findByOrderCode(Long orderCode); // 주문번호로 데이터 조회
 
 
 }

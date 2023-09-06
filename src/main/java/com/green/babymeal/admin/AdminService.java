@@ -178,10 +178,67 @@ public class AdminService {
 
 
 
-    public List<OrderlistEntity> selOrder(Long orderCode) {
-        return orderlistRepository.findOrderById(orderCode);
-    }
+    public List<OrderlistDetailRes> selOrder(Long orderCode) {
+        // 주문정보 담을 객체 생성
+        List<OrderlistDetailRes> resultList = new ArrayList<>();
 
+        // OrderlistEntity 객체를 조회하여 필요한 정보 얻기
+        List<OrderlistEntity> orderlistEntities = orderlistRepository.findByOrderCode(orderCode);
+
+        for (OrderlistEntity order : orderlistEntities) {
+            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderId());
+
+            UserVo userVoData = UserVo.builder()
+                    .name((order.getIuser() != null) ? order.getIuser().getName() : "no data")
+                    .iuser((order.getIuser() != null) ? order.getIuser().getIuser() : 0)
+                    .build();
+
+            List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
+            if (!orderDetails.isEmpty()) {
+                orderDetailVoList = orderDetails.stream()
+                        .map(detail -> OrderDetailVo.builder()
+                                .orderDetailId(detail.getOrderDetailId())
+                                .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
+                                .count(detail.getCount())
+                                .totalPrice(detail.getTotalPrice())
+                                .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
+                                .build())
+                        .collect(Collectors.toList());
+            } else {
+                // OrderDetail이 없는 경우 "no data"로 처리
+                orderDetailVoList.add(OrderDetailVo.builder()
+                        .orderDetailId(0L)
+                        .productId(0L)
+                        .count(0)
+                        .totalPrice(0)
+                        .productName("no data")
+                        .build());
+            }
+////
+////            // OrderlistDetailRes 객체 생성 및 결과 리스트에 추가
+////            OrderlistDetailRes orderDetailRes = OrderlistDetailRes.builder()
+////                    .orderDetailId(order.getOrderId())
+////                    .ordercode(order.getOrderCode())
+////                    .userVo(userVoData)
+////                    .payment(order.getPayment())
+////                    .shipment(order.getShipment())
+////                    .cancel(order.getCancel())
+////                    .phoneNm(order.getPhoneNm())
+////                    .request(order.getRequest())
+////                    .reciever(order.getReciever())
+////                    .address(order.getAddress())
+////                    .addressDetail(order.getAddressDetail())
+////                    .delYn(order.getDelYn())
+////                    .usepoint(order.getUsepoint())
+////                    .orderDetailVo(orderDetailVoList)
+////                    .productName((orderDetails.size() > 1) ? orderDetails.get(1).getProductId().getPName() : "no data")
+////                    .build();
+//
+//            resultList.add(orderDetailRes);
+        }
+
+        return resultList;
+    }
 
     // -------------------------------- 상품
 
