@@ -268,7 +268,7 @@ public class KakaoPay {
 
             }
 
-        orderBasketRepository.findByUserEntity_Iuser(2L);
+        orderBasketRepository.deleteByUserEntity_Iuser(2L);
 
 }
 

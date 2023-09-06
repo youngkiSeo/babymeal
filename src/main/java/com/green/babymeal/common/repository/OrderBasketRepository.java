@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ public interface OrderBasketRepository extends JpaRepository<OrderBasketEntity,L
 
     OrderBasketEntity findByProductEntity_ProductIdAndUserEntity_Iuser(Long productId, Long iuser);
 
+
     List<OrderBasketEntity> findByUserEntity_Iuser(Long iuser);
 
+    void deleteByUserEntity_Iuser(Long iuser);
 
 }
