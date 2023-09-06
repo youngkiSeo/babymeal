@@ -55,4 +55,9 @@ public class BabyController {
     public int insBabyAllergy(@RequestBody BabyAllergyAddVo vo){
         return service.insBabyAllergy(vo);
     }
+
+    @PatchMapping("/babyUpd")
+    public List selBabyT(@RequestBody BabyUpdDto dto){
+        return service.updateBaby(dto);
+    }
 }

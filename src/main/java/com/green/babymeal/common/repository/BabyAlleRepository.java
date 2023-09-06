@@ -17,4 +17,8 @@ public interface BabyAlleRepository extends JpaRepository<UserBabyalleEntity, Lo
     @Query("SELECT ua FROM UserBabyalleEntity ua JOIN ua.userBabyinfoEntity bi WHERE bi.babyId = :babyId AND ua.allergyEntity.allergyId = :allergyId")
     UserBabyalleEntity findByBabyIdAndAllergyId(@Param("babyId") Long babyId, @Param("allergyId") Long allergyId);
     //UserBabyalleEntity findByAllergyEntityAllergyIdAndUserBabyinfoEntity(Long allergyId, UserBabyinfoEntity entity);
+
+    void deleteByUserBabyinfoEntity_BabyId(Long babyId);
+
+
 }
