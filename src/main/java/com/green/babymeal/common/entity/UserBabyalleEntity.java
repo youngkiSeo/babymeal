@@ -14,6 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @ToString(callSuper = true)
+@DynamicUpdate
 public class UserBabyalleEntity {
 
     @Id

@@ -1,11 +1,15 @@
 package com.green.babymeal.baby;
+
 import com.green.babymeal.baby.model.*;
 import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.AllergyEntity;
 import com.green.babymeal.common.entity.UserBabyalleEntity;
+
 import com.green.babymeal.common.entity.UserBabyinfoEntity;
 import com.green.babymeal.common.entity.UserEntity;
 import com.green.babymeal.common.repository.BabyAlleRepository;
+
+
 import com.green.babymeal.common.repository.BabyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -131,5 +136,39 @@ public class BabyService {
         vo.setAllegyId(dto.getAllergyId());
         vo.setIuser(USERPK.getLoginUser().getIuser());
         return vo;
+    }
+
+    @Transactional
+    public List updateBaby(BabyUpdDto dto){
+
+        UserBabyinfoEntity userBabyinfoEntity = babyRepository.findById(dto.getBabyId()).get();
+        userBabyinfoEntity.setPrefer(dto.getPrefer());
+        userBabyinfoEntity.setChildBirth(dto.getChildBirth());
+        UserBabyinfoEntity save = babyRepository.save(userBabyinfoEntity);
+
+        BaByInfoVo vo=new BaByInfoVo();
+        vo.setBabyId(save.getBabyId());
+        vo.setPrefer(save.getPrefer());
+        vo.setChildBirth(save.getChildBirth());
+
+
+        babyAlleRepository.deleteByUserBabyinfoEntity_BabyId(dto.getBabyId());
+
+
+        String[] split = dto.getAllergyId().split(",");
+
+
+        for (int i = 0; i <  split.length; i++) {
+            UserBabyalleEntity userBabyalleEntity=new UserBabyalleEntity();
+            UserBabyinfoEntity userBabyinfo =new UserBabyinfoEntity();
+            userBabyinfo.setBabyId(dto.getBabyId());
+            AllergyEntity allergyEntity=new AllergyEntity();
+            allergyEntity.setAllergyId(Long.valueOf(split[i]));
+            userBabyalleEntity.setAllergyEntity(allergyEntity);
+            userBabyalleEntity.setUserBabyinfoEntity(userBabyinfo);
+            babyAlleRepository.save(userBabyalleEntity);
+        }
+
+        return null;
     }
 }

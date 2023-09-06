@@ -29,8 +29,8 @@ public class SampleController {
 
     @PostMapping("/kakaoPay")
     @Operation(summary = "카카오페이 결제",description = "" +
-            "카카오페이 바로구매시 해당 productId 와 count 를 보내야한다<br>" +
-            "장바구니에서 카카오페이 구매 시 productId와count를 안 보내도 됨<br>" +
+            "카카오페이 바로구매 시 해당 productId 와 count 를 보내야한다<br>" +
+            "장바구니에서 카카오페이 구매 시 productId와 count를 안 보내도 됨<br>" +
             "address : 주소<br>" +
             "addressDetail : 상세주소<br>" +
             "orderCode : 0으로 보내야 한다<br>" +
