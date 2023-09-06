@@ -202,7 +202,7 @@ public class AdminService {
         Page<ProductEntity> productEntities = productRepository.findAll(pageable);
         List<ProductAdminDto> productAdminDtos = new ArrayList<>();
 
-        // 미리 필요한 데이터를 가져옵니다.
+        // 데이터셋
         Map<Long, List<Long>> productDataMap = new HashMap<>();
 
         for (ProductEntity productEntity : productEntities) {
@@ -221,7 +221,7 @@ public class AdminService {
             productDataMap.put(productEntity.getProductId(), cateDetailIds);
         }
 
-        // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성합니다.
+        // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성
         for (ProductEntity productEntity : productEntities) {
             List<Long> cateDetailIds = productDataMap.get(productEntity.getProductId());
             Long cateId = null;
