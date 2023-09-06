@@ -43,7 +43,7 @@ public class UserController {
             "page : 페이지 번호 (0부터 시작)<br>" +
             "size : 정보의 갯수(Default : 10) <br>" +
             "※ 버튼을 누르면 전체유저가 나옴")
-    public UserSelVo GetUserAll(@ParameterObject @PageableDefault(sort = "iuser", direction = Sort.Direction.DESC) Pageable pageable){
+    public UserSelVo GetUserAll(@ParameterObject @PageableDefault(sort = "iuser",page = 0, direction = Sort.Direction.DESC) Pageable pageable){
 //        pageable.getSort();
         return service.selUserAll(pageable);
     }

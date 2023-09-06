@@ -10,6 +10,8 @@ import com.green.babymeal.common.repository.BabyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,17 +96,24 @@ public class BabyService {
         }
         return list;
     }
+
+    @Transactional
     public BabyInsVo update(BabyUpdDto dto){
-        List<UserBabyinfoEntity> listentity = babyRepository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
+        babyRepository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
 //        listentity.listIterator().next(); // 인덱스값을 사용하지않아도 되게한다
         //iter // 포이치 자동으로 만들어줌
-        for (UserBabyinfoEntity entity : listentity) {
+//        for (UserBabyinfoEntity entity : listentity) {
             UserBabyinfoEntity userBabyinfoEntity = new UserBabyinfoEntity();
+            UserEntity userEntity = new UserEntity();
 //            userBabyinfoEntity.setBabyId(dto.getBabyId());
-            userBabyinfoEntity.setBabyId(entity.getBabyId());
+            userBabyinfoEntity.setBabyId(dto.getBabyId());
             userBabyinfoEntity.setChildBirth(dto.getChildBirth());
             userBabyinfoEntity.setPrefer(dto.getPrefer());
+            userEntity.setIuser(USERPK.getLoginUser().getIuser());
+            userBabyinfoEntity.setUserEntity(userEntity);
             babyRepository.save(userBabyinfoEntity);
+
+
             String ss= dto.getAllergyId();
             String[] split = ss.split(",");
             for (int i = 0; i < split.length; i++) {
@@ -115,7 +124,7 @@ public class BabyService {
                 userBabyalleEntity.setAllergyEntity(allergyEntity);
                 babyAlleRepository.save(userBabyalleEntity);
             }
-        }
+//        }
         BabyInsVo vo = new BabyInsVo();
         vo.setChildBirth(dto.getChildBirth());
         vo.setPrefer(dto.getPrefer());

@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "baby_table")
 @Data
 @NoArgsConstructor
 @DynamicInsert
+@DynamicUpdate
 @ToString(callSuper = true)
 public class UserBabyalleEntity {
 
