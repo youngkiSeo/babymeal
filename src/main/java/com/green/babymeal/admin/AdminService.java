@@ -262,9 +262,9 @@ public class AdminService {
 
             // 썸네일 null체크
             List<String> thumbnailList = new ArrayList<>();
-            ProductThumbnailEntity thumbnailEntity = productEntity.getProductThumbnailEntityList();
+            List<ProductThumbnailEntity> thumbnailEntity = productEntity.getProductThumbnailEntityList();
             if (thumbnailEntity != null) {
-                thumbnailList.add(thumbnailEntity.getImg()); // 가져온 썸네일 리스트에 추가
+//                thumbnailList.add(thumbnailEntity.getImg()); // 가져온 썸네일 리스트에 추가
             } else {
                 thumbnailList.add("no data");
             }
@@ -280,7 +280,7 @@ public class AdminService {
                         .cate(relationEntity.getCategoryEntity().getCateId())
                         .cateDetail(cateDetailIds) // cateDetailIds 리스트를 cateDetail에 설정
                         .allegyName(allergyIds)
-                        .thumbnail(productEntity.getProductThumbnailEntityList().getImg())
+//                        .thumbnail(productEntity.getProductThumbnailEntityList().getImg())
                         .build();
                 productAdminDtos.add(productAdminDto2);
             }

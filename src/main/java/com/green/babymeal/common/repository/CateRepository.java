@@ -20,7 +20,8 @@ public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
             " on A.productId=C.productId.productId" +
             " left join ProductAllergyEntity D" +
             " on A.productId=D.productId.productId" +
-            " where B.categoryEntity.cateId=:cateId and A.pQuantity!=0 and A.isDelete=0 and C.img is not null and B.cateDetailEntity.cateDetailId=:cateDetailId ")
+            " where B.categoryEntity.cateId=:cateId and A.pQuantity!=0 and A.isDelete=0 and C.img is not null and B.cateDetailEntity.cateDetailId=:cateDetailId " +
+            " ")
     List<CateSelVo> findBy(@Param("cateId") Long cateId, @Param("cateDetailId") Long cateDetailId);
 
     @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume,A.pointRate) " +
@@ -31,7 +32,8 @@ public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
             " on A.productId=C.productId.productId" +
             " left join ProductAllergyEntity D" +
             " on A.productId=D.productId.productId" +
-            " where B.categoryEntity.cateId=:cateId and A.pQuantity!=0 and A.isDelete=0 and C.img is not null")
+            " where B.categoryEntity.cateId=:cateId and A.pQuantity!=0 and A.isDelete=0 and C.img is not null" +
+            " ")
     List<CateSelVo> findBySel(@Param("cateId") Long cateId);
 
 
