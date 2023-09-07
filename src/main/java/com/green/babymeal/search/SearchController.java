@@ -37,10 +37,15 @@ public class SearchController {
         return service.GetRecentSearch();
     }
 
-    @DeleteMapping("/recent")
+    @DeleteMapping("/recent/{string}")
     @Operation(summary = "최근 검색어 삭제", description = "삭제하고 싶은 상품")
-    public Long removeRecent(String product){
+    public Long removeRecent(@RequestParam String product){
         return service.deleteRecentSearch(product);
+    }
+    @DeleteMapping("/recent")
+    @Operation(summary = "최근 검색어 전체 삭제", description = "삭제하고 싶은 상품")
+    public Long removeRecent(){
+        return service.deleteRecentSearchAll();
     }
 
     @GetMapping()

@@ -20,7 +20,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailEntity, 
             " on B.productId.productId = C.productId"+
             " left join ProductThumbnailEntity D"+
             " on D.productId.productId = C.productId"+
-            " WHERE A.orderId=:orderId")
+            " WHERE A.orderId=:orderId" +
+            " group by B.productId")
     List<OrderlistDetailVo>findByOrderId(@Param("orderId")Long orderId);
     List<OrderDetailEntity> findByOrderId_OrderCode(Long orderCode);
     List<OrderDetailEntity> findByOrderId_OrderCodeIn(List<Long> orderCodes);

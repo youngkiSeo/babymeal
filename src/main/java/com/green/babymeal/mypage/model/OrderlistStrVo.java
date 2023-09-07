@@ -15,6 +15,7 @@ public class OrderlistStrVo {
     private LocalDate createdAt;
     private int totalprice;
     private String pName;
+    private Long productId;
     private String img;
     private String shipment;
 }

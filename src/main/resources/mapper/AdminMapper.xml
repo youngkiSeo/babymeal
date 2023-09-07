@@ -41,12 +41,42 @@
         , A.p_quantity = #{quantity}
         , A.description = #{description}
         , A.sale_volume = #{saleVolume}
-        , A.allergy = #{allergy}
         , A.created_at = current_timestamp()
         , B.cate_id = #{category}
         , A.point_rate =#{pointRate}
         where A.product_id = #{productId}
     </update>
+
+    <!-- 신규등록시 알러지 -->
+    <insert id="insertAllergyId" parameterType="java.util.Map">
+        INSERT IGNORE INTO product_allergy (product_id, allergy_id)
+        VALUES
+        <foreach collection="allergyIds" item="allergyId" separator=",">
+            (#{productId}, #{allergyId})
+        </foreach>
+    </insert>
+    <!-- 수정시 알러지 -->
+    <!-- 기존 알러지 삭제 -->
+    <delete id="deleteAllergies" parameterType="java.lang.Long">
+        DELETE FROM product_allergy
+        WHERE product_id = #{productId}
+    </delete>
+    <!-- 입력받은 알러지 추가-->
+
+    <!-- 카테고리 전체삭제 (수정시 사용함) -->
+    <delete id="delCate" parameterType="java.lang.Long">
+        DELETE FROM product_category_relation
+        WHERE
+    </delete>
+
+    <insert id="updateAllergyId" parameterType="java.util.Map">
+        INSERT INTO product_allergy
+        (product_id, allergy_id)
+        VALUES
+        <foreach collection="allergyIds" item="allergyId" separator=",">
+            (#{productId}, #{allergyId})
+        </foreach>
+    </insert>
 
     <insert id="insProductCateRelation">
         insert into product_category_relation
@@ -73,7 +103,6 @@
         , p_quantity = #{quantity}
         , description = #{description}
         , sale_volume = #{saleVolume}
-        , allergy = #{allergy}
         , updated_at = current_timestamp()
         where product_id = #{productId}
     </update>

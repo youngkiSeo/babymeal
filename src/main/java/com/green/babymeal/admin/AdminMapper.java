@@ -1,6 +1,7 @@
 package com.green.babymeal.admin;
 
 import com.green.babymeal.admin.model.*;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,10 @@ public interface AdminMapper {
     int insWebEditorImg(AdminProductImgDto dto);
     int updAdminProduct(AdminProductUpdDto dto); // 상품 등록
     int insProductCateRelation(AdminProductCateRelationDto dto);
+    void delCate(Long productId); // 상품의 카테고리정보 삭제
+    int insertAllergyId(@Param("allergyIds") List<Long> allergyIds, @Param("productId") Long productId); // 상품신규등록-알러지등록
+    int deleteAllergies(@Param("productId") Long productId);
+    int updateAllergyId(@Param("allergyIds") List<Long> allergyIds, @Param("productId") Long productId); // 상품수정시 알러지등록
 
 
     int changeAdminProduct(AdminProductUpdDto dto); // 상품 수정
@@ -36,4 +41,5 @@ public interface AdminMapper {
     int insImgList(AdminProductImgDto dto);
     List<AdminProductEntity> getProduct(int productId);
     int delAdminProduct(int productId);
+
 }
