@@ -11,4 +11,8 @@ import java.util.List;
 @Repository
 public interface ProductThumbnailRepository extends JpaRepository<ProductThumbnailEntity,Long> {
     List<ProductThumbnailEntity> findByProductId(ProductEntity productEntity);
+    // productId와 thumbnailImg로 ProductThumbnailEntity 찾기
+    ProductThumbnailEntity findByProductId_ProductIdAndImg(Long productId, String thumbnailImg);
+    // productId로 ProductThumbnailEntity 찾기
+    ProductThumbnailEntity findByProductId_ProductId(Long productId);
 }

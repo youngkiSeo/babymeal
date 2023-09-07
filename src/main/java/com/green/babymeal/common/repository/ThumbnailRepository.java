@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ThumbnailRepository extends JpaRepository<ProductThumbnailEntity,Long> {
     ProductThumbnailEntity findAllByProductId(ProductEntity entity);
+    ProductThumbnailEntity findDistinctByProductId(ProductEntity entity);
 }

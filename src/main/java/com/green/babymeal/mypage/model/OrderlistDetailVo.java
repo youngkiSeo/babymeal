@@ -3,11 +3,13 @@ package com.green.babymeal.mypage.model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 public class OrderlistDetailVo {
     private Long productId;
     private String img;

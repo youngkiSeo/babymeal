@@ -1,6 +1,7 @@
 package com.green.babymeal.admin.model;
 
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.mypage.model.OrderlistDetailVo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class OrderlistDetailRes {
     private String productName;
     private int count;
     private int totalPrice;
-    private List<OrderDetailVo> orderDetailVo;
-    private List<OrderlistEntity> orderlist;
+    private List<OrderlistDetailVo> orderDetailVo;
+//    private List<OrderlistEntity> orderlist;
     private UserVo userVo;
 }

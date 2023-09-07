@@ -4,6 +4,9 @@ import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
 
+import com.green.babymeal.mypage.model.OrderlistDetailUserVo;
+import com.green.babymeal.mypage.model.OrderlistDetailVo;
+import com.green.babymeal.mypage.model.OrderlistUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -177,63 +178,37 @@ public class AdminService {
     }
 
 
-//    public List<OrderlistDetailRes> selOrder(Long orderCode) {
-//        // 주문정보 담을 객체 생성
-//        List<OrderlistDetailRes> resultList = new ArrayList<>();
-//
-//        // OrderlistEntity 객체를 조회하여 필요한 정보 얻기
-//        List<OrderlistEntity> orderlistEntities = orderlistRepository.findByOrderCode(orderCode);
-//
-//        for (OrderlistEntity order : orderlistEntities) {
-//            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderId());
-//
-//            UserVo userVoData = UserVo.builder()
-//                    .name((order.getIuser() != null) ? order.getIuser().getName() : "no data")
-//                    .iuser((order.getIuser() != null) ? order.getIuser().getIuser() : 0)
-//                    .build();
-//
-//            List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
-//            if (!orderDetails.isEmpty()) {
-//                orderDetailVoList = orderDetails.stream()
-//                        .map(detail -> OrderDetailVo.builder()
-//                                .orderDetailId(detail.getOrderDetailId())
-//                                .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
-//                                .count(detail.getCount())
-//                                .totalPrice(detail.getTotalPrice())
-//                                .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
-//                                .build())
-//                        .collect(Collectors.toList());
-//            } else {
-//                // OrderDetail이 없는 경우 "no data"로 처리
-//                orderDetailVoList.add(OrderDetailVo.builder()
-//                        .orderDetailId(0L)
-//                        .productId(0L)
-//                        .count(0)
-//                        .totalPrice(0)
-//                        .productName("no data")
-//                        .build());
-//            }
-////
-////            // OrderlistDetailRes 객체 생성 및 결과 리스트에 추가
-////            OrderlistDetailRes orderDetailRes = OrderlistDetailRes.builder()
-////                    .orderDetailId(order.getOrderId())
-////                    .ordercode(order.getOrderCode())
-////                    .userVo(userVoData)
-////                    .payment(order.getPayment())
-////                    .shipment(order.getShipment())
-////                    .cancel(order.getCancel())
-////                    .phoneNm(order.getPhoneNm())
-////                    .request(order.getRequest())
-////                    .reciever(order.getReciever())
-////                    .address(order.getAddress())
-////                    .addressDetail(order.getAddressDetail())
-////                    .delYn(order.getDelYn())
-////                    .usepoint(order.getUsepoint())
-////                    .orderDetailVo(orderDetailVoList)
-////                    .productName((orderDetails.size() > 1) ? orderDetails.get(1).getProductId().getPName() : "no data")
-////                    .build();
-//
-//            resultList.add(orderDetailRes);
+    public OrderlistDetailRes selOrder(Long orderCode) {
+        OrderlistEntity byOrderCode = orderlistRepository.findByOrderCode(orderCode);
+
+        List<OrderlistDetailVo> byOrderId = orderDetailRepository.findByOrderId(byOrderCode.getOrderId());
+
+//        //주문정보 세팅
+//        OrderlistUserVo vo = new OrderlistUserVo();
+//        vo.setReciever(byOrderCode.getReciever());
+//        vo.setAddress(byOrderCode.getAddress());
+//        vo.setAddressDetail(byOrderCode.getAddressDetail());
+//        vo.setPhoneNm(byOrderCode.getPhoneNm());
+//        vo.setRequest(byOrderCode.getRequest());
+//        vo.setUsepoint(byOrderCode.getUsepoint());
+
+        //유저정보 세팅
+        UserVo userVo = UserVo.builder()
+                .iuser(byOrderCode.getIuser().getIuser())
+                .name(byOrderCode.getIuser().getName())
+                .build();
+
+
+        OrderlistDetailRes data = OrderlistDetailRes.builder().orderDetailVo(byOrderId).userVo(userVo).build();
+        data.setCount(byOrderId.get(0).getCount());
+
+        // 대표상품, 전체가격
+        data.setProductName(byOrderId.get(0).getPName());
+        data.setTotalPrice(1000);
+
+
+        return data;
+    }
 
 
 
@@ -243,6 +218,9 @@ public class AdminService {
         Page<ProductEntity> productEntities = productRepository.findAll(pageable);
         List<ProductAdminDto> productAdminDtos = new ArrayList<>();
 
+        // 데이터셋
+        Map<Long, List<Long>> productDataMap = new HashMap<>();
+
         for (ProductEntity productEntity : productEntities) {
             // 알러지 정보 가져오기
             List<ProductAllergyEntity> productAllergies = productAllergyRepository.findByProductId_ProductId(productEntity.getProductId());
@@ -251,39 +229,30 @@ public class AdminService {
                     .collect(Collectors.toList());
 
             // 카테고리 정보 가져오기
-            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll();
-            List<Long> cateDetailIds = new ArrayList<>();
-
             List<ProductCateRelationEntity> productCateRelationEntities = productCateRelationRepository.findByProductEntity_ProductId(productEntity.getProductId());
+            List<Long> cateDetailIds = productCateRelationEntities.stream()
+                    .map(relationEntity -> relationEntity.getCateDetailEntity().getCateDetailId())
+                    .collect(Collectors.toList());
 
-            for (ProductCateRelationEntity relationEntity : productCateRelationEntities) {
-                cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
+            productDataMap.put(productEntity.getProductId(), cateDetailIds);
+        }
+
+        // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성
+        for (ProductEntity productEntity : productEntities) {
+            List<Long> cateDetailIds = productDataMap.get(productEntity.getProductId());
+            Long cateId = null;
+            if (cateDetailIds != null && !cateDetailIds.isEmpty()) {
+                cateId = cateDetailIds.get(0);
             }
 
-            // 썸네일 null체크
-            List<String> thumbnailList = new ArrayList<>();
-            List<ProductThumbnailEntity> thumbnailEntity = productEntity.getProductThumbnailEntityList();
-            if (thumbnailEntity != null) {
-//                thumbnailList.add(thumbnailEntity.getImg()); // 가져온 썸네일 리스트에 추가
-            } else {
-                thumbnailList.add("no data");
-            }
-
-
-            for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
-
-
-                ProductAdminDto productAdminDto2 = ProductAdminDto.builder()
-                        .productId(relationEntity.getProductEntity().getProductId())
-                        .name(productEntity.getPName())
-                        .price(productEntity.getPPrice())
-                        .cate(relationEntity.getCategoryEntity().getCateId())
-                        .cateDetail(cateDetailIds) // cateDetailIds 리스트를 cateDetail에 설정
-                        .allegyName(allergyIds)
-//                        .thumbnail(productEntity.getProductThumbnailEntityList().getImg())
-                        .build();
-                productAdminDtos.add(productAdminDto2);
-            }
+            ProductAdminDto productAdminDto = ProductAdminDto.builder()
+                    .productId(productEntity.getProductId())
+                    .name(productEntity.getPName())
+                    .price(productEntity.getPPrice())
+                    .cate(cateId) // 카테고리 1차
+                    .allegyName(cateDetailIds)
+                    .build();
+            productAdminDtos.add(productAdminDto);
         }
 
         // size가 총 갯수보다 크면 max고정
@@ -302,9 +271,11 @@ public class AdminService {
                     .map(productAllergy -> productAllergy.getAllergyId().getAllergyId())
                     .collect(Collectors.toList());
 
+            log.info("알러지 : {}", allergyIds);
+
             //카테고리 정보 가져오기
 
-            Long categoryId = null;
+//            Long categoryId = null;
             List<Long> cateDetailIds = new ArrayList<>();
 
             List<ProductCateRelationEntity> productCateRelationEntities = productCateRelationRepository.findByProductEntity_ProductId(productEntity.getProductId());
@@ -390,9 +361,6 @@ public class AdminService {
     }
 
 
-    // 이미지 리스트로넣기
-    // 현재상태 : 리스트로 여러개 들어가야하는데 1개씩 넣을때만 에러없이 정상동작됨
-    // 여러개 넣으면 1개만 들어가고 에러발생. 수정중
     public List<ProductImgPkFull> insWebEditorImgList(List<MultipartFile> img, Long productId) {
         String path = getAbsolutePath(fileDir) + "/webeditor/" + productId;
         File file = new File(path);
@@ -419,7 +387,7 @@ public class AdminService {
             ProductImageEntity save = productImageRepository.save(productImageEntity);
             ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(save.getP_img_id());
-            //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
+            //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName; 전체경로
             String fullPath = "/img/webeditor/" + productId + "/" + randomName;
             full.setImg(fullPath);
             list.add(full);
@@ -495,6 +463,7 @@ public class AdminService {
 
 
     //썸네일 리스트
+    @Transactional
     public List<ProductImgPkFull> insImgList(List<MultipartFile> img, Long productId) {
         String path = getAbsolutePath(fileDir) + "/product/" + productId;
         File file = new File(path);
@@ -517,13 +486,43 @@ public class AdminService {
             adminMapper.insImgList(dto);
             ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(dto.getPImgId());
-            String fullPath = "http://192.168.0.144:5001/img/product/" + productId + "/" + randomName;
+            String fullPath = "/img/product/" + productId + "/" + randomName;
             full.setImg(fullPath);
             list.add(full);
         }
         return list;
     }
 
+    // 썸네일 삭제
+    public int deleteThumbnail(AdminThumbnailDelDto dto) {
+        Long productId = dto.getProductId();
+        String thumbnailFullName = dto.getThumbnailFullName();
+
+        // 데이터베이스에서 해당 productId와 thumbnailFullName을 가진 썸네일을 찾아서 삭제
+        ProductThumbnailEntity thumbnailToDelete = productThumbnailRepository.findByProductId_ProductIdAndImg(productId, thumbnailFullName);
+
+        if (thumbnailToDelete != null) {
+            String path = getAbsolutePath(fileDir) + "/product/" + productId + "/" + thumbnailToDelete.getImg();
+            File file = new File(path);
+
+            if (file.exists()) {
+                if (file.delete()) {
+                    // 파일 삭제 성공 시에만 데이터베이스 레코드 삭제
+                    productThumbnailRepository.delete(thumbnailToDelete);
+                    return 1;
+                } else {
+                    // 파일 삭제 실패
+                    return -1;
+                }
+            } else {
+                // 파일이 이미 존재하지 않음
+                // 데이터베이스 레코드 삭제
+                productThumbnailRepository.delete(thumbnailToDelete);
+                return -2;
+            }
+        }
+        return 0;
+    }
 
 //    public Page<ProductAdminDto> allProduct(Pageable pageable) {
 //        return productRepository.findAll(pageable).map(productEntity -> {
