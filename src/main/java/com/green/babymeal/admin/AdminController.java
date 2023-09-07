@@ -46,6 +46,7 @@ public class AdminController {
                                        @RequestParam(required = false) String filter2,
                                        @RequestParam(required = false) String filter3,
                                        @RequestParam(required = false) String filter4,
+                                       @RequestParam(required = false) String filter5,
                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                        Pageable pageable) {
@@ -55,7 +56,7 @@ public class AdminController {
             startDate = LocalDate.of(today.getYear(), Month.JANUARY, 1);
             endDate = today;
         }
-        return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, pageable);
+        return service.allOrder(startDate, endDate, filter1, filter2, filter3, filter4, filter5, pageable);
     }
 
 

@@ -14,6 +14,8 @@ import java.util.List;
 public interface ProductAllergyRepository extends JpaRepository<ProductAllergyEntity, Long> {
     List<ProductAllergyEntity> findByProductId(ProductEntity productId);
     List<ProductAllergyEntity> findByProductId_ProductId(Long productId);
+    @Query("SELECT pa.allergyId.allergyId FROM ProductAllergyEntity pa WHERE pa.productId.productId = :productId")
+    List<Long> findAllergyIdsByProductId(@Param("productId") Long productId);
 
 }
 
