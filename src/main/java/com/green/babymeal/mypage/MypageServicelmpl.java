@@ -372,7 +372,9 @@ public class MypageServicelmpl implements MypageService {
         //한달 총 매출 구하기
         List<SaleVolumnCount> salecount = jpaQueryFactory.select(Projections.bean(SaleVolumnCount.class, (saleVolumn.count.sum()).as("count"),
                         saleVolumn.productId.productId.as("productId")))
-                .from(saleVolumn).where(saleVolumn.createdAt.between(start, end)).groupBy(saleVolumn.productId.productId).fetch();
+                .from(saleVolumn)
+                .where(saleVolumn.createdAt.between(start, end))
+                .groupBy(saleVolumn.productId.productId).fetch();
 
 
         for (int i = 0; i <salecount.size(); i++) {
@@ -417,11 +419,6 @@ public class MypageServicelmpl implements MypageService {
             Long cateId = categoryEntity.getCateId();
             String name = "[" + cateId + "단계] " + productEntity.getPName();
             fetch.get(i).setPName(name);
-
-            //이미지 경로 붙이기
-            String img = fetch.get(i).getImg();
-            String thu = "/img/product/"+fetch.get(i).getProductId()+"/"+img;
-            fetch.get(i).setImg(thu);
         }
 
         SaleVolumnVoCount build = SaleVolumnVoCount.builder().vo(fetch).count(saleVolumnCount.get(0).getProductId()).totalprice(totalprice).build();
