@@ -63,6 +63,7 @@ public class OrderBasketService {
 
         List<OrderBasketEntity> byUserEntityIuser = repository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
 
+
         List<OrderBasketVo> list = byUserEntityIuser.stream().map(item ->
                 OrderBasketVo.builder()
                         .cartId(item.getCartId())
@@ -71,7 +72,7 @@ public class OrderBasketService {
                         .price(item.getProductEntity().getPPrice())
                         .createdAt(item.getCreateAt())
                         .count(item.getCount())
-                        .thumbnail("/img/product/" + item.getProductEntity().getProductId() + "/" + thumbnailRepository.findDistinctByProductId(item.getProductEntity()).getImg())
+                        .thumbnail("/img/product/" + item.getProductEntity().getProductId() + "/" + thumbnailRepository.findDistinctByProductId(item.getProductEntity().getProductId()).getImg())
                         .build()
         ).toList();
 
@@ -99,6 +100,7 @@ public class OrderBasketService {
     public int delete(Long cartId){
         repository.deleteById(cartId);
         Optional<OrderBasketEntity> byId = repository.findById(cartId);
+
 
         if(byId.isEmpty()){
             return 1;

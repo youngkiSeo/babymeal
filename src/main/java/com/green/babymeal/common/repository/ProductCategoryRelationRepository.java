@@ -2,6 +2,7 @@ package com.green.babymeal.common.repository;
 
 import com.green.babymeal.common.entity.ProductCateRelationEntity;
 import com.green.babymeal.common.entity.ProductEntity;
+import com.green.babymeal.common.entity.ProductImageEntity;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,9 @@ public interface ProductCategoryRelationRepository extends JpaRepository<Product
            " where p.productEntity.productId=:productId " +
            " group by p.productEntity.productId ")
    ProductCateRelationEntity find(@Param("productId") Long productId);
+
+
+
 
 
 }

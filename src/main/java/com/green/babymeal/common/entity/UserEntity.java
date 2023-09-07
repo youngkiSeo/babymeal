@@ -89,6 +89,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     @JsonManagedReference
+    @JsonIgnore
     private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();
 
 
