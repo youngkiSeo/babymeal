@@ -66,82 +66,55 @@ public class AdminService {
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4,
                                        Pageable pageable) {
-        // "필터1 : 검색어  필터2 : 주문번호  필터3 : 상품번호   필터4 : 주문상태"
-        // 기간 내 주문리스트를 가져온다
         Page<OrderlistEntity> outputOrderlist = orderlistRepository.findByCreatedAtBetween(startDate, endDate, pageable);
-        // 주문정보 담을 객체 생성
         List<OrderlistRes> resultList = new ArrayList<>();
 
         for (OrderlistEntity order : outputOrderlist.getContent()) {
             List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderCode());
+
+            // 주문 관련 정보 추출
+            String productName = "no data";
+            if (!orderDetails.isEmpty()) {
+                productName = orderDetails.get(0).getProductId().getPName();
+            }
 
             UserVo userVoData = UserVo.builder()
                     .name((order.getIuser() != null) ? order.getIuser().getName() : "no data")
                     .iuser((order.getIuser() != null) ? order.getIuser().getIuser() : 0)
                     .build();
 
-            List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
-            if (!orderDetails.isEmpty()) {
-                orderDetailVoList = orderDetails.stream()
-                        .map(detail -> OrderDetailVo.builder()
-                                .orderDetailId(detail.getOrderDetailId())
-                                .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
-                                .count(detail.getCount())
-                                .totalPrice(detail.getTotalPrice())
-                                .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
-                                .build())
-                        .collect(Collectors.toList());
-            } else {
-                // OrderDetail이 없는 경우 "no data"로 처리
-                orderDetailVoList.add(OrderDetailVo.builder()
-                        .orderDetailId(0L)
-                        .productId(0L)
-                        .count(0)
-                        .totalPrice(0)
-                        .productName("no data")
-                        .build());
-            }
+            List<OrderDetailVo> orderDetailVoList = orderDetails.stream()
+                    .map(detail -> OrderDetailVo.builder()
+                            .orderDetailId(detail.getOrderDetailId())
+                            .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
+                            .count(detail.getCount())
+                            .totalPrice(detail.getTotalPrice())
+                            .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
+                            .build())
+                    .collect(Collectors.toList());
 
-            if (!orderDetails.isEmpty()) {
-                OrderlistRes orderlistRes = OrderlistRes.builder()
-                        .orderId(order.getOrderId())
-                        .ordercode(order.getOrderCode())
-                        .userVo(userVoData)
-                        .payment(order.getPayment())
-                        .shipment(order.getShipment())
-                        .cancel(order.getCancel())
-                        .phoneNm(order.getPhoneNm())
-                        .request(order.getRequest())
-                        .reciever(order.getReciever())
-                        .address(order.getAddress())
-                        .addressDetail(order.getAddressDetail())
-                        .delYn(order.getDelYn())
-                        .usepoint(order.getUsepoint())
-                        .orderDetailVo(orderDetailVoList)
-                        .productName((orderDetails.size() > 1) ? orderDetails.get(1).getProductId().getPName() : "no data")
-                        .build();
-                resultList.add(orderlistRes);
-            } else {
-                // OrderDetail이 없는 경우 "no data"로 처리
-                OrderlistRes orderlistRes = OrderlistRes.builder()
-                        .orderId(order.getOrderId())
-                        .ordercode(order.getOrderCode())
-                        .userVo(userVoData)
-                        .payment(order.getPayment())
-                        .shipment(order.getShipment())
-                        .cancel(order.getCancel())
-                        .phoneNm(order.getPhoneNm())
-                        .request(order.getRequest())
-                        .reciever(order.getReciever())
-                        .address(order.getAddress())
-                        .addressDetail(order.getAddressDetail())
-                        .delYn(order.getDelYn())
-                        .usepoint(order.getUsepoint())
-                        .orderDetailVo(orderDetailVoList)
-                        .productName("no data")
-                        .build();
-                resultList.add(orderlistRes);
-            }
+            OrderlistRes orderlistRes = OrderlistRes.builder()
+                    .orderId(order.getOrderId())
+                    .ordercode(order.getOrderCode())
+                    .userVo(userVoData)
+                    .payment(order.getPayment())
+                    .shipment(order.getShipment())
+                    .cancel(order.getCancel())
+                    .phoneNm(order.getPhoneNm())
+                    .request(order.getRequest())
+                    .reciever(order.getReciever())
+                    .address(order.getAddress())
+                    .addressDetail(order.getAddressDetail())
+                    .delYn(order.getDelYn())
+                    .usepoint(order.getUsepoint())
+                    .orderDetailVo(orderDetailVoList)
+                    .productName(productName)
+                    .createdAt(order.getCreatedAt())
+                    .iuser(order.getIuser().getIuser())
+                    .userName(order.getIuser().getName())
+                    .build();
+
+            resultList.add(orderlistRes);
         }
 
         // 필터2 : 주문번호 기준 필터링
@@ -217,6 +190,7 @@ public class AdminService {
     public Page<ProductAdminDto> allProduct(Pageable pageable) {
         Page<ProductEntity> productEntities = productRepository.findAll(pageable);
         List<ProductAdminDto> productAdminDtos = new ArrayList<>();
+        List<Long> allergyIds = new ArrayList<>();
 
         // 데이터셋
         Map<Long, List<Long>> productDataMap = new HashMap<>();
@@ -224,7 +198,7 @@ public class AdminService {
         for (ProductEntity productEntity : productEntities) {
             // 알러지 정보 가져오기
             List<ProductAllergyEntity> productAllergies = productAllergyRepository.findByProductId_ProductId(productEntity.getProductId());
-            List<Long> allergyIds = productAllergies.stream()
+            allergyIds = productAllergies.stream()
                     .map(productAllergy -> productAllergy.getAllergyId().getAllergyId())
                     .collect(Collectors.toList());
 
@@ -235,10 +209,21 @@ public class AdminService {
                     .collect(Collectors.toList());
 
             productDataMap.put(productEntity.getProductId(), cateDetailIds);
+
         }
 
         // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성
         for (ProductEntity productEntity : productEntities) {
+
+            List<ProductThumbnailEntity> thumbnailEntities = productThumbnailRepository.findByProductId(productEntity);
+
+            // 썸네일 URL 목록을 생성
+            List<String> thumbnailList = new ArrayList<>();
+            for (ProductThumbnailEntity thumbnailEntity : thumbnailEntities) {
+                thumbnailList.add(thumbnailEntity.getImg());
+            }
+
+
             List<Long> cateDetailIds = productDataMap.get(productEntity.getProductId());
             Long cateId = null;
             if (cateDetailIds != null && !cateDetailIds.isEmpty()) {
@@ -250,7 +235,9 @@ public class AdminService {
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
                     .cate(cateId) // 카테고리 1차
-                    .allegyName(cateDetailIds)
+                    .cateDetail(cateDetailIds)
+                    .allegyName(allergyIds)
+                    .thumbnail(thumbnailList.isEmpty() ? "no data" : thumbnailList.get(0))
                     .build();
             productAdminDtos.add(productAdminDto);
         }
@@ -401,24 +388,25 @@ public class AdminService {
     // 최종 상품 등록할때 사용되는 메소드
     public int updProduct(AdminProductUpdDto dto) {
 
-        if (dto.getCategory() > 4 && dto.getCategory() > 0) {
-            log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
-            return 0;
-        }
         AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
         apcd.setProductId(dto.getProductId());
         apcd.setCateId(dto.getCategory());
         apcd.setCateDetailId(dto.getCateDetail());
         adminMapper.insProductCateRelation(apcd);
+        adminMapper.insertAllergyId(dto.getAllergyId(), dto.getProductId());
         return adminMapper.updAdminProduct(dto);
     }
 
+    // 웹에디터 - 상품수정
     public int changeProduct(AdminProductUpdDto dto) {
-        // 상품 정보 수정
-        if (dto.getCategory() > 4 && dto.getCategory() > 0) {
-            log.info("카테고리는 1-4까지 설정 가능, 확인 후 다시 입력하세요");
-            return 0;
-        }
+        AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
+        apcd.setProductId(dto.getProductId());
+        apcd.setCateId(dto.getCategory());
+        apcd.setCateDetailId(dto.getCateDetail());
+        adminMapper.delCate(dto.getProductId()); // 상품의 카테고리정보 모두 삭제
+        adminMapper.insProductCateRelation(apcd); // 상품의 카테고리정보 입력
+        adminMapper.deleteAllergies(dto.getProductId()); // 상품의 알러지정보 모두 삭제
+        adminMapper.updateAllergyId(dto.getAllergyId(), dto.getProductId()); // 상품의 알러지정보 입력
         return adminMapper.changeAdminProduct(dto);
     }
 

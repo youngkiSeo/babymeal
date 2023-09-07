@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class OrderlistRes {
     private Byte payment; // 결제수단
     private Byte shipment; // 배송상태
     private Byte cancel; // 취소환불
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
     private String phoneNm;
     private String request;
     private String reciever;

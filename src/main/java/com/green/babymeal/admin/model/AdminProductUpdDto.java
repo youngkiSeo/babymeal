@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class AdminProductUpdDto {
-    int productId;
+    Long productId;
     String name;
     int price;
     int quantity;
@@ -14,5 +14,6 @@ public class AdminProductUpdDto {
     int saleVolume;
     int category;
     float pointRate;
+    List<Long> allergyId;
     List<Integer> cateDetail;
 }

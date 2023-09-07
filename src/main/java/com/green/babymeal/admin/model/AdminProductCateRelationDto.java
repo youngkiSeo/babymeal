@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class AdminProductCateRelationDto {
 
-    private int productId;
+    private Long productId;
     private int cateId;
     private List<Integer> cateDetailId;
 
