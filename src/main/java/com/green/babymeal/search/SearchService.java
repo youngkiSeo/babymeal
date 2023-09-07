@@ -57,6 +57,19 @@ public class SearchService {
         Long remove = redisTemplate.opsForList().remove(key, 0, product);
         return remove;
     }
+    public Long deleteRecentSearchAll(){
+        UserEntity loginUser = USERPK.getLoginUser();
+        String key = "a:babymeal" +loginUser.getIuser();
+        int start = 0;
+        List<String> range = redisTemplate.opsForList().range(key, start, keysize);
+        Long remove = null;
+        for (String keyword:range) {
+             remove = redisTemplate.opsForList().remove(key, 0, keyword);
+        }
+
+
+        return remove;
+    }
 
     public Double deleteRedisPopular(String msg){
         Double babymeal = null;
@@ -155,10 +168,10 @@ public class SearchService {
 
 
         for (int i = 0; i <productDto.size(); i++) {
-            String thumbnail = productDto.get(i).getImg();
-            int productid = productDto.get(i).getProductid();
-            String fullPath = "/img/product/"+productid+"/"+thumbnail;
-            productDto.get(i).setImg(fullPath);
+            //String thumbnail = productDto.get(i).getImg();
+            //int productid = productDto.get(i).getProductid();
+            //String fullPath = "/img/product/"+productid+"/"+thumbnail;
+            //productDto.get(i).setImg(fullPath);
 
             String cateId = productDto.get(i).getCateId();
             String name = productDto.get(i).getName();

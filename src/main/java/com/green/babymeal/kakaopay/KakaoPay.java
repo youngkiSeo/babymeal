@@ -88,48 +88,45 @@ public class KakaoPay {
         kakaoPayDDto.setUsepoint(dto.getUsepoint());
 
 
-
         int productCount=0;
         int countSum=0;
 
-        if(dto.getProductId()!=null || dto.getProductId()!=0){
-            check=1;
+        if(dto.getProductId()!=null) {
+            check = 1;
             ProductEntity productEntity = productRepository.findById(dto.getProductId()).get();
             String pName = productEntity.getPName();
-            productName=pName;
+            productName = pName;
             int pPrice = productEntity.getPPrice();
-            totalPrice=pPrice*dto.getCount();
+            totalPrice = pPrice * dto.getCount();
             kakaoPayDDto.setTotalPrice(totalPrice);
-            productCount=dto.getCount();
-            allTotalPrice=totalPrice;
+            productCount = dto.getCount();
+            allTotalPrice = totalPrice;
+
+
         }
 
+        else{
+                check = 2;
+                List<OrderBasketEntity> byUserEntityIuser = orderBasketRepository.findByUserEntity_Iuser(2L);
+                for (int i = 0; i < byUserEntityIuser.size(); i++) {
+                    OrderBasketEntity orderBasketEntity = byUserEntityIuser.get(i);
+                    Long productId = orderBasketEntity.getProductEntity().getProductId();
+                    ProductEntity productEntity = productRepository.findById(productId).get();
+                    String pName = productEntity.getPName();
+                    int count = byUserEntityIuser.get(i).getCount();
+                    countSum += count;
+                    productName += pName + count + "개\n";
+                    int pPrice = productEntity.getPPrice();
+                    totalPrice = (pPrice * count);
+                    countList.add(count);
+                    totalPriceList.add(pPrice * count);
+                    productIdList.add(productId);
+                    allTotalPrice += totalPrice;
+                }
+                productCount = countSum;
 
 
-        else {
-            check=2;
-            List<OrderBasketEntity> byUserEntityIuser = orderBasketRepository.findByUserEntity_Iuser(2L);
-            for (int i = 0; i < byUserEntityIuser.size(); i++) {
-                OrderBasketEntity orderBasketEntity = byUserEntityIuser.get(i);
-                Long productId = orderBasketEntity.getProductEntity().getProductId();
-                ProductEntity productEntity = productRepository.findById(productId).get();
-                String pName = productEntity.getPName();
-                int count = byUserEntityIuser.get(i).getCount();
-                countSum+=count;
-                productName+=pName+count+"개\n";
-                int pPrice = productEntity.getPPrice();
-                totalPrice=(pPrice*count);
-                countList.add(count);
-                totalPriceList.add(pPrice*count);
-                productIdList.add(productId);
-                allTotalPrice+=totalPrice;
             }
-
-            productCount=countSum;
-
-
-
-        }
 
 
 

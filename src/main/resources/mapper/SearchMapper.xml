@@ -53,6 +53,7 @@
         where A.p_quantity!=0 AND A.is_delete=0
         and A.p_name LIKE '%${word}%'
         AND A.p_name REGEXP #{msg}
+        AND C.img is not null
         <if test="allergy!=''">
             AND A.product_id NOT IN(SELECT product_id FROM product_allergy WHERE allergy_id in(${allergy}))
         </if>
