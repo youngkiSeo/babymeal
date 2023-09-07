@@ -47,34 +47,31 @@ public class CateService {
     }
 
     public List<CateSelVo> selCateList(CateSelList cateSelList) {
-        log.info("{}", cateSelList.getCateDetailId());
 
         List<CateSelVo> by = cateRepository.findBy(cateSelList.getCateId(), cateSelList.getCateDetailId());
         if (null != cateSelList.getCateDetailId()) {
             for (int i = 0; i < by.size(); i++) {
-                Long productId = by.get(i).getProductId();
-                ProductCateRelationEntity productCateRelationEntity = productCategoryRelationRepository.findById(productId).get();
-                Long productCateId = productCateRelationEntity.getProductCateId();
-                by.get(i).setName("[" + productCateId + "단계]" + by.get(i).getName());
-                by.get(i).setThumbnail("/img/product/" + productId + "/" + by.get(i).getThumbnail());
+                ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(by.get(i).getProductId());
 
+                by.get(i).setName("[" + productCateRelationEntities.getCategoryEntity().getCateId() + "단계]" + by.get(i).getName());
+                by.get(i).setThumbnail("/img/product/" + by.get(i).getProductId() + "/" + by.get(i).getThumbnail());
             }
             return by;
 
         } else {
             List<CateSelVo> bySel = cateRepository.findBySel(cateSelList.getCateId());
             for (int i = 0; i < bySel.size(); i++) {
-                Long productId = bySel.get(i).getProductId();
-                ProductCateRelationEntity productCateRelationEntity = productCategoryRelationRepository.findById(productId).get();
-                Long productCateId = productCateRelationEntity.getProductCateId();
-                bySel.get(i).setName("[" + productCateId + "단계]" + bySel.get(i).getName());
-                bySel.get(i).setThumbnail("/img/product/" + productId + "/" + bySel.get(i).getThumbnail());
+                ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(bySel.get(i).getProductId());
+
+
+                bySel.get(i).setName("[" + productCateRelationEntities.getCategoryEntity().getCateId() + "단계]" + bySel.get(i).getName());
+                bySel.get(i).setThumbnail("/img/product/" + bySel.get(i).getProductId() + "/" + bySel.get(i).getThumbnail());
             }
             return bySel;
+            }
+
         }
 
     }
 
 
-
-}

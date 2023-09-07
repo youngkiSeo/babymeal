@@ -32,6 +32,8 @@ public class CateController {
 
     @GetMapping
     @Operation(summary = "해당 카테고리 상품만 조회",description = "" +
+            "1차 카테고리 상품만 조회하고 싶으면 cateId만 보낸다<br>" +
+            "2차 카테고리 상품을 조회 시 cateId cateDetail 둘다 보낸다<br>" +
             "productId : 상품 번호<br>" +
             "thumbnail : 상품 썸네일<br>" +
             "price : 상품 1개 가격<br>" +
