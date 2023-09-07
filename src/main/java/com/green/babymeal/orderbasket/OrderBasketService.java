@@ -60,25 +60,20 @@ public class OrderBasketService {
 
     public List<OrderBasketVo> get(){
 
-        List<OrderBasketEntity> byUserEntityIuser = repository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
-        List<OrderBasketVo> list=new ArrayList<>();
-        for (OrderBasketEntity orderBasketEntity : byUserEntityIuser) {
-            Long productId = orderBasketEntity.getProductEntity().getProductId();
-            ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findByProductEntity(byUserEntityIuser.listIterator().next().getProductEntity());
-            ProductThumbnailEntity productThumbnailEntity = thumbnailRepository.findById(productId).get();
-            String fullName="["+byProductEntity.getCategoryEntity().getCateId()+"단계]"+orderBasketEntity.getProductEntity().getPName();
 
-            OrderBasketVo vo=OrderBasketVo.builder()
-                    .cartId(orderBasketEntity.getCartId())
-                    .productId(orderBasketEntity.getProductEntity().getProductId())
-                    .productName(fullName)
-                    .price(orderBasketEntity.getProductEntity().getPPrice())
-                    .createdAt(orderBasketEntity.getCreateAt())
-                    .count(orderBasketEntity.getCount())
-                    .thumbnail("/img/product/" + productId + "/" + productThumbnailEntity.getImg())
-                    .build();
-            list.add(vo);
-        }
+        List<OrderBasketEntity> byUserEntityIuser = repository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
+
+        List<OrderBasketVo> list = byUserEntityIuser.stream().map(item ->
+                OrderBasketVo.builder()
+                        .cartId(item.getCartId())
+                        .productId(item.getProductEntity().getProductId())
+                        .productName("[" + productCategoryRelationRepository.find(item.getProductEntity().getProductId()).getCategoryEntity().getCateId() + "단계]" + item.getProductEntity().getPName())
+                        .price(item.getProductEntity().getPPrice())
+                        .createdAt(item.getCreateAt())
+                        .count(item.getCount())
+                        .thumbnail("/img/product/" + item.getProductEntity().getProductId() + "/" + thumbnailRepository.findDistinctByProductId(item.getProductEntity()).getImg())
+                        .build()
+        ).toList();
 
         return list;
     }

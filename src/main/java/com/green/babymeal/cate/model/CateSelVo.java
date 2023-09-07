@@ -15,6 +15,7 @@ public class CateSelVo {
     private int saleVoumn;
     private float pointRate;
 
+
     public CateSelVo(Long productId, String img, int price, String name, int quantity, int saleVoumn,float pointRate) {
         this.productId = productId;
         this.thumbnail = img;

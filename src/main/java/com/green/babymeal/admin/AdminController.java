@@ -123,7 +123,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/{productId}")
-    @Operation(summary = "웹에디터 에서 취소를 하면 테이블에서 이미지 데이터와 빈 값의 상품 테이블 데이터를 삭제")
+    @Operation(summary = "웹에디터에서 상품등록 취소를 하면 테이블에서 이미지 데이터와 빈 값의 상품 테이블 데이터를 삭제")
     public int delProductImg(@PathVariable Long productId){
         return service.delProductImg(productId);
     }

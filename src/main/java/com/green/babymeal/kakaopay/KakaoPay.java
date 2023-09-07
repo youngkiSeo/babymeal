@@ -47,7 +47,8 @@ public class KakaoPay {
     private final AuthenticationFacade USERPK;
 
     private int check=0;
-     private int allTotalPrice=0;
+    private int allTotalPrice=0;
+    private int usepoint=0;
 
     List countList=new LinkedList();
     List totalPriceList=new ArrayList();
@@ -65,6 +66,8 @@ public class KakaoPay {
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.add("Content-Type","application/x-www-form-urlencoded;charset=utf-8");
 
+
+        usepoint=dto.getUsepoint();
         String productName="";
         int totalPrice=0;
         Long code=0L;
@@ -144,7 +147,7 @@ public class KakaoPay {
         params.add("partner_user_id",USERPK.getLoginUser().getIuser());
         params.add("item_name", productName); //상품 이름
         params.add("quantity", productCount); //상품의 수량
-        params.add("total_amount", allTotalPrice); //상품의 총가격
+        params.add("total_amount", allTotalPrice-usepoint); //상품의 총가격
         params.add("tax_free_amount", "100");
         params.add("approved_at", LocalDateTime.now().toString()); //구매일자
         params.add("approval_url", "http://192.168.0.144:5001/kakaopaypayment");
@@ -286,7 +289,7 @@ public class KakaoPay {
         params.add("partner_order_id", "1001");
         params.add("partner_user_id", USERPK.getLoginUser().getIuser());
         params.add("pg_token", pg_token);
-        params.add("total_amount", allTotalPrice);
+        params.add("total_amount", allTotalPrice-usepoint);
         params.add("approved_at", LocalDateTime.now().toString());
         log.info(pg_token);
         HttpEntity<MultiValueMap<String, Object>> body = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
