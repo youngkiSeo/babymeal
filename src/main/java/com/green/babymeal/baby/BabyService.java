@@ -101,17 +101,24 @@ public class BabyService {
         }
         return list;
     }
+
+    /*@Transactional
     public BabyInsVo update(BabyUpdDto dto){
-        List<UserBabyinfoEntity> listentity = babyRepository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
+        babyRepository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
 //        listentity.listIterator().next(); // 인덱스값을 사용하지않아도 되게한다
         //iter // 포이치 자동으로 만들어줌
-        for (UserBabyinfoEntity entity : listentity) {
+//        for (UserBabyinfoEntity entity : listentity) {
             UserBabyinfoEntity userBabyinfoEntity = new UserBabyinfoEntity();
+            UserEntity userEntity = new UserEntity();
 //            userBabyinfoEntity.setBabyId(dto.getBabyId());
-            userBabyinfoEntity.setBabyId(entity.getBabyId());
+            userBabyinfoEntity.setBabyId(dto.getBabyId());
             userBabyinfoEntity.setChildBirth(dto.getChildBirth());
             userBabyinfoEntity.setPrefer(dto.getPrefer());
+            userEntity.setIuser(USERPK.getLoginUser().getIuser());
+            userBabyinfoEntity.setUserEntity(userEntity);
             babyRepository.save(userBabyinfoEntity);
+
+
             String ss= dto.getAllergyId();
             String[] split = ss.split(",");
             for (int i = 0; i < split.length; i++) {
@@ -122,17 +129,17 @@ public class BabyService {
                 userBabyalleEntity.setAllergyEntity(allergyEntity);
                 babyAlleRepository.save(userBabyalleEntity);
             }
-        }
+//        }
         BabyInsVo vo = new BabyInsVo();
         vo.setChildBirth(dto.getChildBirth());
         vo.setPrefer(dto.getPrefer());
         vo.setAllegyId(dto.getAllergyId());
         vo.setIuser(USERPK.getLoginUser().getIuser());
         return vo;
-    }
+    }*/
 
     @Transactional
-    public List updateBaby(BabyUpdDto dto){
+    public BabyInsVo updateBaby(BabyUpdDto dto){
 
         UserBabyinfoEntity userBabyinfoEntity = babyRepository.findById(dto.getBabyId()).get();
         userBabyinfoEntity.setPrefer(dto.getPrefer());
@@ -162,6 +169,12 @@ public class BabyService {
             babyAlleRepository.save(userBabyalleEntity);
         }
 
-        return null;
+        BabyInsVo babyInsVo = new BabyInsVo();
+        babyInsVo.setChildBirth(dto.getChildBirth());
+        babyInsVo.setPrefer(dto.getPrefer());
+        babyInsVo.setAllegyId(dto.getAllergyId());
+        babyInsVo.setIuser(USERPK.getLoginUser().getIuser());
+
+        return babyInsVo;
     }
 }

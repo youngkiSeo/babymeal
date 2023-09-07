@@ -12,11 +12,13 @@ public class SaleVolumnVo {
     private int count;
     private String pName;
     private int pPrice;
+    private String img;
 
-    public SaleVolumnVo(Long productId, int count, String pName, int pPrice) {
+    public SaleVolumnVo(Long productId, int count, String pName, int pPrice, String img) {
         this.productId = productId;
         this.count = count;
         this.pName = pName;
         this.pPrice = pPrice;
+        this.img = img;
     }
 }

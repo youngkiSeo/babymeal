@@ -18,6 +18,6 @@ public class OrderlistDetailRes {
     private int count;
     private int totalPrice;
     private List<OrderDetailVo> orderDetailVo;
-    private List<OrderlistEntity> orderlist;
+//    private List<OrderlistEntity> orderlist;
     private UserVo userVo;
 }

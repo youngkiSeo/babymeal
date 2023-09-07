@@ -15,8 +15,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @DynamicInsert
-@ToString(callSuper = true)
 @DynamicUpdate
+@ToString(callSuper = true)
 public class UserBabyinfoEntity {
 
     @Id

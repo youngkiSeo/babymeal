@@ -5,6 +5,7 @@ import com.green.babymeal.common.entity.UserEntity;
 import com.green.babymeal.user.model.UserDelDto;
 import com.green.babymeal.user.model.UserSelVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository rep;
@@ -49,7 +51,8 @@ public class UserService {
         UserSelVo vo = new UserSelVo();
         vo.setPage(pageable.getPageNumber());
         vo.setMaxPage(all.getTotalPages());
-        vo.setCount(all.getSize());
+        vo.setCount((int)rep.count());
+//        vo.setCount(all.getSize());
         vo.setList(list);
         return vo;
     }

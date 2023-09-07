@@ -4,6 +4,9 @@ import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
 
+import com.green.babymeal.mypage.model.OrderlistDetailUserVo;
+import com.green.babymeal.mypage.model.OrderlistDetailVo;
+import com.green.babymeal.mypage.model.OrderlistUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -177,63 +178,21 @@ public class AdminService {
     }
 
 
-//    public List<OrderlistDetailRes> selOrder(Long orderCode) {
-//        // 주문정보 담을 객체 생성
-//        List<OrderlistDetailRes> resultList = new ArrayList<>();
-//
-//        // OrderlistEntity 객체를 조회하여 필요한 정보 얻기
-//        List<OrderlistEntity> orderlistEntities = orderlistRepository.findByOrderCode(orderCode);
-//
-//        for (OrderlistEntity order : orderlistEntities) {
-//            List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderId());
-//
-//            UserVo userVoData = UserVo.builder()
-//                    .name((order.getIuser() != null) ? order.getIuser().getName() : "no data")
-//                    .iuser((order.getIuser() != null) ? order.getIuser().getIuser() : 0)
-//                    .build();
-//
-//            List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
-//            if (!orderDetails.isEmpty()) {
-//                orderDetailVoList = orderDetails.stream()
-//                        .map(detail -> OrderDetailVo.builder()
-//                                .orderDetailId(detail.getOrderDetailId())
-//                                .productId((detail.getProductId() != null) ? detail.getProductId().getProductId() : 1)
-//                                .count(detail.getCount())
-//                                .totalPrice(detail.getTotalPrice())
-//                                .productName((detail.getProductId() != null) ? detail.getProductId().getPName() : "no data")
-//                                .build())
-//                        .collect(Collectors.toList());
-//            } else {
-//                // OrderDetail이 없는 경우 "no data"로 처리
-//                orderDetailVoList.add(OrderDetailVo.builder()
-//                        .orderDetailId(0L)
-//                        .productId(0L)
-//                        .count(0)
-//                        .totalPrice(0)
-//                        .productName("no data")
-//                        .build());
-//            }
-////
-////            // OrderlistDetailRes 객체 생성 및 결과 리스트에 추가
-////            OrderlistDetailRes orderDetailRes = OrderlistDetailRes.builder()
-////                    .orderDetailId(order.getOrderId())
-////                    .ordercode(order.getOrderCode())
-////                    .userVo(userVoData)
-////                    .payment(order.getPayment())
-////                    .shipment(order.getShipment())
-////                    .cancel(order.getCancel())
-////                    .phoneNm(order.getPhoneNm())
-////                    .request(order.getRequest())
-////                    .reciever(order.getReciever())
-////                    .address(order.getAddress())
-////                    .addressDetail(order.getAddressDetail())
-////                    .delYn(order.getDelYn())
-////                    .usepoint(order.getUsepoint())
-////                    .orderDetailVo(orderDetailVoList)
-////                    .productName((orderDetails.size() > 1) ? orderDetails.get(1).getProductId().getPName() : "no data")
-////                    .build();
-//
-//            resultList.add(orderDetailRes);
+    public OrderlistDetailRes selOrder(Long orderCode) {
+        OrderlistEntity byOrderCode = orderlistRepository.findByOrderCode(orderCode);
+
+        List<OrderlistDetailVo> byOrderId = orderDetailRepository.findByOrderId(byOrderCode.getOrderId());
+
+        OrderlistUserVo vo = new OrderlistUserVo();
+        vo.setReciever(byOrderCode.getReciever());
+        vo.setAddress(byOrderCode.getAddress());
+        vo.setAddressDetail(byOrderCode.getAddressDetail());
+        vo.setPhoneNm(byOrderCode.getPhoneNm());
+        vo.setRequest(byOrderCode.getRequest());
+        vo.setUsepoint(byOrderCode.getUsepoint());
+
+        return OrderlistDetailRes.builder().orderDetailVo(null).build();
+    }
 
 
 
@@ -243,6 +202,9 @@ public class AdminService {
         Page<ProductEntity> productEntities = productRepository.findAll(pageable);
         List<ProductAdminDto> productAdminDtos = new ArrayList<>();
 
+        // 데이터셋
+        Map<Long, List<Long>> productDataMap = new HashMap<>();
+
         for (ProductEntity productEntity : productEntities) {
             // 알러지 정보 가져오기
             List<ProductAllergyEntity> productAllergies = productAllergyRepository.findByProductId_ProductId(productEntity.getProductId());
@@ -251,39 +213,30 @@ public class AdminService {
                     .collect(Collectors.toList());
 
             // 카테고리 정보 가져오기
-            List<ProductCateRelationEntity> productCateRelationEntityList = productCateRelationRepository.findAll();
-            List<Long> cateDetailIds = new ArrayList<>();
-
             List<ProductCateRelationEntity> productCateRelationEntities = productCateRelationRepository.findByProductEntity_ProductId(productEntity.getProductId());
+            List<Long> cateDetailIds = productCateRelationEntities.stream()
+                    .map(relationEntity -> relationEntity.getCateDetailEntity().getCateDetailId())
+                    .collect(Collectors.toList());
 
-            for (ProductCateRelationEntity relationEntity : productCateRelationEntities) {
-                cateDetailIds.add(relationEntity.getCateDetailEntity().getCateDetailId());
+            productDataMap.put(productEntity.getProductId(), cateDetailIds);
+        }
+
+        // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성
+        for (ProductEntity productEntity : productEntities) {
+            List<Long> cateDetailIds = productDataMap.get(productEntity.getProductId());
+            Long cateId = null;
+            if (cateDetailIds != null && !cateDetailIds.isEmpty()) {
+                cateId = cateDetailIds.get(0);
             }
 
-            // 썸네일 null체크
-            List<String> thumbnailList = new ArrayList<>();
-            List<ProductThumbnailEntity> thumbnailEntity = productEntity.getProductThumbnailEntityList();
-            if (thumbnailEntity != null) {
-//                thumbnailList.add(thumbnailEntity.getImg()); // 가져온 썸네일 리스트에 추가
-            } else {
-                thumbnailList.add("no data");
-            }
-
-
-            for (ProductCateRelationEntity relationEntity : productCateRelationEntityList) {
-
-
-                ProductAdminDto productAdminDto2 = ProductAdminDto.builder()
-                        .productId(relationEntity.getProductEntity().getProductId())
-                        .name(productEntity.getPName())
-                        .price(productEntity.getPPrice())
-                        .cate(relationEntity.getCategoryEntity().getCateId())
-                        .cateDetail(cateDetailIds) // cateDetailIds 리스트를 cateDetail에 설정
-                        .allegyName(allergyIds)
-//                        .thumbnail(productEntity.getProductThumbnailEntityList().getImg())
-                        .build();
-                productAdminDtos.add(productAdminDto2);
-            }
+            ProductAdminDto productAdminDto = ProductAdminDto.builder()
+                    .productId(productEntity.getProductId())
+                    .name(productEntity.getPName())
+                    .price(productEntity.getPPrice())
+                    .cate(cateId) // 카테고리 1차
+                    .allegyName(cateDetailIds)
+                    .build();
+            productAdminDtos.add(productAdminDto);
         }
 
         // size가 총 갯수보다 크면 max고정
@@ -522,6 +475,12 @@ public class AdminService {
             list.add(full);
         }
         return list;
+    }
+
+    public class CustomException extends RuntimeException {
+        public CustomException(String message) {
+            super(message);
+        }
     }
 
 

@@ -27,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -343,20 +344,25 @@ public class MypageServicelmpl implements MypageService {
         return save;
     }
 
-    public List<SaleVolumnVo> Selectsale(String year, String month) {
+    public List<SaleVolumnVo> Selectsale( int page, int row,String year, String month) {
         LocalDate start = LocalDate.parse(year + "-" + month + "-01");
         LocalDate end = end(year, month);
+        int offset = page * row;
 
         List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,
                         saleVolumn.productId.productId,
                         saleVolumn.count.sum(),
                         saleVolumn.productId.pName,
-                        saleVolumn.productId.pPrice))
+                        saleVolumn.productId.pPrice,
+                        thumbnail.img))
                 .from(saleVolumn)
+                .join(thumbnail)
+                .on(saleVolumn.productId.productId.eq(thumbnail.productId.productId))
                 .where(saleVolumn.createdAt.between(start, end))
                 .groupBy(saleVolumn.productId.productId)
                 .orderBy((saleVolumn.count.sum()).desc())
-                .limit(5)
+                .offset(offset)
+                .limit(row)
                 .fetch();
 
         for (int i = 0; i < fetch.size(); i++) {
@@ -376,6 +382,11 @@ public class MypageServicelmpl implements MypageService {
             Long cateId = categoryEntity.getCateId();
             String name = "[" + cateId + "단계] " + productEntity.getPName();
             fetch.get(i).setPName(name);
+
+            //이미지 경로 붙이기
+            String img = fetch.get(i).getImg();
+            String thu = "/img/product/"+fetch.get(i).getProductId()+"/"+img;
+            fetch.get(i).setImg(thu);
         }
         return fetch;
     }
@@ -418,19 +429,19 @@ public class MypageServicelmpl implements MypageService {
             fetch.get(i).setLabel(name);
 
             switch (i) {
-                case 1:
+                case 0:
                     fetch.get(i).setColor("hsl(340, 70%, 50%)");
                     break;
-                case 2:
+                case 1:
                     fetch.get(i).setColor("hsl(298, 70%, 50%)");
                     break;
-                case 3:
+                case 2:
                     fetch.get(i).setColor("hsl(280, 70%, 50%)");
                     break;
-                case 4:
+                case 3:
                     fetch.get(i).setColor("hsl(38, 70%, 50%)");
                     break;
-                case 5:
+                case 4:
                     fetch.get(i).setColor("hsl(321, 70%, 50%)");
                     break;
             }
