@@ -21,7 +21,7 @@
 
     <select id="getProduct">
         SELECT A.p_price price, A.p_quantity quantity, A.description,
-        B.img, B.thumbnail
+        B.img, C.img
         from product A
         INNER JOIN product_image B
         ON A.product_id = B.product_id
@@ -59,7 +59,7 @@
 
     <update id="insThumbnail">
         insert into product_thumbnail
-        (product_id,thumbnail)
+        (product_id,img)
         values
         <foreach collection="img" item="item" separator=",">
             (#{productId},#{item})
@@ -136,8 +136,8 @@
     </insert>
 
     <insert id="insImgList" useGeneratedKeys="true" keyProperty="pImgId">
-        insert into product_image
-        (product_id,thumbnail)
+        insert into product_thumbnail
+        (product_id,img)
         values
         (#{productId},#{randomName})
     </insert>

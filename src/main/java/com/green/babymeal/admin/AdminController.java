@@ -5,6 +5,7 @@ import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -166,6 +167,17 @@ public class AdminController {
     @Operation(summary = "등록된 상품 삭제")
     public int delAdminProduct(@RequestParam int productId){
         return service.delAdminProduct(productId);
+    }
+
+    @DeleteMapping("/webeditor/thumbnail")
+    @Operation(summary = "썸네일 삭제", description = "썸네일 이름 / 상품pk보내주세요" +
+    " << 응답코드 >>" +
+    " 1 : 썸네일 정상 삭제됨" +
+    " -1 : 파일이 있으나, 파일 삭제 실패" +
+    " -2 : 존재하지 않는 파일, db기록만 삭제 (db에 파일명이 있었으나 실제 사진이 없었던 경우)" +
+    "0 : 삭제실패, 존재하지 않는 경로 또는 파일명" )
+    public int deleteThumbnail(@RequestBody AdminThumbnailDelDto dto){
+        return service.deleteThumbnail(dto);
     }
 
 }
