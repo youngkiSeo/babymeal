@@ -12,7 +12,6 @@ public class AdminProductUpdDto {
     int quantity;
     String description;
     int saleVolume;
-    int allergy;
     int category;
     float pointRate;
     List<Integer> cateDetail;

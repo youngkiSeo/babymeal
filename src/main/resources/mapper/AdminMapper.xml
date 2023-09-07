@@ -37,11 +37,11 @@
         inner join product_category_relation B
         ON A.product_id = B.product_id
         SET A.p_name = #{name}
+        SET A.p_name = #{name}
         , A.p_price = #{price}
         , A.p_quantity = #{quantity}
         , A.description = #{description}
         , A.sale_volume = #{saleVolume}
-        , A.allergy = #{allergy}
         , A.created_at = current_timestamp()
         , B.cate_id = #{category}
         , A.point_rate =#{pointRate}
@@ -73,7 +73,6 @@
         , p_quantity = #{quantity}
         , description = #{description}
         , sale_volume = #{saleVolume}
-        , allergy = #{allergy}
         , updated_at = current_timestamp()
         where product_id = #{productId}
     </update>
