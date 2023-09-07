@@ -3,9 +3,11 @@ package com.green.babymeal.cate.model;
 import lombok.Builder;
 import lombok.Data;
 
+
 @Data
 @Builder
 public class CateSelVo {
+
 
     private Long productId;
     private String thumbnail;

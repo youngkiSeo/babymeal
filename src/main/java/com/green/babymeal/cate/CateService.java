@@ -5,9 +5,11 @@ import com.green.babymeal.common.entity.CateDetailEntity;
 import com.green.babymeal.common.entity.CategoryEntity;
 import com.green.babymeal.common.entity.ProductCateRelationEntity;
 import com.green.babymeal.common.repository.*;
+import io.netty.util.internal.UnstableApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +48,8 @@ public class CateService {
         return list;
     }
 
-    public List<CateSelVo> selCateList(CateSelList cateSelList) {
+
+    public List<CateSelVo> selCateList( CateSelList cateSelList) {
 
         List<CateSelVo> by = cateRepository.findBy(cateSelList.getCateId(), cateSelList.getCateDetailId());
         if (null != cateSelList.getCateDetailId()) {

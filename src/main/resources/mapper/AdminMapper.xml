@@ -44,6 +44,7 @@
         , A.created_at = current_timestamp()
         , B.cate_id = #{category}
         , A.point_rate =#{pointRate}
+        , A.is_delete = 0
         where A.product_id = #{productId}
     </update>
 

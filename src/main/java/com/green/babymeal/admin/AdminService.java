@@ -389,6 +389,7 @@ public class AdminService {
     // 최종 상품 등록할때 사용되는 메소드
     public int updProduct(AdminProductUpdDto dto) {
 
+
         AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
         apcd.setProductId(dto.getProductId());
         apcd.setCateId(dto.getCategory());
