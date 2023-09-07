@@ -13,6 +13,7 @@ public class ProductAdminSelDto {
     private Long productId;
     private String name;
     private int price;
+    private byte delYn;
     private Long cate; // 1차카테
     private List<Long> cateDetail; // 2차카테
     private List<Long> allergyId; // 알러지
