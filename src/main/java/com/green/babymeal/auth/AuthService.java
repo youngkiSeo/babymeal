@@ -60,6 +60,7 @@ public class AuthService {
                 .mobile_nb(dto.getMobileNb())
                 .nickNm(dto.getNickNm())
                 .zipCode(dto.getZipCode())
+                .delYn((byte)0)
                 .build();
         userRep.save(p);
 
@@ -83,7 +84,7 @@ public class AuthService {
         log.info("local-login ip : {}", ip);
 
         UserEntity r = userRep.findByProviderTypeAndUid(ProviderType.LOCAL, dto.getUid());
-        if(r == null) {
+        if(r == null || r.getDelYn() == 1) {
             throw new RestApiException(AuthErrorCode.NOT_FOUND_ID);
         }
 

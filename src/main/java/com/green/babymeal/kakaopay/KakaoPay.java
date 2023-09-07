@@ -92,7 +92,7 @@ public class KakaoPay {
         int productCount=0;
         int countSum=0;
 
-        if(dto.getProductId()!=null){
+        if(dto.getProductId()!=null || dto.getProductId()!=0){
             check=1;
             ProductEntity productEntity = productRepository.findById(dto.getProductId()).get();
             String pName = productEntity.getPName();

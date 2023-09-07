@@ -450,11 +450,17 @@ public class AdminService {
     }
 
 
-    //최종상품 등록전에 이미지 삭제를 할 때
+    //최종 상품 등록전에 이미지 삭제를 할 때
     @Transactional
     public int delWebEditorCancel(Long pImgId) {
-        ProductImageEntity productImageEntity = productImageRepository.findById(pImgId).get();
-        String path = getAbsolutePath(fileDir) + "/webeditor/" + productImageEntity.getProductId() + "/" + productImageEntity.getImg();
+
+        Optional<ProductImageEntity> byId = productImageRepository.findById(pImgId);
+        if(byId.isEmpty()){
+            productImageRepository.deleteById(pImgId);
+            return 1;
+        }
+        ProductImageEntity productImageEntity = byId.get();
+        String path = getAbsolutePath(fileDir) + "/webeditor/" + productImageEntity.getProductId().getProductId() + "/" + productImageEntity.getImg();
         File file = new File(path);
         file.delete();
         productImageRepository.deleteById(pImgId);
