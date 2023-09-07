@@ -16,6 +16,7 @@ public class ProductAdminDto {
     private String name;
     private int price;
     private int quantity;
+    private byte delYn;
     private Long cate; // 1차카테
     private List<Long> cateDetail; // 2차카테
     private List<Long> allegyName; // 알러지

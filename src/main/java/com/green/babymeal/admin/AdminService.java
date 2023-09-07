@@ -64,7 +64,7 @@ public class AdminService {
 
 
     public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
-                                       String filter1, String filter2, String filter3, String filter4,
+                                       String filter1, String filter2, String filter3, String filter4, String filter5,
                                        Pageable pageable) {
         Page<OrderlistEntity> outputOrderlist = orderlistRepository.findByCreatedAtBetween(startDate, endDate, pageable);
         List<OrderlistRes> resultList = new ArrayList<>();
@@ -141,6 +141,11 @@ public class AdminService {
             resultList.removeIf(orderRes -> !orderRes.getShipment().equals(Long.parseLong(filter4)));
         }
 
+        //필터5 : 구매자이름
+        if(filter5 != null){
+            resultList.removeIf(orderlistRes -> !orderlistRes.getUserVo().getName().equals(filter5));
+        }
+
 
         // size가 총 항목 수보다 큰 경우 size를 총 항목 수로 조정
         if (pageable.getPageSize() > outputOrderlist.getTotalElements()) {
@@ -166,13 +171,14 @@ public class AdminService {
 //        vo.setUsepoint(byOrderCode.getUsepoint());
 
         //유저정보 세팅
-        UserVo userVo = UserVo.builder()
-                .iuser(byOrderCode.getIuser().getIuser())
-                .name(byOrderCode.getIuser().getName())
-                .build();
+//        UserVo userVo = UserVo.builder()
+//                .iuser(byOrderCode.getIuser().getIuser())
+//                .name(byOrderCode.getIuser().getName())
+//                .build();
 
 
-        OrderlistDetailRes data = OrderlistDetailRes.builder().orderDetailVo(byOrderId).userVo(userVo).build();
+        //OrderlistDetailRes data = OrderlistDetailRes.builder().orderDetailVo(byOrderId).userVo(userVo).build();
+        OrderlistDetailRes data = OrderlistDetailRes.builder().orderDetailVo(byOrderId).build();
         data.setCount(byOrderId.get(0).getCount());
 
         // 대표상품, 전체가격
@@ -184,23 +190,18 @@ public class AdminService {
     }
 
 
-
     // -------------------------------- 상품
 
     public Page<ProductAdminDto> allProduct(Pageable pageable) {
         Page<ProductEntity> productEntities = productRepository.findAll(pageable);
         List<ProductAdminDto> productAdminDtos = new ArrayList<>();
-        List<Long> allergyIds = new ArrayList<>();
 
         // 데이터셋
         Map<Long, List<Long>> productDataMap = new HashMap<>();
 
         for (ProductEntity productEntity : productEntities) {
-            // 알러지 정보 가져오기
-            List<ProductAllergyEntity> productAllergies = productAllergyRepository.findByProductId_ProductId(productEntity.getProductId());
-            allergyIds = productAllergies.stream()
-                    .map(productAllergy -> productAllergy.getAllergyId().getAllergyId())
-                    .collect(Collectors.toList());
+            // 각 제품에 대한 알러지 정보 가져오기
+            List<Long> allergyIds = getAllergyIdsByProductId(productEntity.getProductId());
 
             // 카테고리 정보 가져오기
             List<ProductCateRelationEntity> productCateRelationEntities = productCateRelationRepository.findByProductEntity_ProductId(productEntity.getProductId());
@@ -208,13 +209,9 @@ public class AdminService {
                     .map(relationEntity -> relationEntity.getCateDetailEntity().getCateDetailId())
                     .collect(Collectors.toList());
 
-            productDataMap.put(productEntity.getProductId(), cateDetailIds);
+            productDataMap.put(productEntity.getProductId(), allergyIds);
 
-        }
-
-        // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성
-        for (ProductEntity productEntity : productEntities) {
-
+            // 다음 루프에서 중복을 방지하고 ProductAdminDto를 생성
             List<ProductThumbnailEntity> thumbnailEntities = productThumbnailRepository.findByProductId(productEntity);
 
             // 썸네일 URL 목록을 생성
@@ -223,21 +220,19 @@ public class AdminService {
                 thumbnailList.add(thumbnailEntity.getImg());
             }
 
-
-            List<Long> cateDetailIds = productDataMap.get(productEntity.getProductId());
-            Long cateId = null;
-            if (cateDetailIds != null && !cateDetailIds.isEmpty()) {
-                cateId = cateDetailIds.get(0);
-            }
+            //List<Long> cateDetailIdsForProduct = productDataMap.get(productEntity.getProductId());
 
             ProductAdminDto productAdminDto = ProductAdminDto.builder()
                     .productId(productEntity.getProductId())
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
-                    .cate(cateId) // 카테고리 1차
+                    .cate((productCateRelationEntities != null && !productCateRelationEntities.isEmpty())
+                            ? productCateRelationEntities.get(0).getCategoryEntity().getCateId()
+                            : 0) // 카테고리 1차
                     .cateDetail(cateDetailIds)
                     .allegyName(allergyIds)
                     .thumbnail(thumbnailList.isEmpty() ? "no data" : thumbnailList.get(0))
+                    .delYn(productEntity.getIsDelete())
                     .build();
             productAdminDtos.add(productAdminDto);
         }
@@ -283,8 +278,9 @@ public class AdminService {
                     .productId(productEntity.getProductId())
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
+                    .delYn(productEntity.getIsDelete())
                     .cate((productCateRelationEntities != null && !productCateRelationEntities.isEmpty())
-                            ? productCateRelationEntities.get(0).getProductCateId()
+                            ? productCateRelationEntities.get(0).getCategoryEntity().getCateId()
                             : 0) // 카테고리-1차
                     .cateDetail(cateDetailIds) // 카테고리-2차
                     .allergyId(allergyIds)
@@ -518,6 +514,11 @@ public class AdminService {
             }
         }
         return 0;
+    }
+
+    //알러지 가져오는 메소드
+    public List<Long> getAllergyIdsByProductId(Long productId) {
+        return productAllergyRepository.findAllergyIdsByProductId(productId);
     }
 
 //    public Page<ProductAdminDto> allProduct(Pageable pageable) {

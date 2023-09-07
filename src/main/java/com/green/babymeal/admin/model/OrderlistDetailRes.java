@@ -20,5 +20,5 @@ public class OrderlistDetailRes {
     private int totalPrice;
     private List<OrderlistDetailVo> orderDetailVo;
 //    private List<OrderlistEntity> orderlist;
-    private UserVo userVo;
+    //private UserVo userVo;
 }
