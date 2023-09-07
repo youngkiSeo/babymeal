@@ -11,29 +11,23 @@ import com.green.babymeal.common.repository.*;
 import com.green.babymeal.common.utils.MyHeaderUtils;
 import com.green.babymeal.mypage.model.*;
 import com.green.babymeal.user.UserRepository;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -340,14 +334,42 @@ public class MypageServicelmpl implements MypageService {
         ProductEntity productEntity = productRep.findById(dto.getProductId()).get();
         SaleVolumnEntity entity = SaleVolumnEntity.builder().count(dto.getCount()).productId(productEntity).build();
         SaleVolumnEntity save = saleRep.save(entity);
-
         return save;
     }
 
-    public List<SaleVolumnVo> Selectsale( int page, int row,String year, String month) {
-        LocalDate start = LocalDate.parse(year + "-" + month + "-01");
-        LocalDate end = end(year, month);
+    public SaleVolumnVoCount Selectsale( int page, int row,String year, String month) {
+        LocalDate start = null;
+        LocalDate end = null;
+        if (month.equals("0")){
+            start = LocalDate.parse(year + "-01-01");
+        } else {
+
+        }
+         start = LocalDate.parse(year + "-" + month + "-01");
+         end = end(year, month);
         int offset = page * row;
+        int totalprice = 0;
+
+
+        List<SaleVolumnCount> saleVolumnCount = jpaQueryFactory.select(Projections.bean(
+                SaleVolumnCount.class, saleVolumn.productId.productId.countDistinct().as("productId")))
+                .from(saleVolumn)
+                .where(saleVolumn.createdAt.between(start, end)).fetch();
+
+        //한달 총 매출 구하기
+        List<SaleVolumnCount> salecount = jpaQueryFactory.select(Projections.bean(SaleVolumnCount.class, (saleVolumn.count.sum()).as("count"),
+                        saleVolumn.productId.productId.as("productId")))
+                .from(saleVolumn).where(saleVolumn.createdAt.between(start, end)).groupBy(saleVolumn.productId.productId).fetch();
+
+
+        for (int i = 0; i <salecount.size(); i++) {
+            ProductEntity productEntity = productRep.findById(salecount.get(i).getProductId()).get();
+            int count = salecount.get(i).getCount();
+            int result = count * productEntity.getPPrice();
+            totalprice += result;
+
+        }
+
 
         List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,
                         saleVolumn.productId.productId,
@@ -372,8 +394,8 @@ public class MypageServicelmpl implements MypageService {
             ProductEntity productEntity = productRep.findById(productId).get();
             int pPrice = productEntity.getPPrice();
             int count = fetch.get(i).getCount();
-            int totalprice = count * pPrice;
-            fetch.get(i).setPPrice(totalprice);
+            int productprice = count * pPrice;
+            fetch.get(i).setPPrice(productprice);
 
             //카테고리 단계 붙이기
             List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
@@ -388,7 +410,9 @@ public class MypageServicelmpl implements MypageService {
             String thu = "/img/product/"+fetch.get(i).getProductId()+"/"+img;
             fetch.get(i).setImg(thu);
         }
-        return fetch;
+
+        SaleVolumnVoCount build = SaleVolumnVoCount.builder().vo(fetch).count(saleVolumnCount.get(0).getProductId()).totalprice(totalprice).build();
+        return build;
     }
 
     public List<SaleVolumnColorVo> SelectsaleColor(String year, String month) {
@@ -446,8 +470,6 @@ public class MypageServicelmpl implements MypageService {
                     break;
             }
 
-
-
         }
         return fetch;
     }
@@ -457,12 +479,10 @@ public class MypageServicelmpl implements MypageService {
 
         if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
             end = LocalDate.parse(year + "-" + month + "-31");
-
         } else if (month.equals("02")) {
             end = LocalDate.parse(year+"-"+month+"-28");
         }else
             end = LocalDate.parse(year+"-"+month+"-30");
-
         return end;
     }
 

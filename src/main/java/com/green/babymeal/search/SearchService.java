@@ -34,18 +34,18 @@ public class SearchService {
     private final TaskScheduler taskScheduler;
     private final ProductRepository productRep;
     private final SearchMapper mapper;
+    final int keysize = 10;
 
     public List<SearchPopularVo> list(){
-        String key = "babymeal";
+        String key = "a:babymeal";
         ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
         Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 9);  //score순으로 10개 보여줌
         return typedTuples.stream().map(item-> SearchPopularVo.builder().product(item.getValue()).count(item.getScore()).build()).toList();
     }
 
     public List<String> GetRecentSearch() {
-        final int keysize = 5;
         UserEntity loginUser = USERPK.getLoginUser();
-        String key = "babymeal" +loginUser.getIuser();
+        String key = "a:babymeal" +loginUser.getIuser();
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         return range;
@@ -53,7 +53,7 @@ public class SearchService {
 
     public Long deleteRecentSearch(String product){
         UserEntity loginUser = USERPK.getLoginUser();
-        String key = "babymeal" +loginUser.getIuser();
+        String key = "a:babymeal" +loginUser.getIuser();
         Long remove = redisTemplate.opsForList().remove(key, 0, product);
         return remove;
     }
@@ -61,7 +61,7 @@ public class SearchService {
     public Double deleteRedisPopular(String msg){
         Double babymeal = null;
         try{
-            babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", msg, -1);
+            babymeal = redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, -1);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,7 +157,7 @@ public class SearchService {
         for (int i = 0; i <productDto.size(); i++) {
             String thumbnail = productDto.get(i).getImg();
             int productid = productDto.get(i).getProductid();
-            String fullPath =thumbnail;
+            String fullPath = "/img/product/"+productid+"/"+thumbnail;
             productDto.get(i).setImg(fullPath);
 
             String cateId = productDto.get(i).getCateId();
@@ -194,26 +194,24 @@ public class SearchService {
     public Double redispopular(String msg){
         Double babymeal = null;
         try{
-             babymeal = redisTemplate.opsForZSet().incrementScore("babymeal", msg, 1);
+             babymeal = redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, 1);
         }catch (Exception e) {
             e.printStackTrace();
         }
 
         Runnable task = () -> {
-            redisTemplate.opsForZSet().incrementScore("babymeal", msg, -1);
+            redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, -1);
         };
 
-        taskScheduler.schedule(task, Date.from(Instant.now().plus(30, ChronoUnit.SECONDS)));
-        //taskScheduler.schedule(task, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
+        taskScheduler.schedule(task, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
 
         return babymeal;
     }
 
     //최근검색어 저장하는 메소드
     public List<String> redisrecent(String product) {
-        final int keysize = 5;
         UserEntity loginUser = USERPK.getLoginUser();
-        String key = "babymeal" +loginUser.getIuser();
+        String key = "a:babymeal" +loginUser.getIuser();
 
         //레디스에 중복된 단어를 저장 하지 못하도록 하자
 
@@ -226,7 +224,7 @@ public class SearchService {
             }
         }
 
-        //레디스에 5개 이상 저장 하지 못하도록 하자
+        //레디스에 10개 이상 저장 하지 못하도록 하자
         Long size = redisTemplate.opsForList().size(key);
         if (size == keysize) {
             redisTemplate.opsForList().rightPop(key);
