@@ -5,6 +5,7 @@ import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.OrderlistEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -166,6 +167,12 @@ public class AdminController {
     @Operation(summary = "등록된 상품 삭제")
     public int delAdminProduct(@RequestParam int productId){
         return service.delAdminProduct(productId);
+    }
+
+    @DeleteMapping("/webeditor/thumbnail")
+    @Operation(summary = "썸네일 삭제", description = "썸네일 이름 / 상품pk보내주세요")
+    public int deleteThumbnail(@RequestBody AdminThumbnailDelDto dto){
+        return service.deleteThumbnail(dto);
     }
 
 }
