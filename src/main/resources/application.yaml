@@ -3,9 +3,9 @@ app:
     header-scheme-name: authorization
     token-type: Bearer
     access-secret: DeaguGreenArtAcademyClass502ForJavaSpringBoot
-    accessTokenExpiry: 2000000
+    accessTokenExpiry: 3_600_000 # 1시간
     refresh-secret: ForJavaSpringBootClass502DaeguGreenArtAcademy
-    refreshTokenExpiry: 1296000000
+    refreshTokenExpiry: 1_296_000_000 #
     redis-access-black-key: "A-AT-BLACK"
     redis-refresh-key: "A-RT"
   oauth2:
