@@ -39,16 +39,21 @@ public class BabyService {
 //        userEntity.setIuser(dto.getIuser());
         entity.setUserEntity(userEntity);
         babyRepository.save(entity);
-        String ss= dto.getAllergyId();
-        String[] split = ss.split(",");
-        for (int i = 0; i < split.length; i++) {
-            UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
-            userBabyalleEntity.setUserBabyinfoEntity(entity);
-            AllergyEntity allergyEntity = new AllergyEntity();
-            allergyEntity.setAllergyId(Long.valueOf(split[i]));
-            userBabyalleEntity.setAllergyEntity(allergyEntity);
-            babyAlleRepository.save(userBabyalleEntity);
+
+
+        if(!(dto.getAllergyId().isEmpty())){
+            String ss= dto.getAllergyId();
+            String[] split = ss.split(",");
+            for (int i = 0; i < split.length; i++) {
+                UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
+                userBabyalleEntity.setUserBabyinfoEntity(entity);
+                AllergyEntity allergyEntity = new AllergyEntity();
+                allergyEntity.setAllergyId(Long.valueOf(split[i]));
+                userBabyalleEntity.setAllergyEntity(allergyEntity);
+                babyAlleRepository.save(userBabyalleEntity);
+            }
         }
+
         BabyInsVo vo = new BabyInsVo();
         vo.setChildBirth(dto.getChildBirth());
         vo.setPrefer(dto.getPrefer());

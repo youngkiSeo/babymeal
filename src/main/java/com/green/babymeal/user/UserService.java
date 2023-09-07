@@ -20,7 +20,6 @@ import java.util.stream.Stream;
 public class UserService {
 
     private final UserRepository rep;
-    private final UserMapper mapper;
     private final AuthService service;
 
     /*public ResponseEntity<UserEntity> insUser(UserInsDto dto){

@@ -35,6 +35,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "image")
+    @JsonIgnore
     private String image;
 
     @Column(name = "name")
@@ -89,6 +90,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     @JsonManagedReference
+    @JsonIgnore
     private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();
 
 
