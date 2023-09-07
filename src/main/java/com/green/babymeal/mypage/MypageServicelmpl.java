@@ -68,7 +68,7 @@ public class MypageServicelmpl implements MypageService {
 
         List<OrderlistSelVo> order = jpaQueryFactory
                 .select(Projections.constructor(OrderlistSelVo.class, orderlist.orderId, orderlist.orderCode, orderlist.createdAt
-                        , orderDetail.totalPrice, orderDetail.productId.pName, thumbnail.img, orderlist.shipment))
+                        , orderDetail.totalPrice, orderDetail.productId.pName, orderDetail.productId.productId,thumbnail.img, orderlist.shipment))
                 .from(orderlist)
                 .leftJoin(orderDetail)
                 .on(orderDetail.orderId.orderId.eq(orderlist.orderId))
@@ -79,17 +79,22 @@ public class MypageServicelmpl implements MypageService {
                 .groupBy(orderlist.orderId)
                 .fetch();
 
-
         for (int i = 0; i < order.size(); i++) {
             Long orderId = order.get(i).getOrderId();
 
             List<OrderlistDetailVo> orderDetailEntity = orderDetailRep.findByOrderId(orderId);
-            int totalprice = 0;
 
+
+            int totalprice = 0;
+            String fullPath =null;
             Long catenum = 0L;
+
             for (int j = 0; j < orderDetailEntity.size(); j++) {
                 int price = orderDetailEntity.get(j).getTotalPrice();
                 totalprice += price;
+
+//                 fullPath = "/img/product/"+orderDetailEntity.get(j).getProductId()+"/"+orderDetailEntity.get(j).getImg();
+
 
                 //카테고리 아이디 찾기
 
@@ -112,6 +117,7 @@ public class MypageServicelmpl implements MypageService {
             String name = "[" + catenum + "단계] " + pName;
             order.get(i).setPName(name);
             order.get(i).setTotalprice(totalprice);
+//            order.get(i).setImg(fullPath);
 
 
         }
@@ -121,6 +127,7 @@ public class MypageServicelmpl implements MypageService {
                 .createdAt(item.getCreatedAt())
                 .totalprice(item.getTotalprice())
                 .pName(item.getPName())
+                .productId(item.getProductId())
                 .img(item.getImg())
                 .shipment(String.valueOf(item.getShipment()))
                 .build()).toList();
@@ -153,7 +160,13 @@ public class MypageServicelmpl implements MypageService {
     public OrderlistDetailUserVo orderDetail(Long ordercode) {
         OrderlistEntity byOrderCode = orderlistRep.findByOrderCode(ordercode);
         List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(byOrderCode.getOrderId());
-        //OrderlistEntity orderlistEntity = orderlistRep.findByOrderId(orderId);
+
+//        for (int i = 0; i <byOrderId.size(); i++) {
+//            String img = byOrderId.get(i).getImg();
+//            String fullPath = "/img/product/"+byOrderId.get(i).getProductId()+"/"+img;
+//            byOrderId.get(i).setImg(fullPath);
+//        }
+
         OrderlistUserVo vo = new OrderlistUserVo();
         vo.setReciever(byOrderCode.getReciever());
         vo.setAddress(byOrderCode.getAddress());

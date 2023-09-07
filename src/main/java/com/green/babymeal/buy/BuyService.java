@@ -56,7 +56,7 @@ public class BuyService {
             }
         }
         log.info("code:{}",code);
-        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).payment(dto.getPayment()).phoneNm(dto.getPhoneNm()).shipment(shipment)
+        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).payment(shipment).phoneNm(dto.getPhoneNm()).shipment(shipment)
                 .request(dto.getRequest()).reciever(dto.getReceiver()).address(dto.getAddress()).addressDetail(dto.getAddressDetail()).usepoint(dto.getPoint()).build();
 
         orderlistRep.save(orderlistEntity);
@@ -121,7 +121,7 @@ public class BuyService {
         Random random = new Random();
         StringBuilder codeBuilder = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            int digit = random.nextInt(10); // Generates a random number between 0 and 9
+            int digit = random.nextInt(10);
             codeBuilder.append(digit);
         }
 

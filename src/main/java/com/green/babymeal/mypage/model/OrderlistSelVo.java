@@ -17,15 +17,17 @@ public class OrderlistSelVo {
     private LocalDate createdAt;
     private int totalprice;
     private String pName;
+    private Long productId;
     private String img;
     private Byte shipment;
 
-    public OrderlistSelVo(Long orderId, Long orderCode, LocalDate createdAt, int totalprice, String pName, String img, Byte shipment) {
+    public OrderlistSelVo(Long orderId, Long orderCode, LocalDate createdAt, int totalprice, String pName, Long productId, String img, Byte shipment) {
         this.orderId = orderId;
         this.orderCode = orderCode;
         this.createdAt = createdAt;
         this.totalprice = totalprice;
         this.pName = pName;
+        this.productId = productId;
         this.img = img;
         this.shipment = shipment;
     }
