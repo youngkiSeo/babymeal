@@ -435,7 +435,7 @@ public class AdminService {
     }
 
 
-    //최종상품 등록전에 이미지 삭제를 할 때
+    //최종 상품 등록전에 이미지 삭제를 할 때
     @Transactional
     public int delWebEditorCancel(Long pImgId) {
         ProductImageEntity productImageEntity = productImageRepository.findById(pImgId).get();
