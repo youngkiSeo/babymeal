@@ -191,7 +191,7 @@ public class AdminService {
         vo.setRequest(byOrderCode.getRequest());
         vo.setUsepoint(byOrderCode.getUsepoint());
 
-        return OrderlistDetailRes.builder().orderDetailVo(null).build();
+        return OrderlistDetailRes.builder().orderDetailVo(byOrderId).build();
     }
 
 
