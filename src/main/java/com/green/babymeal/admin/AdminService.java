@@ -305,6 +305,7 @@ public class AdminService {
         ProductEntity entity = new ProductEntity();
         entity.setPPrice(0);
         entity.setPName("");
+        entity.setIsDelete((byte)0);
         ProductEntity save = productRepository.save(entity);
         if (save != null) {
             return save.getProductId();
