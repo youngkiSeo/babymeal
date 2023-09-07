@@ -35,6 +35,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "image")
+    @JsonIgnore
     private String image;
 
     @Column(name = "name")
