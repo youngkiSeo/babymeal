@@ -117,6 +117,10 @@ public class AdminService {
             resultList.add(orderlistRes);
         }
 
+        if(filter1 != null){ // 상품명 검색
+            resultList.removeIf(orderlistRes -> !orderlistRes.getProductName().equals(filter1));
+        }
+
         // 필터2 : 주문번호 기준 필터링
         if (filter2 != null) {
             resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
