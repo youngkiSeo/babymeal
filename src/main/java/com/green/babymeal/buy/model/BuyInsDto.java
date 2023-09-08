@@ -10,7 +10,7 @@ public class BuyInsDto {
     private String addressDetail;
     private String phoneNm;
     private String request;
-    //private Byte payment;
+    private Byte payment;
     private int point;
 
     List<BuyInsOrderbasketDto> Insorderbasket;
