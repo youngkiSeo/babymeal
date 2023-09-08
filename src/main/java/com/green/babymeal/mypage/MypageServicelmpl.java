@@ -1,5 +1,6 @@
 package com.green.babymeal.mypage;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.green.babymeal.common.config.exception.AuthErrorCode;
 import com.green.babymeal.common.config.exception.RestApiException;
 import com.green.babymeal.common.config.properties.AppProperties;
@@ -8,6 +9,7 @@ import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.config.security.model.AuthToken;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
+import com.green.babymeal.common.utils.MyFileUtils;
 import com.green.babymeal.common.utils.MyHeaderUtils;
 import com.green.babymeal.mypage.model.*;
 import com.green.babymeal.user.UserRepository;
@@ -21,9 +23,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -49,11 +54,14 @@ public class MypageServicelmpl implements MypageService {
     private final RedisService redisService;
     private final BabyAlleRepository babyAlleRep;
     private final BabyRepository babyRep;
-
+    private final MypageMapper mapper;
 
     QOrderlistEntity orderlist = QOrderlistEntity.orderlistEntity;
     QOrderDetailEntity orderDetail = QOrderDetailEntity.orderDetailEntity;
     QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
+
+    @Value("${file.dir}")
+    private String fileDir;
 
     @Override
     public List<OrderlistStrVo> orderlist(int month) {
@@ -160,13 +168,6 @@ public class MypageServicelmpl implements MypageService {
     public OrderlistDetailUserVo orderDetail(Long ordercode) {
         OrderlistEntity byOrderCode = orderlistRep.findByOrderCode(ordercode);
         List<OrderlistDetailVo> byOrderId = orderDetailRep.findByOrderId(byOrderCode.getOrderId());
-
-//        for (int i = 0; i <byOrderId.size(); i++) {
-//            String img = byOrderId.get(i).getImg();
-//            String fullPath = "/img/product/"+byOrderId.get(i).getProductId()+"/"+img;
-//            byOrderId.get(i).setImg(fullPath);
-//        }
-
         OrderlistUserVo vo = new OrderlistUserVo();
         vo.setReciever(byOrderCode.getReciever());
         vo.setAddress(byOrderCode.getAddress());
@@ -275,6 +276,42 @@ public class MypageServicelmpl implements MypageService {
                 .point(entity.getPoint())
                 .build();
 
+    }
+    public int updPicUser(MultipartFile pic){
+        UserEntity loginUser = USERPK.getLoginUser();
+        ProfileUpdPicDto dto = new ProfileUpdPicDto();
+        dto.setIuser(loginUser.getIuser());
+        String centerPath = String.format("%s/user/%d", MyFileUtils.getAbsolutePath(fileDir),loginUser.getIuser());
+
+
+        File dic = new File(centerPath);
+        if(!dic.exists()){
+            dic.mkdirs();
+        }
+
+        String originFileName = pic.getOriginalFilename();
+        String savedFileName = MyFileUtils.makeRandomFileNm(originFileName);
+        String savedFilePath = String.format("%s/%s",centerPath, savedFileName);
+
+        File target = new File(savedFilePath);
+        try {
+            pic.transferTo(target);
+        }catch (Exception e) {
+            return 0;
+        }
+        String img = savedFileName;
+        dto.setImg(img);
+        try {
+            int result = mapper.patchProfile(dto);
+            if(result == 0) {
+                throw new Exception("프로필 사진을 등록할 수 없습니다.");
+            }
+        } catch (Exception e) {
+            //파일 삭제
+            target.delete();
+            return 0;
+        }
+        return 1;
     }
 
     public int nicknmcheck(String nickname) {

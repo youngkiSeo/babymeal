@@ -3,6 +3,8 @@ package com.green.babymeal.admin;
 
 import com.green.babymeal.admin.model.*;
 import com.green.babymeal.common.entity.OrderlistEntity;
+import com.green.babymeal.mypage.model.SaleVolumnColorVo;
+import com.green.babymeal.mypage.model.SaleVolumnVoCount;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
@@ -179,6 +181,19 @@ public class AdminController {
     "0 : 삭제실패, 존재하지 않는 경로 또는 파일명" )
     public int deleteThumbnail(@RequestBody AdminThumbnailDelDto dto){
         return service.deleteThumbnail(dto);
+    }
+
+    @GetMapping("/salevolum")
+    @Operation(summary = "판매량 조회",description ="year:년도 ex)2022<br>"+
+            "month: ex)01,02,03..11,12")
+    public SaleVolumnVoCount selectSalevolum(@RequestParam int page, @RequestParam int row, @RequestParam String year, @RequestParam String month){
+        return service.Selectsale(page,row,year,month);
+    }
+
+    @GetMapping("/salevolum/color")
+    @Operation(summary = "판매량 조회 color")
+    public List<SaleVolumnColorVo> select(@RequestParam String year, @RequestParam String month){
+        return service.SelectsaleColor(year,month);
     }
 
 }

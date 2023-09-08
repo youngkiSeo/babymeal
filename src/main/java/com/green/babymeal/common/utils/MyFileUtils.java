@@ -55,7 +55,9 @@ public class MyFileUtils {
             return null;
         }
     }
-
+    public static String makeRandomFileNm(String fileNm){
+        return UUID.randomUUID()+"."+getExt(fileNm);
+    }
 
     //절대경로 리턴
     public static String getAbsolutePath(String src) {
