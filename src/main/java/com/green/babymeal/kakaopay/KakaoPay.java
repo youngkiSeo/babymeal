@@ -107,7 +107,7 @@ public class KakaoPay {
 
         else{
                 check = 2;
-                List<OrderBasketEntity> byUserEntityIuser = orderBasketRepository.findByUserEntity_Iuser(2L);
+                List<OrderBasketEntity> byUserEntityIuser = orderBasketRepository.findByUserEntity_Iuser(USERPK.getLoginUser().getIuser());
                 for (int i = 0; i < byUserEntityIuser.size(); i++) {
                     OrderBasketEntity orderBasketEntity = byUserEntityIuser.get(i);
                     Long productId = orderBasketEntity.getProductEntity().getProductId();
