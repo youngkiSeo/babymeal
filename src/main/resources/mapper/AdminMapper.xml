@@ -67,7 +67,7 @@
     <!-- 카테고리 전체삭제 (수정시 사용함) -->
     <delete id="delCate" parameterType="java.lang.Long">
         DELETE FROM product_category_relation
-        WHERE
+        WHERE product_id = #{productId}
     </delete>
 
     <insert id="updateAllergyId" parameterType="java.util.Map">
