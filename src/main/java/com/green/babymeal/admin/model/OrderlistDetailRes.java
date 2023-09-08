@@ -19,6 +19,8 @@ public class OrderlistDetailRes {
     private int count;
     private int totalPrice;
     private List<OrderlistDetailVo> orderDetailVo;
+    private int usePoint;
+    private int givePoint; // 적립혜택
 //    private List<OrderlistEntity> orderlist;
     //private UserVo userVo;
 }

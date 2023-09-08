@@ -171,30 +171,39 @@ public class AdminService {
 
         List<OrderlistDetailVo> byOrderId = orderDetailRepository.findByOrderId(byOrderCode.getOrderId());
 
-//        //주문정보 세팅
-//        OrderlistUserVo vo = new OrderlistUserVo();
-//        vo.setReciever(byOrderCode.getReciever());
-//        vo.setAddress(byOrderCode.getAddress());
-//        vo.setAddressDetail(byOrderCode.getAddressDetail());
-//        vo.setPhoneNm(byOrderCode.getPhoneNm());
-//        vo.setRequest(byOrderCode.getRequest());
-//        vo.setUsepoint(byOrderCode.getUsepoint());
+        int totalCountPrice = 0; // 전체 가격 초기화
+        for (OrderlistDetailVo orderDetail : byOrderId) {
+            int productPrice = orderDetail.getPrice(); // 상품 가격
+            int productCount = orderDetail.getCount();   // 상품 수량
+            int productTotalPrice = productPrice * productCount; // 상품 총 가격
 
-        //유저정보 세팅
-//        UserVo userVo = UserVo.builder()
-//                .iuser(byOrderCode.getIuser().getIuser())
-//                .name(byOrderCode.getIuser().getName())
-//                .build();
+            totalCountPrice += productTotalPrice; // 전체 가격에 상품 총 가격 더하기
+        }
 
+        // 전체 혜택(적립금지급)
+        int totalGivePoint = 0;
 
-        //OrderlistDetailRes data = OrderlistDetailRes.builder().orderDetailVo(byOrderId).userVo(userVo).build();
-        OrderlistDetailRes data = OrderlistDetailRes.builder().orderDetailVo(byOrderId).build();
-        data.setCount(byOrderId.get(0).getCount());
+        for (OrderlistDetailVo orderDetail : byOrderId) {
+            int productPrice = orderDetail.getPrice(); // 상품 가격
+            int productCount = orderDetail.getCount(); // 상품 수량
+            float pointRate = 0.005f; // 상품 적립율
 
-        // 대표상품, 전체가격
-        data.setProductName(byOrderId.get(0).getPName());
-        data.setTotalPrice(1000);
+            int productTotalPrice = productPrice * productCount; // 상품 총 가격
+            int productGivePoint = (int) (productTotalPrice * pointRate); // 상품 적립금
 
+            totalGivePoint += productGivePoint; // 전체 적립금에 상품 적립금 더하기
+        }
+
+        OrderlistDetailRes data = OrderlistDetailRes.builder()
+                .productId(byOrderId.get(0).getProductId()) // 대표상품 productId
+                .orderDetailId(byOrderCode.getOrderId())
+                .usePoint(byOrderCode.getUsepoint())
+                .orderDetailVo(byOrderId)
+                .count(byOrderId.get(0).getCount())
+                .productName(byOrderId.get(0).getPName())
+                .totalPrice(totalCountPrice) // 전체 가격 설정
+                .givePoint(totalGivePoint)
+                .build();
 
         return data;
     }
@@ -295,6 +304,7 @@ public class AdminService {
                             ? productCateRelationEntities.get(0).getCategoryEntity().getCateId()
                             : 0) // 카테고리-1차
                     .cateDetail(cateDetailIds) // 카테고리-2차
+                    .description(productEntity.getDescription())
                     .allergyId(allergyIds)
                     .thumbnail(thumbnailList)
                     .build();
