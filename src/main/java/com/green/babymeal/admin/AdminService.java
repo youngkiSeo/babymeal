@@ -105,7 +105,7 @@ public class AdminService {
                     .reciever(order.getReciever())
                     .address(order.getAddress())
                     .addressDetail(order.getAddressDetail())
-                    .delYn(order.getDelYn())
+                    .delYn(order.getDelYn() != null ?  0 : order.getDelYn())
                     .usepoint(order.getUsepoint())
                     .orderDetailVo(orderDetailVoList)
                     .productName(productName)
@@ -236,7 +236,7 @@ public class AdminService {
                     .cateDetail(cateDetailIds)
                     .allegyName(allergyIds)
                     .thumbnail(thumbnailList.isEmpty() ? "no data" : thumbnailList.get(0))
-                    .delYn(productEntity.getIsDelete())
+                    .delYn(productEntity.getIsDelete() != null ?  0 : productEntity.getIsDelete())
                     .build();
             productAdminDtos.add(productAdminDto);
         }
