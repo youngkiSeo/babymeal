@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>완료</title>
+</head>
+<body>
+
+</body>
+<script>
+    function getPgToken() {
+        const urlStr = window.location.href;
+        const url = new URL(urlStr);
+        const urlParams = url.searchParams;
+        return urlParams.get('pg_token');
+    }
+
+    function getAccessToken() {
+        fetch('/api/user/refresh')
+            .then(res => res.json())
+            .then(res => {
+                if(res.accessToken) {
+                    const pgToken = getPgToken();
+                    postKakaoPaySuccess(pgToken, res.accessToken);
+                }
+            })
+    }
+    function postKakaoPaySuccess(pg_token, accessToken) {
+        fetch(`/kakaoPaySuccess?pg_token=${pg_token}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                location.href = '/';
+            });
+    }
+
+    getAccessToken();
+
+</script>
+</html>

@@ -250,7 +250,6 @@ public class AdminService {
                             : 0) // 카테고리 1차
                     .cateDetail(cateDetailIds)
                     .allegyName(allergyIds)
-                    .quantity(productEntity.getPQuantity())
                     .thumbnail(thumbnailList.isEmpty() ? "no data" : thumbnailList.get(0))
                     .delYn(productEntity.getIsDelete() != null ?  0 : productEntity.getIsDelete())
                     .build();
@@ -299,7 +298,6 @@ public class AdminService {
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
                     .delYn(productEntity.getIsDelete())
-                    .quantity(productEntity.getPQuantity())
                     .cate((productCateRelationEntities != null && !productCateRelationEntities.isEmpty())
                             ? productCateRelationEntities.get(0).getCategoryEntity().getCateId()
                             : 0) // 카테고리-1차

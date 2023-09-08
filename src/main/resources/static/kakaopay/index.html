@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>카카오 테스트</title>
+</head>
+<body>
+  <form id="frm" action="/kakaoPay" method="post">
+    <div>productId : <input type="text" name="productId" value="1"></div>
+    <div>count : <input type="number" name="count" value="1"></div>
+    <div>address : <input type="text" name="address" value="대구시"></div>
+    <div>addressDetail : <input type="text" name="addressDetail" value="달서구 달달달"></div>
+    <div>orderCode : <input type="text" name="orderCode" value="0"></div>
+    <div>payment : <input type="text" name="payment" value="1"></div>
+    <div>phoneNumber : <input type="text" name="phoneNumber" value="01011112222"></div>
+    <div>reciever : <input type="text" name="reciever" value="받는자"></div>
+    <div>request : <input type="text" name="request" value="요청사항"></div>
+    <div>shipment : <input type="text" name="shipment" value="1"></div>
+    <div>usepoint  : <input type="text" name="usepoint" value="0"></div>
+    <div>access_token : <input type="text" name="access_token" value="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0QHQuY29tIiwiaXVzZXIiOjIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2OTQxNDU2MjgsImV4cCI6MTY5NDE0OTIyOH0.t8f3e86kHUY_MrtQzUXQe7SCEsGauZ3ob4ABabVuNkc"></div>
+    <input type="submit" id="btnPay" value="결제">
+  </form>
+</body>
+<script>
+  const $frm = document.querySelector('#frm');
+  const $btnPay = $frm.querySelector('#btnPay');
+
+  $btnPay.addEventListener('click', e => {
+    e.preventDefault();
+
+    if(!$frm.access_token.value) {
+      alert('액세스 토큰 필요');
+      return;
+    }
+    const params = {
+      productId: $frm.productId.value,
+      count: $frm.count.value,
+      address: $frm.address.value,
+      addressDetail: $frm.addressDetail.value,
+      orderCode: $frm.orderCode.value,
+      payment: $frm.payment.value,
+      phoneNumber: $frm.phoneNumber.value,
+      reciever: $frm.reciever.value,
+      request: $frm.request.value,
+      shipment: $frm.shipment.value,
+      usepoint: $frm.usepoint.value
+    }
+    console.log(params);
+    fetch('/kakaoPay', {
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${$frm.access_token.value}`
+      }
+    })
+            .then(res => {
+              console.log(res);
+              return res.json();
+            })
+            .then(res => {
+              if(res) {
+                location.href=res.qrCodePage;
+              }
+            });
+
+  });
+</script>
+</html>

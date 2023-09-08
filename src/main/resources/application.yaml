@@ -148,7 +148,15 @@ spring:
   datasource:
     url: jdbc:mariadb://192.168.0.144:3306/babymeal
     username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
 file:
   dir: /home/download
 server:
   port: 8080
+
+app:
+  oauth2:
+    authorized-redirect-uris:
+      - http://192.168.0.144:5001/oauth/redirect #카카카카카
