@@ -34,12 +34,12 @@ public class SearchService {
     private final TaskScheduler taskScheduler;
     private final ProductRepository productRep;
     private final SearchMapper mapper;
-    final int keysize = 10;
+    final int keysize = 5;
 
     public List<SearchPopularVo> list(){
         String key = "a:babymeal";
         ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 9);  //score순으로 10개 보여줌
+        Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 4);  //score순으로 10개 보여줌
         return typedTuples.stream().map(item-> SearchPopularVo.builder().product(item.getValue()).count(item.getScore()).build()).toList();
     }
 
@@ -242,16 +242,12 @@ public class SearchService {
         if (size == keysize) {
             redisTemplate.opsForList().rightPop(key);
         }
-
-
         Long result = redisTemplate.opsForList().leftPush(key, product);
-        log.info("result:{}",result);
 
         //검색
         List<String> list = redisTemplate.opsForList().range(key, 0, keysize);
 
         return list;
-
     }
 
 }
