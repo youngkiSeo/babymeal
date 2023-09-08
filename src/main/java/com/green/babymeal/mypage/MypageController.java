@@ -79,8 +79,7 @@ public class MypageController {
             "iuser : 회원의 고유값(PK) <- 해당 유저가 수정됨<br>"+
                     "pic : 사진 넣는 부분")
     public int patchPic(@RequestParam MultipartFile pic){
-        //service.updPicUser(pic);
-        return 1;
+        return service.updPicUser(pic);
     }
 
     @PostMapping("/checkpw")

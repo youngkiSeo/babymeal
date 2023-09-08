@@ -155,3 +155,8 @@ file:
   dir: /home/download
 server:
   port: 8080
+
+app:
+  oauth2:
+    authorized-redirect-uris:
+      - http://192.168.0.144:5001/oauth/redirect #카카카카카

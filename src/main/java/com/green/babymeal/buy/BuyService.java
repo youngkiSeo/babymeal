@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,12 +33,17 @@ public class BuyService {
     private final UserRepository userRep;
 
 
-
+    @Transactional
     public BuyProductVo BuyProduct(BuyInsDto dto){
         UserEntity loginUser = USERPK.getLoginUser();
         Long iuser = loginUser.getIuser();
         UserEntity userEntity = userRep.findById(iuser).get();
 
+        log.info("point : {}",userEntity.getPoint());
+        // 사용자가 가진 포인트의 양보다 많이 사용할 경우 에러 발생
+        if (dto.getPoint()>userEntity.getPoint()){
+            throw new RuntimeException();
+        }
         final Byte delYn = 0;
         final Byte shipment = 1;
 
@@ -56,7 +62,7 @@ public class BuyService {
             }
         }
         log.info("code:{}",code);
-        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).payment(shipment).phoneNm(dto.getPhoneNm()).shipment(shipment)
+        OrderlistEntity orderlistEntity = OrderlistEntity.builder().orderCode(code).iuser(userEntity).payment(dto.getPayment()).phoneNm(dto.getPhoneNm()).shipment(shipment)
                 .request(dto.getRequest()).reciever(dto.getReceiver()).address(dto.getAddress()).addressDetail(dto.getAddressDetail()).usepoint(dto.getPoint()).build();
 
         orderlistRep.save(orderlistEntity);
@@ -91,6 +97,9 @@ public class BuyService {
             productRep.save(productEntity);
 
             // 장바구니 삭제
+            if (dto.getInsorderbasket().get(i).getCartId()!=0){
+
+            }
             orderBasketRep.deleteById(dto.getInsorderbasket().get(i).getCartId());
 
         }

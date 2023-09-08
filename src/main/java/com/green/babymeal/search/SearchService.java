@@ -237,7 +237,7 @@ public class SearchService {
             }
         }
 
-        //레디스에 10개 이상 저장 하지 못하도록 하자
+        //레디스에 5개(keysize) 이상 저장 하지 못하도록 하자
         Long size = redisTemplate.opsForList().size(key);
         if (size == keysize) {
             redisTemplate.opsForList().rightPop(key);
