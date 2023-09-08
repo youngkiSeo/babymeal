@@ -63,9 +63,9 @@ public class AdminService {
     private ProductThumbnailRepository productThumbnailRepository;
 
     @Autowired
-    private  ProductCategoryRelationRepository productcaterelationRep;
+    private ProductCategoryRelationRepository productcaterelationRep;
     @Autowired
-    private  JPAQueryFactory jpaQueryFactory;
+    private JPAQueryFactory jpaQueryFactory;
 
     QSaleVolumnEntity saleVolumn = QSaleVolumnEntity.saleVolumnEntity;
     QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
@@ -113,7 +113,7 @@ public class AdminService {
                     .reciever(order.getReciever())
                     .address(order.getAddress())
                     .addressDetail(order.getAddressDetail())
-                    .delYn(order.getDelYn() != null ?  0 : order.getDelYn())
+                    .delYn(order.getDelYn() != null ? 0 : order.getDelYn())
                     .usepoint(order.getUsepoint())
                     .orderDetailVo(orderDetailVoList)
                     .productName(productName)
@@ -126,7 +126,7 @@ public class AdminService {
             resultList.add(orderlistRes);
         }
 
-        if(filter1 != null){ // 상품명 검색
+        if (filter1 != null) { // 상품명 검색
             resultList.removeIf(orderlistRes -> !orderlistRes.getProductName().equals(filter1));
         }
 
@@ -160,7 +160,7 @@ public class AdminService {
         }
 
         //필터5 : 구매자이름
-        if(filter5 != null){
+        if (filter5 != null) {
             resultList.removeIf(orderlistRes -> !orderlistRes.getUserVo().getName().equals(filter5));
         }
 
@@ -206,6 +206,7 @@ public class AdminService {
                 .productId(byOrderId.get(0).getProductId()) // 대표상품 productId
                 .orderDetailId(byOrderCode.getOrderId())
                 .usePoint(byOrderCode.getUsepoint())
+                .shipment(byOrderCode.getShipment())
                 .orderDetailVo(byOrderId)
                 .count(byOrderId.get(0).getCount())
                 .productName(byOrderId.get(0).getPName())
@@ -216,6 +217,23 @@ public class AdminService {
         return data;
     }
 
+    // 배송상태변경
+    //@Transactional
+    public int updateShipmentStatus(AdminShipmentDto shipmentDto) {
+        List<Long> orderCodeList = shipmentDto.getOrderCode();
+        byte newShipmentStatus = shipmentDto.getShipment();
+
+        // 주문번호 목록으로 조회하여 데이터 가져옴
+        List<OrderlistEntity> orderEntities = orderlistRepository.findByOrderCodeIn(orderCodeList);
+
+        // 배송 상태를 변경
+        for (OrderlistEntity orderEntity : orderEntities) {
+            orderEntity.setShipment(newShipmentStatus);
+            return 1;
+        }
+
+        return 0;
+    }
 
     // -------------------------------- 상품
 
@@ -259,7 +277,7 @@ public class AdminService {
                     .cateDetail(cateDetailIds)
                     .allegyName(allergyIds)
                     .thumbnail(thumbnailList.isEmpty() ? "no data" : thumbnailList.get(0))
-                    .delYn(productEntity.getIsDelete() != null ?  0 : productEntity.getIsDelete())
+                    .delYn(productEntity.getIsDelete() != null ? 0 : productEntity.getIsDelete())
                     .build();
             productAdminDtos.add(productAdminDto);
         }
@@ -322,14 +340,13 @@ public class AdminService {
     }
 
 
-
     // 웹에디터
     public Long webEditorPk() {
         //웹에디터 시작 > 상품 pk번호 생성하여 반환 , ok
         ProductEntity entity = new ProductEntity();
         entity.setPPrice(0);
         entity.setPName("");
-        entity.setIsDelete((byte)0);
+        entity.setIsDelete((byte) 0);
         ProductEntity save = productRepository.save(entity);
         if (save != null) {
             return save.getProductId();
@@ -469,7 +486,7 @@ public class AdminService {
     public int delWebEditorCancel(Long pImgId) {
 
         Optional<ProductImageEntity> byId = productImageRepository.findById(pImgId);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             productImageRepository.deleteById(pImgId);
             return 1;
         }
@@ -549,109 +566,81 @@ public class AdminService {
         return productAllergyRepository.findAllergyIdsByProductId(productId);
     }
 
-//    public Page<ProductAdminDto> allProduct(Pageable pageable) {
-//        return productRepository.findAll(pageable).map(productEntity -> {
-//            List<String> allergyName = getAllergyNamesByProductId(productEntity.getProductId());
-//
-//            //카테고리 정보 불러오기
-//            CategoryEntity category = productEntity.getProductCateRelationEntity().getCategoryEntity();
-//            CateDetailEntity cateDetail = productEntity.getProductCateRelationEntity().getCateDetailEntity();
-//
-//            return ProductAdminDto.builder()
-//                    .productId(productEntity.getProductId())
-//                    .name(productEntity.getPName())
-//                    .price(productEntity.getPPrice())
-//                    //.description(productEntity.getDescription())
-//                    //.quantity(productEntity.getPQuantity())
-//                    .cate()
-//                    .cateDetail()
-//                    .allegyName(allergyName) //알러지 정보 추가
-//                    .thumbnail(Collections.singletonList(productEntity.getProductThumbnailEntityList().getImg())) // 썸네일 이미지 추가
-//                    .build();
-//        });
-//    }
-//
-//    public List<String> getAllergyNamesByProductId(Long productId) { // 알러지 이름으로 파싱
-//        List<ProductAllergyEntity> productAllergyEntities = productAllergyRepository.findByProductId_ProductId(productId);
-//
-//        return productAllergyEntities.stream()
-//                .map(productAllergyEntity -> productAllergyEntity.getAllergyId().getAllergyName())
-//                .collect(Collectors.toList());
-//    }
-public SaleVolumnVoCount Selectsale(int page, int row, String year, String month) {
-    LocalDate start = null;
-    LocalDate end = null;
-    if (month.equals("0")){
-        start = LocalDate.parse(year + "-01-01");
-    } else {
 
+    public SaleVolumnVoCount Selectsale(int page, int row, String year, String month) {
+        LocalDate start = null;
+        LocalDate end = null;
+        if (month.equals("0")) {
+            start = LocalDate.parse(year + "-01-01");
+        } else {
+
+        }
+        start = LocalDate.parse(year + "-" + month + "-01");
+        end = end(year, month);
+        int offset = page * row;
+        int totalprice = 0;
+
+
+        List<SaleVolumnCount> saleVolumnCount = jpaQueryFactory.select(Projections.bean(
+                        SaleVolumnCount.class, saleVolumn.productId.productId.countDistinct().as("productId")))
+                .from(saleVolumn)
+                .where(saleVolumn.createdAt.between(start, end)).fetch();
+
+        //한달 총 매출 구하기
+        List<SaleVolumnCount> salecount = jpaQueryFactory.select(Projections.bean(SaleVolumnCount.class, (saleVolumn.count.sum()).as("count"),
+                        saleVolumn.productId.productId.as("productId")))
+                .from(saleVolumn)
+                .where(saleVolumn.createdAt.between(start, end))
+                .groupBy(saleVolumn.productId.productId).fetch();
+
+
+        for (int i = 0; i < salecount.size(); i++) {
+            ProductEntity productEntity = productRepository.findById(salecount.get(i).getProductId()).get();
+            int count = salecount.get(i).getCount();
+            int result = count * productEntity.getPPrice();
+            totalprice += result;
+
+        }
+
+
+        List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,
+                        saleVolumn.productId.productId,
+                        saleVolumn.count.sum(),
+                        saleVolumn.productId.pName,
+                        saleVolumn.productId.pPrice,
+                        thumbnail.img))
+                .from(saleVolumn)
+                .join(thumbnail)
+                .on(saleVolumn.productId.productId.eq(thumbnail.productId.productId))
+                .where(saleVolumn.createdAt.between(start, end))
+                .groupBy(saleVolumn.productId.productId)
+                .orderBy((saleVolumn.count.sum()).desc())
+                .offset(offset)
+                .limit(row)
+                .fetch();
+
+        for (int i = 0; i < fetch.size(); i++) {
+
+            // 상품 가격 가져오기
+            Long productId = fetch.get(i).getProductId();
+            ProductEntity productEntity = productRepository.findById(productId).get();
+            int pPrice = productEntity.getPPrice();
+            int count = fetch.get(i).getCount();
+            int productprice = count * pPrice;
+            fetch.get(i).setPPrice(productprice);
+
+            //카테고리 단계 붙이기
+            List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
+
+            CategoryEntity categoryEntity = byProductEntity.get(0).getCategoryEntity();
+            Long cateId = categoryEntity.getCateId();
+            String name = "[" + cateId + "단계] " + productEntity.getPName();
+            fetch.get(i).setPName(name);
+        }
+
+        SaleVolumnVoCount build = SaleVolumnVoCount.builder().vo(fetch).count(saleVolumnCount.get(0).getProductId()).totalprice(totalprice).build();
+        return build;
     }
-    start = LocalDate.parse(year + "-" + month + "-01");
-    end = end(year, month);
-    int offset = page * row;
-    int totalprice = 0;
-
-
-    List<SaleVolumnCount> saleVolumnCount = jpaQueryFactory.select(Projections.bean(
-                    SaleVolumnCount.class, saleVolumn.productId.productId.countDistinct().as("productId")))
-            .from(saleVolumn)
-            .where(saleVolumn.createdAt.between(start, end)).fetch();
-
-    //한달 총 매출 구하기
-    List<SaleVolumnCount> salecount = jpaQueryFactory.select(Projections.bean(SaleVolumnCount.class, (saleVolumn.count.sum()).as("count"),
-                    saleVolumn.productId.productId.as("productId")))
-            .from(saleVolumn)
-            .where(saleVolumn.createdAt.between(start, end))
-            .groupBy(saleVolumn.productId.productId).fetch();
-
-
-    for (int i = 0; i <salecount.size(); i++) {
-        ProductEntity productEntity = productRepository.findById(salecount.get(i).getProductId()).get();
-        int count = salecount.get(i).getCount();
-        int result = count * productEntity.getPPrice();
-        totalprice += result;
-
-    }
-
-
-    List<SaleVolumnVo> fetch = jpaQueryFactory.select(Projections.constructor(SaleVolumnVo.class,
-                    saleVolumn.productId.productId,
-                    saleVolumn.count.sum(),
-                    saleVolumn.productId.pName,
-                    saleVolumn.productId.pPrice,
-                    thumbnail.img))
-            .from(saleVolumn)
-            .join(thumbnail)
-            .on(saleVolumn.productId.productId.eq(thumbnail.productId.productId))
-            .where(saleVolumn.createdAt.between(start, end))
-            .groupBy(saleVolumn.productId.productId)
-            .orderBy((saleVolumn.count.sum()).desc())
-            .offset(offset)
-            .limit(row)
-            .fetch();
-
-    for (int i = 0; i < fetch.size(); i++) {
-
-        // 상품 가격 가져오기
-        Long productId = fetch.get(i).getProductId();
-        ProductEntity productEntity = productRepository.findById(productId).get();
-        int pPrice = productEntity.getPPrice();
-        int count = fetch.get(i).getCount();
-        int productprice = count * pPrice;
-        fetch.get(i).setPPrice(productprice);
-
-        //카테고리 단계 붙이기
-        List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
-
-        CategoryEntity categoryEntity = byProductEntity.get(0).getCategoryEntity();
-        Long cateId = categoryEntity.getCateId();
-        String name = "[" + cateId + "단계] " + productEntity.getPName();
-        fetch.get(i).setPName(name);
-    }
-
-    SaleVolumnVoCount build = SaleVolumnVoCount.builder().vo(fetch).count(saleVolumnCount.get(0).getProductId()).totalprice(totalprice).build();
-    return build;
-}
 
     public List<SaleVolumnColorVo> SelectsaleColor(String year, String month) {
         LocalDate start = LocalDate.parse(year + "-" + month + "-01");
@@ -712,15 +701,16 @@ public SaleVolumnVoCount Selectsale(int page, int row, String year, String month
         return fetch;
     }
 
-    public LocalDate end(String year,String month){
-        LocalDate end =null;
+    public LocalDate end(String year, String month) {
+        LocalDate end = null;
 
-        if (month.equals("01")||month.equals("03")||month.equals("05")||month.equals("07")||month.equals("08")||month.equals("10")||month.equals("12")) {
+        if (month.equals("01") || month.equals("03") || month.equals("05") || month.equals("07") || month.equals("08") || month.equals("10") || month.equals("12")) {
             end = LocalDate.parse(year + "-" + month + "-31");
         } else if (month.equals("02")) {
-            end = LocalDate.parse(year+"-"+month+"-28");
-        }else
-            end = LocalDate.parse(year+"-"+month+"-30");
+            end = LocalDate.parse(year + "-" + month + "-28");
+        } else
+            end = LocalDate.parse(year + "-" + month + "-30");
         return end;
     }
 }
+

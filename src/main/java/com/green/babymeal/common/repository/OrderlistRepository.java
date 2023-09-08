@@ -30,5 +30,6 @@ public interface OrderlistRepository extends JpaRepository<OrderlistEntity, Long
     List<OrderlistDetailRes> findOrderById(Long orderCode);
     OrderlistEntity findByOrderCode(Long orderCode); // 주문번호로 데이터 조회
 
+    List<OrderlistEntity> findByOrderCodeIn(List<Long> orderCode);
 
 }

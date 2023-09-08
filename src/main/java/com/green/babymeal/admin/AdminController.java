@@ -69,6 +69,13 @@ public class AdminController {
         return service.selOrder(orderCode);
     }
 
+    @PutMapping("/order/shipment")
+    @Operation(summary = "배송상태변경", description = "<br>" +
+    " 0, 1, 2, 3")
+    public int updateShipmentStatus(AdminShipmentDto shipmentDto){
+        return service.updateShipmentStatus(shipmentDto);
+    }
+
 
     @GetMapping("/product")
     @Operation(summary = "상품정보조회(데이터뿌리기) > 관리자용 <br>", description = "<br>" +

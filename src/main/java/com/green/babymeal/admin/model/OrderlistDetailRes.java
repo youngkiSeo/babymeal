@@ -18,6 +18,7 @@ public class OrderlistDetailRes {
     private String productName;
     private int count;
     private int totalPrice;
+    private int shipment;
     private List<OrderlistDetailVo> orderDetailVo;
     private int usePoint;
     private int givePoint; // 적립혜택
