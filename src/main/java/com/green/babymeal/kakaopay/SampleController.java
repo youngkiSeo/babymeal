@@ -3,18 +3,20 @@ package com.green.babymeal.kakaopay;
 
 
 import com.green.babymeal.kakaopay.model.KakaoPayDto;
+import com.green.babymeal.kakaopay.model.QrCodeVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "카카오페이")
-@Log
+@Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class SampleController {
     @Setter(onMethod_ = @Autowired)
     private KakaoPay kakaopay;
@@ -40,10 +42,11 @@ public class SampleController {
             "request : 요청사항<br>" +
             "shipment : 기본값 1<br>" +
             "usepoint : 결제 시 사용할 포인트<br>")
-    public String kakaoPay(@RequestBody KakaoPayDto dto) {
+    public QrCodeVo kakaoPay(@RequestBody KakaoPayDto dto) {
         log.info("kakaoPay post............................................");
-
-       return  kakaopay.kakaoPayReady(dto);
+        String qrCodePage = kakaopay.kakaoPayReady(dto);
+        log.info("qrCode: {}", qrCodePage);
+       return QrCodeVo.builder().qrCodePage(qrCodePage).build();
 
     }
 

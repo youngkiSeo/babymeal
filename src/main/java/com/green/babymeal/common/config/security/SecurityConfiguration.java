@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                                             , "/pic/**"
                                             , "/error"
                                             , "/err"
-                                    ,"/**"
+                                            ,"/**"  // 비회원 조회를 위해서
                                             , "/admin/**"
                                             , "/dm","/feed","/user/profile","/user/signin","/user/signup"
                                             ,"/api/v1/auth/**"
