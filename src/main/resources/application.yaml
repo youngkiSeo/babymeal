@@ -159,4 +159,4 @@ server:
 app:
   oauth2:
     authorized-redirect-uris:
-      - http://192.168.0.144:5001/oauth/redirect #카카카카카
+      - http://192.168.0.144:5001/oauth/redirect
