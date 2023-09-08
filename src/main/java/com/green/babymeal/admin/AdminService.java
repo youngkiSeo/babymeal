@@ -113,6 +113,7 @@ public class AdminService {
                     .iuser(order.getIuser().getIuser())
                     .userName(order.getIuser().getName())
                     .build();
+            log.info("배송상태 {}", order.getShipment());
 
             resultList.add(orderlistRes);
         }
@@ -142,7 +143,12 @@ public class AdminService {
 
         //필터4 : 주문상태
         if (filter4 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getShipment().equals(Long.parseLong(filter4)));
+            log.info("필터 : {} , {} ", filter4, Long.parseLong(filter4));
+            log.info("??? : {}", resultList.get(0).getShipment());
+
+            resultList.removeIf(orderlistRes -> orderlistRes.getShipment() == null || orderlistRes.getShipment().longValue() != Long.parseLong(filter4));
+
+            //resultList.removeIf(orderlistRes -> orderlistRes.getShipment() == null || !orderlistRes.getShipment().equals(filterValue));
         }
 
         //필터5 : 구매자이름
