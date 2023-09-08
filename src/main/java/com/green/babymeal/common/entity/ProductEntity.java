@@ -36,7 +36,7 @@ public class ProductEntity {
     @Column(name = "pQuantity",length=11)
     private int pQuantity;
 
-    @Column(name = "description",length=1000)
+    @Column(name = "description",length=100)
     private String description;
 
     @ColumnDefault("0")
