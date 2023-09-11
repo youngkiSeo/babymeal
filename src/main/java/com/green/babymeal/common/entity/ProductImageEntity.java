@@ -14,7 +14,7 @@ public class ProductImageEntity {
     @Column(name = "imgId", updatable = false,nullable = false, columnDefinition = "BIGINT UNSIGNED") //
     private Long p_img_id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",nullable = false)
     @ToString.Exclude
     private ProductEntity productId;

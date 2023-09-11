@@ -14,12 +14,12 @@ public class CateViewEntity {
     @Column(name = "cate_view_id",columnDefinition = "BIGINT UNSIGNED")
     private Long cateViewId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cate_id",columnDefinition = "BIGINT UNSIGNED")
     private CategoryEntity categoryEntity;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cate_detail_id",columnDefinition = "BIGINT UNSIGNED")
     private CateDetailEntity cateDetailEntity;
 }

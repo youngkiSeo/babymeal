@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>카카오 테스트</title>
 </head>
+
 <body>
   <form id="frm" action="/api/kakaoPay" method="post">
     <div>productId : <input type="text" name="productId" value="1"></div>
@@ -21,6 +22,7 @@
     <input type="submit" id="btnPay" value="결제">
   </form>
 </body>
+
 <script>
   const $frm = document.querySelector('#frm');
   const $btnPay = $frm.querySelector('#btnPay');

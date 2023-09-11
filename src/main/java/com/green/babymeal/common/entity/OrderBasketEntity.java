@@ -23,11 +23,11 @@ public class OrderBasketEntity {
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long cartId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "iuser")
     @JsonBackReference
     private UserEntity userEntity;
