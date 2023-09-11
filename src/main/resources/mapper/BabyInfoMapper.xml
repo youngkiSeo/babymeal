@@ -8,7 +8,7 @@
         select baby_id babyId, child_birth childBirth, prefer
         from baby
         where iuser=#{iuser}
-        order by updated_at DESC
+        order by updated_at  DESC
         limit 3
     </select>
 

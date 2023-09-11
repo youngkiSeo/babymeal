@@ -42,6 +42,6 @@ public class UserBabyinfoEntity {
 
     @UpdateTimestamp
     @Column
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
 }
