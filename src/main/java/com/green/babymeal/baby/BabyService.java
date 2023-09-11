@@ -160,7 +160,19 @@ public class BabyService {
         babyAlleRepository.deleteByUserBabyinfoEntity_BabyId(dto.getBabyId());
 
 
-        String[] split = dto.getAllergyId().split(",");
+        if(!(dto.getAllergyId().isEmpty())){
+            String ss= dto.getAllergyId();
+            String[] split = ss.split(",");
+            for (int i = 0; i < split.length; i++) {
+                UserBabyalleEntity userBabyalleEntity = new UserBabyalleEntity();
+                userBabyalleEntity.setUserBabyinfoEntity(userBabyinfoEntity);
+                AllergyEntity allergyEntity = new AllergyEntity();
+                allergyEntity.setAllergyId(Long.valueOf(split[i]));
+                userBabyalleEntity.setAllergyEntity(allergyEntity);
+                babyAlleRepository.save(userBabyalleEntity);
+            }
+        }
+        /*String[] split = dto.getAllergyId().split(",");
 
 
         for (int i = 0; i <  split.length; i++) {
@@ -172,7 +184,7 @@ public class BabyService {
             userBabyalleEntity.setAllergyEntity(allergyEntity);
             userBabyalleEntity.setUserBabyinfoEntity(userBabyinfo);
             babyAlleRepository.save(userBabyalleEntity);
-        }
+        }*/
 
         BabyInsVo babyInsVo = new BabyInsVo();
         babyInsVo.setChildBirth(dto.getChildBirth());
