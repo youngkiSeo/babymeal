@@ -16,22 +16,48 @@ import java.nio.file.Paths;
 @Slf4j
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
-
-
     @Value("${file.dir}")
     private String fileDir;
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         exposeDirectory(fileDir, registry);
     }
-
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
         Path uploadDir = Paths.get(dirName);
         String uploadPath = uploadDir.toFile().getAbsolutePath();
         log.info("uploadPath {}", uploadPath);
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
         registry.addResourceHandler("/img/**").addResourceLocations("file:"+ uploadPath + "/");
+        registry.addResourceHandler("/admin", "/admin/**")
+                .addResourceLocations("classpath:/static/admin/**")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        Resource requestedResource = location.createRelative(resourcePath);
+                        // If we actually hit a file, serve that. This is stuff like .js and .css files.
+                        if (requestedResource.exists() && requestedResource.isReadable()) {
+                            return requestedResource;
+                        }
+                        // Anything else returns the index.
+                        return new ClassPathResource("/static/admin/index.html");
+                    }
+                });
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/**")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        Resource requestedResource = location.createRelative(resourcePath);
+                        // If we actually hit a file, serve that. This is stuff like .js and .css files.
+                        if (requestedResource.exists() && requestedResource.isReadable()) {
+                            return requestedResource;
+                        }
+                        // Anything else returns the index.
+                        return new ClassPathResource("/static/index.html");
+                    }
+                });
     }
 }
 //    @Value("${file.dir}")
