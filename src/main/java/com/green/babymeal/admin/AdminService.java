@@ -7,6 +7,9 @@ import com.green.babymeal.common.repository.*;
 import com.green.babymeal.mypage.model.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.twitter.penguin.korean.TwitterKoreanProcessorJava;
+import com.twitter.penguin.korean.phrase_extractor.KoreanPhraseExtractor;
+import com.twitter.penguin.korean.tokenizer.KoreanTokenizer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +23,7 @@ import com.green.babymeal.common.utils.MyFileUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import scala.collection.Seq;
 
 
 import java.io.File;
@@ -128,9 +132,43 @@ public class AdminService {
 
 
 
+            //resultList.get(1).getOrderDetailVo().get(1).getProductName(); 의 index를 순회해야 함
         if (filter1 != null) { // 상품명 검색
-            resultList.removeIf(orderlistRes -> !orderlistRes.getProductName().equals(filter1));
+            List<String> filter1Tokens = getTwiiterApiWord(filter1);
+            log.info("리스트 : {}", filter1Tokens);
+
+            // 주문 목록을 순회하면서 필터를 적용하고, 필터를 통과하지 못한 주문을 임시 목록에 저장
+            List<OrderlistRes> filteredOrders = new ArrayList<>();
+
+            for (OrderlistRes orderlistRes : resultList) {
+                boolean keepOrder = false; // 주문을 유지할지 여부를 나타내는 플래그
+
+                for (OrderDetailVo orderDetail : orderlistRes.getOrderDetailVo()) {
+                    boolean containsToken = false; // 형태소를 포함하는지 여부를 나타내는 플래그
+                    for (String token : filter1Tokens) {
+                        if (orderDetail.getProductName().contains(token)) {
+                            containsToken = true; // 주문이 형태소를 포함하면 플래그를 설정
+                            break;
+                        }
+                    }
+
+                    if (containsToken) {
+                        keepOrder = true; // 주문이 형태소를 포함하면 유지
+                        break;
+                    }
+                }
+
+                if (keepOrder) {
+                    filteredOrders.add(orderlistRes); // 주문을 유지해야하는 경우 임시 목록에 추가
+                }
+            }
+
+            // 필터링된 주문 목록으로 결과를 업데이트
+            // 바로 업데이트했더니 인덱스 오류나서 부득이 임시목록에서 값 옮겨담는 것으로 처리
+            resultList = filteredOrders;
         }
+
+
 
         // 필터2 : 주문번호 기준 필터링
         if (filter2 != null) {
@@ -719,6 +757,25 @@ public class AdminService {
         } else
             end = LocalDate.parse(year + "-" + month + "-30");
         return end;
+    }
+
+
+    //트위터 형태소분석기
+    public List<String> getTwiiterApiWord(String word) {
+        CharSequence normalized = TwitterKoreanProcessorJava.normalize(word);
+        Seq<KoreanTokenizer.KoreanToken> tokens = TwitterKoreanProcessorJava.tokenize(normalized);
+        Seq<KoreanTokenizer.KoreanToken> stemmed = TwitterKoreanProcessorJava.stem(tokens);
+        List<String> text = TwitterKoreanProcessorJava.tokensToJavaStringList(stemmed);
+//        log.info("형태소 분석결과 :  {} " , word);
+//        StringBuffer sb = new StringBuffer();
+//        log.info( "  : : {}", text.size());
+//        if (text.size() > 0){
+//            for (int i = 0; i <text.size(); i++) {
+//                sb.append(text.get(i)).append("|");
+//            }
+//        }
+//        log.info("형태소 분석결과 :  {} " , sb.toString());
+        return text;
     }
 }
 

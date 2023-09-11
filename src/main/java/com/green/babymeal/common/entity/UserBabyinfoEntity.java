@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -39,6 +40,8 @@ public class UserBabyinfoEntity {
     @ToString.Exclude
     private UserEntity userEntity;
 
-
+    @UpdateTimestamp
+    @Column
+    private LocalDateTime updatedAt;
 
 }
