@@ -191,6 +191,8 @@ public class BabyService {
         babyInsVo.setPrefer(dto.getPrefer());
         babyInsVo.setAllegyId(dto.getAllergyId());
         babyInsVo.setIuser(USERPK.getLoginUser().getIuser());
+        babyInsVo.setBabyId(dto.getBabyId());
+
 
         return babyInsVo;
     }

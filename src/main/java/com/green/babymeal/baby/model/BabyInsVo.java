@@ -12,4 +12,5 @@ public class BabyInsVo {
     private String prefer;
     private Long iuser;
     private String allegyId;
+    private Long babyId;
 }
