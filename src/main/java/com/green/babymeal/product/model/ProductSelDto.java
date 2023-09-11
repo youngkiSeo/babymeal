@@ -11,5 +11,6 @@ public class ProductSelDto {
     private int pPrice;
     private int pQuantity;
     private int saleVoumn;
+    private Long cateId;
     private List<String> allergyNames;
 }
