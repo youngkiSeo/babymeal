@@ -231,8 +231,8 @@ public class MypageServicelmpl implements MypageService {
     }
 
     public ProfileVo profileupdate(ProfileUpdDto dto) {
-        UserEntity loginUser = USERPK.getLoginUser();
-        UserEntity entity = userRep.findById(loginUser.getIuser()).get();
+        Long iuser = USERPK.getLoginUser().getIuser();
+        UserEntity entity = userRep.findById(iuser).get();
 
         // "" 이 들어오지 못하도록함
         if (!dto.getNickNm().equals("")) {
