@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,5 +38,7 @@ public class UserBabyinfoEntity {
     @JoinColumn(name = "iuser")
     @ToString.Exclude
     private UserEntity userEntity;
+
+
 
 }
