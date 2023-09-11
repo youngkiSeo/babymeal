@@ -234,6 +234,7 @@ public class MypageServicelmpl implements MypageService {
         Long iuser = USERPK.getLoginUser().getIuser();
         UserEntity entity = userRep.findById(iuser).get();
 
+        log.info("dtoupw:{}" ,dto.getUpw());
         // "" 이 들어오지 못하도록함
         if (!dto.getNickNm().equals("")) {
             entity.setNickNm(dto.getNickNm());
