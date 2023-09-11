@@ -218,7 +218,7 @@ public class AdminService {
     }
 
     // 배송상태변경
-    //@Transactional
+    @Transactional
     public int updateShipmentStatus(AdminShipmentDto shipmentDto) {
         List<Long> orderCodeList = shipmentDto.getOrderCode();
         byte newShipmentStatus = shipmentDto.getShipment();
@@ -226,13 +226,15 @@ public class AdminService {
         // 주문번호 목록으로 조회하여 데이터 가져옴
         List<OrderlistEntity> orderEntities = orderlistRepository.findByOrderCodeIn(orderCodeList);
 
+        int updatedCount = 0; // 변경된 갯수 확인용
+
         // 배송 상태를 변경
         for (OrderlistEntity orderEntity : orderEntities) {
             orderEntity.setShipment(newShipmentStatus);
-            return 1;
+            updatedCount++;
         }
 
-        return 0;
+        return updatedCount; // 업데이트된 주문 수를 반환
     }
 
     // -------------------------------- 상품
