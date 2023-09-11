@@ -7,6 +7,7 @@ import com.green.babymeal.mypage.model.SaleVolumnColorVo;
 import com.green.babymeal.mypage.model.SaleVolumnVoCount;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

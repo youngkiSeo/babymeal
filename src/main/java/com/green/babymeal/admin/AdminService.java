@@ -390,7 +390,7 @@ public class AdminService {
         ProductImgPkFull full = new ProductImgPkFull();
         full.setPImgId(save.getP_img_id());
         //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName;
-        String fullPath = "/img/webeditor/" + productId + "/" + randomName;
+        String fullPath = /*"/img/webeditor/" + productId + "/" + */randomName;
         full.setImg(fullPath);
         return full;
     }
@@ -423,7 +423,7 @@ public class AdminService {
             ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(save.getP_img_id());
             //String fullPath="http://192.168.0.144:5001/img/webeditor/"+productId+"/"+randomName; 전체경로
-            String fullPath = "/img/webeditor/" + productId + "/" + randomName;
+            String fullPath = /*"/img/webeditor/" + productId + "/" + */randomName;
             full.setImg(fullPath);
             list.add(full);
 
@@ -531,7 +531,7 @@ public class AdminService {
             adminMapper.insImgList(dto);
             ProductImgPkFull full = new ProductImgPkFull();
             full.setPImgId(dto.getPImgId());
-            String fullPath = "/img/product/" + productId + "/" + randomName;
+            String fullPath = /*"/img/product/" + productId + "/" + */randomName;
             full.setImg(fullPath);
             list.add(full);
         }

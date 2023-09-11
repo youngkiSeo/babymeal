@@ -68,7 +68,7 @@ public class CateService {
 
 
                 bySel.get(i).setName("[" + productCateRelationEntities.getCategoryEntity().getCateId() + "단계]" + bySel.get(i).getName());
-                bySel.get(i).setThumbnail("/img/product/" + bySel.get(i).getProductId() + "/" + bySel.get(i).getThumbnail());
+                bySel.get(i).setThumbnail(/*"/img/product/" + bySel.get(i).getProductId() + "/" + */bySel.get(i).getThumbnail());
             }
             return bySel;
             }
