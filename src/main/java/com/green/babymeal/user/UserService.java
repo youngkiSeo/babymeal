@@ -20,22 +20,6 @@ import java.util.stream.Stream;
 public class UserService {
 
     private final UserRepository rep;
-    private final AuthService service;
-
-    /*public ResponseEntity<UserEntity> insUser(UserInsDto dto){
-        UserEntity entity = new UserEntity();
-        entity.setName(dto.getName());
-        entity.setNickNm(dto.getNick_name());
-        entity.setAddress(dto.getAddress());
-        entity.setAddressDetail(dto.getAddress_detail());
-        entity.setBirthday(dto.getBirthday());
-        entity.setEmail(dto.getEmail());
-        entity.setZipCode(dto.getZip_code());
-        entity.setMobile_nb(dto.getMobile_nb());
-        entity.setPassword(dto.getPassword());
-        entity.setUid(dto.getUid());
-       return ResponseEntity.ok(rep.save(entity));
-    }*/
 
     public UserEntity selUser(String uid){
         UserEntity entity = new UserEntity();

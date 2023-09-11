@@ -153,7 +153,6 @@ public class AuthService {
         System.out.println(req + type);
         String accessToken = resolveToken(req,type);
         log.info("{}", accessToken);
-//        String accessToken = JWT_PROVIDER.resolveToken(req, JWT_PROVIDER.TOKEN_TYPE);
 
         if(accessToken != null) {
             AuthToken authToken = new AuthToken(accessToken, appProperties.getAccessTokenKey());
@@ -180,36 +179,6 @@ public class AuthService {
         }
         MyHeaderUtils.deleteCookie(req, res, REFRESH_TOKEN);
     }
-
-    /*public void signOut(String accessToken
-            , HttpServletRequest req
-            , HttpServletResponse res) {
-
-        if(accessToken != null) {
-            AuthToken authToken = new AuthToken(accessToken, appProperties.getAccessTokenKey());
-
-            String blackAccessTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisAccessBlackKey(), accessToken);
-            long expiration = authToken.getTokenExpirationTime() - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-            if(expiration > 0) {
-                redisService.setValuesWithTimeout(blackAccessTokenKey, "logout", expiration);
-            }
-        }
-
-        //cookie에서 값 가져오기
-        Optional<Cookie> refreshTokenCookie = MyHeaderUtils.getCookie(req, REFRESH_TOKEN);
-        if(refreshTokenCookie.isEmpty()) {
-            throw new RestApiException(AuthErrorCode.NOT_FOUND_REFRESH_TOKEN);
-        }
-
-        Optional<String> refreshToken = refreshTokenCookie.map(Cookie::getValue);
-        if(refreshToken.isPresent()) {
-            AuthToken authToken = new AuthToken(refreshToken.get(), appProperties.getRefreshTokenKey());
-            long iuser = authToken.getUserDetails().getIuser();
-            String redisRefreshTokenKey = String.format("%s:%s", appProperties.getAuth().getRedisRefreshKey(), iuser);
-            redisService.deleteValues(redisRefreshTokenKey);
-        }
-        MyHeaderUtils.deleteCookie(req, res, REFRESH_TOKEN);
-    }*/
 
     public AuthResVo refresh(HttpServletRequest req) {
         Optional<Cookie> refreshTokenCookie = MyHeaderUtils.getCookie(req, REFRESH_TOKEN);
@@ -241,13 +210,13 @@ public class AuthService {
         result.setMsg(CommonRes.FAIL.getMsg());
     }
 
-    //------------------------------------------------
+    //--------------{헤더에서 엑세스토큰 가져오는 메소드}----------------------------------
     public String resolveToken(HttpServletRequest req, String type) {
         log.info("JwtTokenProvider - resolveToken: HTTP 헤더에서 Token 값 추출");
         String headerAuth = req.getHeader("authorization");
         return headerAuth != null && headerAuth.startsWith(String.format("%s ", type)) ? headerAuth.substring(type.length()).trim() : null;
     }
-    //-----------------------------
+    //-------------{아이디 체크 , 닉네임체크}----------------
 
     public int uidCheck(String uid){
         String result= SIGN_MAPPER.uidCheck(uid);

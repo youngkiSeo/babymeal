@@ -33,7 +33,7 @@ public class UserBabyinfoEntity {
     @OneToMany(mappedBy = "userBabyinfoEntity", cascade = CascadeType.REMOVE) // mappedBy 컬럼이 안생기는 조인
     private List<UserBabyalleEntity> userBabyalleEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 사용할때만 join문을 실행하는 것
     @JoinColumn(name = "iuser")
     @ToString.Exclude
     private UserEntity userEntity;

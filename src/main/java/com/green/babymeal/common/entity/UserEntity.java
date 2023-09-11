@@ -48,7 +48,7 @@ public class UserEntity {
     private String mobile_nb;
 
     @Column(name = "created_at")
-    @CreationTimestamp
+    @CreationTimestamp // 만들어질때 시간정보를 넣어주는 것
     private LocalDateTime createdAt;
 
     @JsonIgnore
@@ -90,7 +90,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     @JsonManagedReference
-    @JsonIgnore
+    @JsonIgnore // 엔티티를 SELECT 할때 보이고 싶지않을때 사용하는 구문
     private List<OrderBasketEntity> orderBasketEntityList=new ArrayList<>();
 
 
