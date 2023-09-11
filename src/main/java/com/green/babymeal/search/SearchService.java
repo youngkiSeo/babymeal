@@ -43,22 +43,22 @@ public class SearchService {
     }
 
     public List<String> GetRecentSearch() {
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         return range;
     }
 
     public Long deleteRecentSearch(String product){
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
         Long remove = redisTemplate.opsForList().remove(key, 0, product);
         return remove;
     }
     public Long deleteRecentSearchAll(){
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         Long remove = null;
