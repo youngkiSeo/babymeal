@@ -88,22 +88,4 @@ public class MypageController {
     int checkPw(@RequestParam String upw){
         return service.selpw(upw);
     }
-
-
-    @PostMapping("/salevolumn")
-    public SaleVolumnEntity InsSaleVolumn(@RequestBody SaleVolumnDto dto){
-        return service.Inssalevolumn(dto);
-    }
-    @GetMapping("/salevolum")
-    @Operation(summary = "판매량 조회",description ="year:년도 ex)2022<br>"+
-            "month: ex)01,02,03..11,12")
-    public SaleVolumnVoCount selectSalevolum(@RequestParam int page,@RequestParam int row,@RequestParam String year, @RequestParam String month){
-        return service.Selectsale(page,row,year,month);
-    }
-
-    @GetMapping("/salevolum/color")
-    @Operation(summary = "판매량 조회 color")
-    public List<SaleVolumnColorVo> select(@RequestParam String year, @RequestParam String month){
-        return service.SelectsaleColor(year,month);
-    }
 }
