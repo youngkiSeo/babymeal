@@ -3,6 +3,7 @@ package com.green.babymeal.admin;
 import com.green.babymeal.admin.model.*;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.apache.ibatis.annotations.Mapper;
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

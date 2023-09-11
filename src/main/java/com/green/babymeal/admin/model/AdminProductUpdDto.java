@@ -1,6 +1,7 @@
 package com.green.babymeal.admin.model;
 
 import lombok.Data;
+import org.aspectj.lang.annotation.RequiredTypes;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class AdminProductUpdDto {
     int saleVolume;
     int category;
     float pointRate;
+
     List<Long> allergyId;
     List<Integer> cateDetail;
 }
