@@ -19,7 +19,6 @@ import scala.collection.Seq;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.concurrent.ScheduledFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,8 +81,6 @@ public class SearchService {
 
     }
 
-
-
     public SearchSelRes selfilter(String product, int page, int row, String sorter, List<String>filter){
 
         if (sorter==null){
@@ -115,11 +112,8 @@ public class SearchService {
         dto.setAllergy(strallergy);
         dto.setSorter(Integer.parseInt(sorter));
 
-
         int startIdx = (dto.getPage() - 1) * dto.getRow();
         dto.setStartIdx(startIdx);
-
-
 
         String msg = "";
         //영한 변환
@@ -164,7 +158,7 @@ public class SearchService {
         dto.setMsg(String.valueOf(sb));
 
 
-        List<SearchSelVo> productDto = mapper.selfilter(dto);
+        List<SearchSelProductDto> productDto = mapper.selfilter(dto);
 
 
         for (int i = 0; i <productDto.size(); i++) {
