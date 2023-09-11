@@ -3,7 +3,7 @@ package com.green.babymeal.search.model;
 import lombok.Data;
 
 @Data
-public class SearchSelVo {
+public class SearchSelProductDto {
     private int productid;
     private String name;
     private String img;

@@ -1,8 +1,12 @@
 package com.green.babymeal.search.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
 public class SearchMaxpageVo {
     private int count;
 }
