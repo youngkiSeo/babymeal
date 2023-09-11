@@ -72,7 +72,7 @@ public class OrderBasketService {
                         .price(item.getProductEntity().getPPrice())
                         .createdAt(item.getCreateAt())
                         .count(item.getCount())
-                        .thumbnail("/img/product/" + item.getProductEntity().getProductId() + "/" + thumbnailRepository.findDistinctByProductId(item.getProductEntity().getProductId()).getImg())
+                        .thumbnail(/*"/img/product/" + item.getProductEntity().getProductId() + "/" + */thumbnailRepository.findDistinctByProductId(item.getProductEntity().getProductId()).getImg())
                         .build()
         ).toList();
 

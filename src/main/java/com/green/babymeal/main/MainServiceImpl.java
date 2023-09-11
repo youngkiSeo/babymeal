@@ -126,7 +126,7 @@ public class MainServiceImpl implements MainService {
 
             for (MainSelVo vo : fetch) {
                 vo.setName("[" + cate + "단계]" + vo.getName());
-                vo.setThumbnail("/img/product/" + vo.getProductId() + "/" + vo.getThumbnail());
+                vo.setThumbnail(/*"/img/product/" + vo.getProductId() + "/" + */vo.getThumbnail());
             }
 
             return MainSelPaging.builder()
@@ -240,7 +240,7 @@ public class MainServiceImpl implements MainService {
             ProductCateRelationEntity byProductEntity = productCategoryRelationRepository.findFirstByProductEntity(productEntity).get();
             Long cateId = byProductEntity.getCategoryEntity().getCateId();
             vo.setName("[" + cateId + "단계]" + vo.getName());
-            vo.setThumbnail("/img/product/" + byProductEntity.getProductEntity().getProductId() + "/" + byProductEntity.getProductEntity().getProductThumbnailEntityList().get(0).getImg());
+            vo.setThumbnail(/*"/img/product/" + byProductEntity.getProductEntity().getProductId() + "/" + */byProductEntity.getProductEntity().getProductThumbnailEntityList().get(0).getImg());
         }
     }
 
