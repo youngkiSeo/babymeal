@@ -431,14 +431,16 @@ public class AdminService {
 
     // 최종 상품 등록할때 사용되는 메소드
     public int updProduct(AdminProductUpdDto dto) {
-
-
         AdminProductCateRelationDto apcd = new AdminProductCateRelationDto();
         apcd.setProductId(dto.getProductId());
         apcd.setCateId(dto.getCategory());
         apcd.setCateDetailId(dto.getCateDetail());
         adminMapper.insProductCateRelation(apcd);
-        adminMapper.insertAllergyId(dto.getAllergyId(), dto.getProductId());
+
+        List<Long> allergyIdList = dto.getAllergyId();
+        if (allergyIdList != null && !allergyIdList.isEmpty()) {
+            adminMapper.insertAllergyId(allergyIdList, dto.getProductId());
+        }
         return adminMapper.updAdminProduct(dto);
     }
 
