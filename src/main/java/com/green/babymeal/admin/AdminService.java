@@ -126,6 +126,8 @@ public class AdminService {
             resultList.add(orderlistRes);
         }
 
+
+
         if (filter1 != null) { // 상품명 검색
             resultList.removeIf(orderlistRes -> !orderlistRes.getProductName().equals(filter1));
         }
@@ -280,7 +282,7 @@ public class AdminService {
                     .allegyName(allergyIds)
                     .quantity(productEntity.getPQuantity())
                     .thumbnail(thumbnailList.isEmpty() ? "no data" : thumbnailList.get(0))
-                    .delYn(productEntity.getIsDelete() != null ? 0 : productEntity.getIsDelete())
+                    .delYn(productEntity.getIsDelete() == null ? 0 : productEntity.getIsDelete())
                     .build();
             productAdminDtos.add(productAdminDto);
         }
@@ -327,6 +329,7 @@ public class AdminService {
                     .name(productEntity.getPName())
                     .price(productEntity.getPPrice())
                     .delYn(productEntity.getIsDelete())
+                    .quantity(productEntity.getPQuantity())
                     .cate((productCateRelationEntities != null && !productCateRelationEntities.isEmpty())
                             ? productCateRelationEntities.get(0).getCategoryEntity().getCateId()
                             : 0) // 카테고리-1차
