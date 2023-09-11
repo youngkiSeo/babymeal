@@ -4,9 +4,11 @@ import com.green.babymeal.admin.model.*;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.apache.ibatis.annotations.Mapper;
 import org.aspectj.lang.annotation.RequiredTypes;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AdminMapper {
@@ -20,9 +22,10 @@ public interface AdminMapper {
     int updAdminProduct(AdminProductUpdDto dto); // 상품 등록
     int insProductCateRelation(AdminProductCateRelationDto dto);
     void delCate(Long productId); // 상품의 카테고리정보 삭제
-    int insertAllergyId(@Param("allergyIds") List<Long> allergyIds, @Param("productId") Long productId); // 상품신규등록-알러지등록
+    int insertAllergyId(@Param("allergyId") List<Long> allergyId, @Param("productId") Long productId); // 상품신규등록-알러지등록
+    int updAllergyId(@Param("paramMap") Map<String, Object> paramMap);
     int deleteAllergies(@Param("productId") Long productId);
-    int updateAllergyId(@Param("allergyIds") List<Long> allergyIds, @Param("productId") Long productId); // 상품수정시 알러지등록
+    //int updateAllergyId(@Param("allergyId") List<Long> allergyId, @Param("productId") Long productId); // 상품수정시 알러지등록
 
 
     int changeAdminProduct(AdminProductUpdDto dto); // 상품 수정

@@ -492,10 +492,19 @@ public class AdminService {
         apcd.setProductId(dto.getProductId());
         apcd.setCateId(dto.getCategory());
         apcd.setCateDetailId(dto.getCateDetail());
+
         adminMapper.delCate(dto.getProductId()); // 상품의 카테고리정보 모두 삭제
         adminMapper.insProductCateRelation(apcd); // 상품의 카테고리정보 입력
         adminMapper.deleteAllergies(dto.getProductId()); // 상품의 알러지정보 모두 삭제
-        adminMapper.updateAllergyId(dto.getAllergyId(), dto.getProductId()); // 상품의 알러지정보 입력
+
+        // 상품의 알러지정보 입력
+        if (dto.getAllergyId() != null && !dto.getAllergyId().isEmpty()) {
+            Map<String, Object> allergyParam = new HashMap<>();
+            allergyParam.put("allergyIds", dto.getAllergyId());
+            allergyParam.put("productId", dto.getProductId());
+            adminMapper.updAllergyId(allergyParam);
+        }
+
         return adminMapper.changeAdminProduct(dto);
     }
 
