@@ -21,13 +21,13 @@ public class UserBabyalleEntity {
     @Column(name = "baby_allergy" ,updatable = false, nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long babyallergy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 사용할때만 join문을 실행하는 것
     @JoinColumn(name = "baby_id")
     @ToString.Exclude
     private UserBabyinfoEntity userBabyinfoEntity;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 사용할때만 join문을 실행하는 것
     @JoinColumn(name = "allergyId")
     @ToString.Exclude
     private AllergyEntity allergyEntity;

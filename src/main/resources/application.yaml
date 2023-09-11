@@ -146,8 +146,8 @@ spring:
     redis:
       host: 192.168.0.144
   datasource:
-    url: jdbc:mariadb://192.168.0.144:3306/babymeal
-    username: root
+    url: jdbc:mariadb://192.168.0.144:3306/team_a
+    username: team_a
   jpa:
     hibernate:
       ddl-auto: update

@@ -16,17 +16,17 @@ public class ProductCateRelationEntity {
     private Long productCateId;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private ProductEntity productEntity;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cateId",nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private CategoryEntity categoryEntity;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cateDetailId",nullable = false,columnDefinition = "BIGINT UNSIGNED")
     private CateDetailEntity cateDetailEntity;
 

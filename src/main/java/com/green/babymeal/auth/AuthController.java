@@ -65,20 +65,9 @@ public class AuthController {
     public ResponseEntity getSignout(HttpServletRequest req
             , HttpServletResponse res) {
         service.signOut(req, res);
-//        ResponseCookie responseCookie = ResponseCookie.from("access-token");
         return ResponseEntity.ok(1);
     }
 
-    /*@GetMapping("/sign-out")
-    @Operation(summary = "로그아웃",
-            description = "엑세스토큰을 넣으면 해당유저가 로그아웃<br>" +
-                    "※ 소셜때문에 이렇게 한것으로 알고있어요")
-    public ResponseEntity getSignout(@RequestParam(required = false) String accessToken
-            , HttpServletRequest req
-            , HttpServletResponse res) {
-        service.signOut(accessToken, req, res);
-        return ResponseEntity.ok(1);
-    }*/
 
     @GetMapping("/refresh")
     @Operation(summary = "엑세스 토큰 재발급",

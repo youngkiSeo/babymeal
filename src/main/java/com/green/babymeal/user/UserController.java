@@ -25,11 +25,6 @@ public class UserController {
 
     private final UserService service;
 
-    /*@PostMapping("/join")
-    public ResponseEntity<UserEntity> PostUser(@RequestBody UserInsDto dto){
-        return service.insUser(dto);
-    }*/
-
     @GetMapping("/{uid}")
     @Operation(summary = "유저ID로 찾기",description = "ID : 회원의 아이디 입력<br>")
     public UserEntity GetUser(@PathVariable String uid){
@@ -44,7 +39,6 @@ public class UserController {
             "size : 정보의 갯수(Default : 10) <br>" +
             "※ 버튼을 누르면 전체유저가 나옴")
     public UserSelVo GetUserAll(@ParameterObject @PageableDefault(sort = "iuser",page = 0, direction = Sort.Direction.DESC) Pageable pageable){
-//        pageable.getSort();
         return service.selUserAll(pageable);
     }
 
