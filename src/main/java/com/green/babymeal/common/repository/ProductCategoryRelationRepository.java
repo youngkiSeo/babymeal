@@ -21,6 +21,9 @@ public interface ProductCategoryRelationRepository extends JpaRepository<Product
    List<ProductCateRelationEntity> findByProductEntity_ProductId(Long productId);
    Optional<ProductCateRelationEntity> findFirstByProductEntity(ProductEntity entity); // 상품에 단계
 
+   @Query("SELECT pcr.categoryEntity.cateId FROM ProductCateRelationEntity pcr WHERE pcr.productEntity.productId = :productId")
+   Long findCateIdByProductId(@Param("productId") Long productId); // 상품 단계찾기
+
 
    @Query("select p from ProductCateRelationEntity p" +
            " where p.productEntity.productId=:productId " +

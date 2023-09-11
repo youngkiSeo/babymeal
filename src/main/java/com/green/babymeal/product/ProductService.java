@@ -1,5 +1,6 @@
 package com.green.babymeal.product;
 
+import com.green.babymeal.cate.model.CateSelVo;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.ProductAllergyRepository;
 import com.green.babymeal.common.repository.ProductCategoryRelationRepository;
@@ -75,13 +76,16 @@ public class ProductService {
         List<String> allergyName = productAllergies.stream()
                 .map(productAllergyEntity -> getAllergyName(productAllergyEntity.getAllergyId()))
                 .collect(Collectors.toList());
-//        // 상품 단계 조회
-//        Long cateIdLong = productCategoryRelationRepository.findCateIdByProductEntity(productId);
-//        //String cateId = cateIdLong.toString();
+        // 상품 단계 조회
+        Long cateIdLong = 0L;
+        ProductCateRelationEntity temp = new ProductCateRelationEntity();
+        log.info("단계 : {}", cateIdLong);
+        cateIdLong = productCategoryRelationRepository.findCateIdByProductId(productId);
 
         // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
         ProductSelDto productAllergyDto = new ProductSelDto();
-        productAllergyDto.setPName("["+getProductCategoryIdById(productId)+"단계]"+productEntity.getPName());
+        productAllergyDto.setPName("[" + cateIdLong + "단계]" + productEntity.getPName());
+        productAllergyDto.setCateId(cateIdLong);
         productAllergyDto.setDescription(productEntity.getDescription());
         productAllergyDto.setPPrice(productEntity.getPPrice());
         productAllergyDto.setPQuantity(productEntity.getPQuantity());
@@ -98,9 +102,17 @@ public class ProductService {
         return allergyEntity.getAllergyName();
     }
 
-    // 카테고리 추출
-    public Long getProductCategoryIdById(Long productId) {
-        List<ProductCateRelationEntity> productCategoryRelation = productCategoryRelationRepository.findByProductEntity_ProductId(productId);
-        return productCategoryRelation.get(0).getProductCateId();
-    }
+//    // 카테고리 추출
+//    public Long getProductCategoryIdById(Long productId) {
+//        List<CateSelVo> by = cateRepository.findBy(cateSelList.getCateId(), cateSelList.getCateDetailId());
+//        if (null != cateSelList.getCateDetailId()) {
+//            for (int i = 0; i < by.size(); i++) {
+//                ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(by.get(i).getProductId());
+//
+//                by.get(i).setName("[" + productCateRelationEntities.getCategoryEntity().getCateId() + "단계]" + by.get(i).getName());
+//                by.get(i).setThumbnail("/img/product/" + by.get(i).getProductId() + "/" + by.get(i).getThumbnail());
+//            }
+//    }
+//
+
 }
