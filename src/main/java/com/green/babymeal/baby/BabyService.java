@@ -31,6 +31,7 @@ public class BabyService {
     private com.green.babymeal.common.entity.UserBabyinfoEntity UserBabyinfoEntity;
 
     public BabyInsVo insBaby(BabyInsDto dto){
+
         UserBabyinfoEntity entity = new UserBabyinfoEntity();
         UserEntity userEntity = new UserEntity();
         entity.setChildBirth(dto.getChildBirth());

@@ -57,7 +57,7 @@ public class CateService {
                 ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(by.get(i).getProductId());
 
                 by.get(i).setName("[" + productCateRelationEntities.getCategoryEntity().getCateId() + "단계]" + by.get(i).getName());
-                by.get(i).setThumbnail("/img/product/" + by.get(i).getProductId() + "/" + by.get(i).getThumbnail());
+                by.get(i).setThumbnail(/*"/img/product/" + by.get(i).getProductId() + "/" + */by.get(i).getThumbnail());
             }
             return by;
 
