@@ -55,4 +55,9 @@ public class SearchController {
         SearchSelRes selfilter = service.selfilter(product,page,row,sorter,filter);
         return selfilter;
     }
+
+    @DeleteMapping
+    public double deleteRedisPopular(@RequestParam String product){
+       return service.deleteRedisPopular(product);
+    }
 }
