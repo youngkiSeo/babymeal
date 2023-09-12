@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
 
 
@@ -139,14 +140,13 @@ public class BuyService {
 
     public BuySelVo selProduct(Long productId, int count){
         ProductEntity productEntity = productRep.findById(productId).get();
-        ProductThumbnailEntity allByProductId = thumbnailRep.findAllByProductId(productEntity);
-
+        List<ProductThumbnailEntity> allByProductId = thumbnailRep.findAllByProductId(productEntity);
 
         return BuySelVo.builder().productId(productEntity.getProductId())
                 .name(productEntity.getPName())
                 .count(count)
                 .price(productEntity.getPPrice())
-                .thumbnail(allByProductId.getImg())
+                .thumbnail(allByProductId.get(0).getImg())
                 .build();
 
 
