@@ -487,6 +487,7 @@ public class AdminService {
 
         List<Long> allergyIdList = dto.getAllergyId();
         if (allergyIdList != null && !allergyIdList.isEmpty()) {
+            // 알러지 정보가 들어오면 데이터 세팅
             adminMapper.insertAllergyId(allergyIdList, dto.getProductId());
         }
         return adminMapper.updAdminProduct(dto);

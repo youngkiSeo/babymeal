@@ -53,7 +53,7 @@
         INSERT INTO product_allergy
         (product_id, allergy_id)
         VALUES
-        <foreach collection="allergyIds" item="allergyId" separator=",">
+        <foreach collection="allergyId" item="allergyId" separator=",">
             (#{productId}, #{allergyId})
         </foreach>
     </insert>
