@@ -133,8 +133,7 @@ public class SearchService {
         redispopular(msg);
 
         //최근검색어 - 레디스저장
-        Long loginUser = USERPK.getLoginUser().getIuser();
-        log.info("loginuser:{}",loginUser);
+        UserEntity loginUser = USERPK.getLoginUser();
         if (loginUser!=null){
             log.info("product:{}",product);
             redisrecent(product);
