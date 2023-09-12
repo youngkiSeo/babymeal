@@ -82,6 +82,9 @@ public class SearchService {
     }
 
     public SearchSelRes selfilter(String product, int page, int row, String sorter, List<String>filter){
+        if (product.equals(" ")){
+            return null;
+        }
 
         if (sorter==null){
             sorter="0";
