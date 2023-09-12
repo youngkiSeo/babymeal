@@ -43,22 +43,22 @@ public class SearchService {
     }
 
     public List<String> GetRecentSearch() {
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         return range;
     }
 
     public Long deleteRecentSearch(String product){
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
         Long remove = redisTemplate.opsForList().remove(key, 0, product);
         return remove;
     }
     public Long deleteRecentSearchAll(){
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         Long remove = null;
@@ -133,7 +133,8 @@ public class SearchService {
         redispopular(msg);
 
         //최근검색어 - 레디스저장
-        UserEntity loginUser = USERPK.getLoginUser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        log.info("loginuser:{}",loginUser);
         if (loginUser!=null){
             log.info("product:{}",product);
             redisrecent(product);
@@ -217,8 +218,8 @@ public class SearchService {
 
     //최근검색어 저장하는 메소드
     public List<String> redisrecent(String product) {
-        UserEntity loginUser = USERPK.getLoginUser();
-        String key = "a:babymeal" +loginUser.getIuser();
+        Long loginUser = USERPK.getLoginUser().getIuser();
+        String key = "a:babymeal" +loginUser;
 
         //레디스에 중복된 단어를 저장 하지 못하도록 하자
 
@@ -242,6 +243,7 @@ public class SearchService {
         List<String> list = redisTemplate.opsForList().range(key, 0, keysize);
 
         return list;
+
     }
 
 }
