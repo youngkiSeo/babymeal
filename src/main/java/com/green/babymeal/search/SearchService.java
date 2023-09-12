@@ -36,7 +36,7 @@ public class SearchService {
     final int keysize = 5;
 
     public List<SearchPopularVo> list(){
-        String key = "a:babymeal";
+        String key = "a:babyfood";
         ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
         Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 4);  //score순으로 10개 보여줌
         return typedTuples.stream().map(item-> SearchPopularVo.builder().product(item.getValue()).count(item.getScore()).build()).toList();
@@ -44,7 +44,7 @@ public class SearchService {
 
     public List<String> GetRecentSearch() {
         Long loginUser = USERPK.getLoginUser().getIuser();
-        String key = "a:babymeal" +loginUser;
+        String key = "a:babyfood" +loginUser;
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         return range;
@@ -52,13 +52,13 @@ public class SearchService {
 
     public Long deleteRecentSearch(String product){
         Long loginUser = USERPK.getLoginUser().getIuser();
-        String key = "a:babymeal" +loginUser;
+        String key = "a:babyfood" +loginUser;
         Long remove = redisTemplate.opsForList().remove(key, 0, product);
         return remove;
     }
     public Long deleteRecentSearchAll(){
         Long loginUser = USERPK.getLoginUser().getIuser();
-        String key = "a:babymeal" +loginUser;
+        String key = "a:babyfood" +loginUser;
         int start = 0;
         List<String> range = redisTemplate.opsForList().range(key, start, keysize);
         Long remove = null;
@@ -221,7 +221,7 @@ public class SearchService {
     //최근검색어 저장하는 메소드
     public List<String> redisrecent(String product) {
         Long loginUser = USERPK.getLoginUser().getIuser();
-        String key = "a:babymeal" +loginUser;
+        String key = "a:babyfood" +loginUser;
 
         //레디스에 중복된 단어를 저장 하지 못하도록 하자
 
