@@ -26,11 +26,6 @@ public class SearchController {
         return service.list();
     }
 
-    @DeleteMapping("/popular")
-    @Operation(summary = "인기 검색어 삭제", description = "")
-    public Double deleteSearch(String product){
-        return service.deleteRedisPopular(product);
-    }
     @GetMapping("/recent")
     @Operation(summary = "최근 검색어", description = "")
     public List<String> recentSearch(){
@@ -49,7 +44,7 @@ public class SearchController {
     }
 
     @GetMapping()
-    @Operation(summary = "필터",description = ""+
+    @Operation(summary = "",description = ""+
             " sorter: 0이면 판매량 많은 순서 1이면 판매량 적은 순서 <br> "+
             "sorter: 2이면 가격 높은 순서 3이면 가격 낮은 순서<br>")
     public SearchSelRes filterAllergy(@RequestParam String product,
