@@ -3,6 +3,7 @@ package com.green.babymeal.cate;
 
 
 
+import com.green.babymeal.cate.model.CateMaxPage;
 import com.green.babymeal.cate.model.CateSelList;
 import com.green.babymeal.cate.model.CateSelVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +44,7 @@ public class CateController {
             "quantity : 상품 재고량<br>" +
             "saleVoumn : 상품 판매량<br>" +
             "pointRate : 적립률")
-    private List<CateSelVo> selCateList(CateSelList cateSelList, Pageable pageable){
+    private CateMaxPage selCateList(CateSelList cateSelList, Pageable pageable){
         return service.selCateList(cateSelList,pageable);
     }
 
