@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @SuperBuilder
-public class OrderBasketEntity {
+public class OrderBasketEntity  {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT UNSIGNED")
