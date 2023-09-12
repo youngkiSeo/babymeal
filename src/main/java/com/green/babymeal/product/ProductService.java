@@ -2,10 +2,7 @@ package com.green.babymeal.product;
 
 import com.green.babymeal.cate.model.CateSelVo;
 import com.green.babymeal.common.entity.*;
-import com.green.babymeal.common.repository.ProductAllergyRepository;
-import com.green.babymeal.common.repository.ProductCategoryRelationRepository;
-import com.green.babymeal.common.repository.ProductRepository;
-import com.green.babymeal.common.repository.ReviewRepository;
+import com.green.babymeal.common.repository.*;
 import com.green.babymeal.product.model.ProductReviewDto;
 import com.green.babymeal.product.model.ProductSelDto;
 import com.green.babymeal.product.model.ProductVolumeDto;
@@ -37,6 +34,9 @@ public class ProductService {
 
     @Autowired
     private ProductCategoryRelationRepository productCategoryRelationRepository;
+
+    @Autowired
+    private ProductThumbnailRepository productThumbnailRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -82,16 +82,33 @@ public class ProductService {
         log.info("단계 : {}", cateIdLong);
         cateIdLong = productCategoryRelationRepository.findCateIdByProductId(productId);
 
+        // 썸네일 URL 목록을 생성
+        List<ProductThumbnailEntity> thumbnailEntities = productThumbnailRepository.findByProductId(productEntity);
+        List<String> thumbnailList = new ArrayList<>();
+
+        // 최대 4개까지 썸네일을 추가
+        int maxThumbnails = 4;
+        for (ProductThumbnailEntity thumbnailEntity : thumbnailEntities) {
+            if (thumbnailList.size() < maxThumbnails) {
+                thumbnailList.add(thumbnailEntity.getImg());
+            } else {
+                break; // 최대 개수에 도달하면 반복문을 종료
+                // 썸네일 최대 4개만 출력하도록 고정
+            }
+        }
+
         // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
-        ProductSelDto productAllergyDto = new ProductSelDto();
-        productAllergyDto.setPName("[" + cateIdLong + "단계]" + productEntity.getPName());
-        productAllergyDto.setCateId(cateIdLong);
-        productAllergyDto.setDescription(productEntity.getDescription());
-        productAllergyDto.setPPrice(productEntity.getPPrice());
-        productAllergyDto.setPQuantity(productEntity.getPQuantity());
-        productAllergyDto.setSaleVoumn(productEntity.getSaleVolume());
-        productAllergyDto.setAllergyNames(allergyName);
-        return productAllergyDto;
+        ProductSelDto productDataDto = new ProductSelDto();
+        productDataDto.setPName("[" + cateIdLong + "단계]" + productEntity.getPName());
+        productDataDto.setCateId(cateIdLong);
+        productDataDto.setDescription(productEntity.getDescription());
+        productDataDto.setPPrice(productEntity.getPPrice());
+        productDataDto.setPQuantity(productEntity.getPQuantity());
+        productDataDto.setSaleVoumn(productEntity.getSaleVolume());
+        productDataDto.setAllergyNames(allergyName);
+        productDataDto.setDescription(productDataDto.getDescription());
+        productDataDto.setThumbnail(thumbnailList);
+        return productDataDto;
     }
 
     private String getAllergyName(AllergyEntity allergyEntity) {

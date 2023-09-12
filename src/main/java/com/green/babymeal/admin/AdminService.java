@@ -171,8 +171,9 @@ public class AdminService {
 
 
         // 필터2 : 주문번호 기준 필터링
-        if (filter2 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
+        if (filter2 != null && !filter2.isEmpty()) {
+            String partialFilter = filter2.trim();
+            resultList.removeIf(orderRes -> !String.valueOf(orderRes.getOrdercode()).contains(partialFilter));
         }
 
         // 필터3 : 상품번호 , 주문 정보를 필터링할 때 filter3 값과 일치하는 상품 번호가 있는 경우 해당 주문 정보를 유지, 그렇지 않은 경우에만 제거
@@ -252,6 +253,11 @@ public class AdminService {
                 .productName(byOrderId.get(0).getPName())
                 .totalPrice(totalCountPrice) // 전체 가격 설정
                 .givePoint(totalGivePoint)
+                .userMail(byOrderCode.getIuser().getUid())
+                .mobileNb(byOrderCode.getPhoneNm())
+                .iuser(byOrderCode.getIuser().getIuser())
+                .name(byOrderCode.getIuser().getName())
+                .orderMemo(byOrderCode.getRequest()) // 주문메모
                 .build();
 
         return data;
@@ -492,10 +498,19 @@ public class AdminService {
         apcd.setProductId(dto.getProductId());
         apcd.setCateId(dto.getCategory());
         apcd.setCateDetailId(dto.getCateDetail());
+
         adminMapper.delCate(dto.getProductId()); // 상품의 카테고리정보 모두 삭제
         adminMapper.insProductCateRelation(apcd); // 상품의 카테고리정보 입력
         adminMapper.deleteAllergies(dto.getProductId()); // 상품의 알러지정보 모두 삭제
-        adminMapper.updateAllergyId(dto.getAllergyId(), dto.getProductId()); // 상품의 알러지정보 입력
+
+        // 상품의 알러지정보 입력
+        if (dto.getAllergyId() != null && !dto.getAllergyId().isEmpty()) {
+            Map<String, Object> allergyParam = new HashMap<>();
+            allergyParam.put("allergyIds", dto.getAllergyId());
+            allergyParam.put("productId", dto.getProductId());
+            adminMapper.updAllergyId(allergyParam);
+        }
+
         return adminMapper.changeAdminProduct(dto);
     }
 
