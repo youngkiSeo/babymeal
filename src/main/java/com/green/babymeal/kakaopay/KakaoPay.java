@@ -137,9 +137,9 @@ public class KakaoPay {
         params.add("total_amount", allTotalPrice-usepoint); //상품의 총가격
         params.add("tax_free_amount", "100");
         params.add("approved_at", LocalDateTime.now().toString()); //구매일자
-        params.add("approval_url", "http://localhost:8080/kakaopay/kakaopaypayment.html");
-        params.add("cancel_url", "http://localhost:8080/kakaopay/kakaoPayCancel.html");
-        params.add("fail_url", "http://localhost:8080/kakaopay/kakaoPaySuccessFail.html");
+        params.add("approval_url", "http://192.168.0.144:5001/kakaopay/kakaopaypayment.html");
+        params.add("cancel_url", "http://192.168.0.144:5001/kakaopay/kakaoPayCancel.html");
+        params.add("fail_url", "http://192.168.0.144:5001/kakaopay/kakaoPaySuccessFail.html");
 
         //params.add("approval_url", "http://192.168.0.144:5001/kakaopaypayment.html");
         //params.add("cancel_url", "http://192.168.0.144:5001/kakaoPayCancel.html");
