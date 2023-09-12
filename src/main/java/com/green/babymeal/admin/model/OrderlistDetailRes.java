@@ -22,6 +22,11 @@ public class OrderlistDetailRes {
     private List<OrderlistDetailVo> orderDetailVo;
     private int usePoint;
     private int givePoint; // 적립혜택
+    private Long iuser;
+    private String name; // 유저이름
+    private String mobileNb; // 유저휴대폰
+    private String userMail;
+    private String orderMemo;
 //    private List<OrderlistEntity> orderlist;
     //private UserVo userVo;
 }
