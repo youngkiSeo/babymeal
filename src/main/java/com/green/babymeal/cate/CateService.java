@@ -8,6 +8,7 @@ import com.green.babymeal.common.repository.*;
 import io.netty.util.internal.UnstableApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -49,9 +50,9 @@ public class CateService {
     }
 
 
-    public List<CateSelVo> selCateList( CateSelList cateSelList) {
+    public List<CateSelVo> selCateList(CateSelList cateSelList, Pageable pageable) {
 
-        List<CateSelVo> by = cateRepository.findBy(cateSelList.getCateId(), cateSelList.getCateDetailId());
+        List<CateSelVo> by = cateRepository.findBy(cateSelList.getCateId(), cateSelList.getCateDetailId(),pageable);
         if (null != cateSelList.getCateDetailId()) {
             for (int i = 0; i < by.size(); i++) {
                 ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(by.get(i).getProductId());
@@ -62,7 +63,7 @@ public class CateService {
             return by;
 
         } else {
-            List<CateSelVo> bySel = cateRepository.findBySel(cateSelList.getCateId());
+            List<CateSelVo> bySel = cateRepository.findBySel(cateSelList.getCateId(),pageable);
             for (int i = 0; i < bySel.size(); i++) {
                 ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(bySel.get(i).getProductId());
 

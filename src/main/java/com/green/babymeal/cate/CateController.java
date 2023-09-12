@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -42,8 +43,8 @@ public class CateController {
             "quantity : 상품 재고량<br>" +
             "saleVoumn : 상품 판매량<br>" +
             "pointRate : 적립률")
-    private List<CateSelVo> selCateList(CateSelList cateSelList){
-        return service.selCateList(cateSelList);
+    private List<CateSelVo> selCateList(CateSelList cateSelList, Pageable pageable){
+        return service.selCateList(cateSelList,pageable);
     }
 
 
