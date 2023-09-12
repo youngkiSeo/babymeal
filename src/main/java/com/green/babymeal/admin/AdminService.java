@@ -254,6 +254,7 @@ public class AdminService {
                 .totalPrice(totalCountPrice) // 전체 가격 설정
                 .givePoint(totalGivePoint)
                 .userMail(byOrderCode.getIuser().getUid())
+                .mobileNb(byOrderCode.getPhoneNm())
                 .iuser(byOrderCode.getIuser().getIuser())
                 .name(byOrderCode.getIuser().getName())
                 .orderMemo(byOrderCode.getRequest()) // 주문메모
