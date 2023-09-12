@@ -73,8 +73,7 @@ public class CateService {
         } else {
             List<CateSelVo> bySel = cateRepository.findBySel(cateSelList.getCateId(),pageable);
             Page<List<CateSelVo>> bySelCount = cateRepository.findBySelCount(cateSelList.getCateId(), pageable);
-            ;
-            ;
+
             for (int i = 0; i < bySel.size(); i++) {
                 ProductCateRelationEntity productCateRelationEntities = productCategoryRelationRepository.find(bySel.get(i).getProductId());
 
