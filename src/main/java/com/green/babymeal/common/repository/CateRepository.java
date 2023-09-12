@@ -26,7 +26,7 @@ public interface CateRepository extends JpaRepository<CategoryEntity,Long> {
             " group by A.productId")
     List<CateSelVo> findBy(@Param("cateId") Long cateId, @Param("cateDetailId") Long cateDetailId, Pageable pageable);
 
-   @Query("select A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume,A.pointRate " +
+   @Query("select new com.green.babymeal.cate.model.CateSelVo(A.productId,C.img,A.pPrice,A.pName,A.pQuantity,A.saleVolume,A.pointRate) " +
            " from ProductEntity A" +
            " left join ProductCateRelationEntity B" +
            " on A.productId=B.productEntity.productId" +
