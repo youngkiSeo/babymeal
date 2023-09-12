@@ -56,7 +56,7 @@ public class SearchController {
         return selfilter;
     }
 
-    @DeleteMapping
+    @DeleteMapping("/popular")
     public double deleteRedisPopular(@RequestParam String product){
        return service.deleteRedisPopular(product);
     }
