@@ -171,8 +171,9 @@ public class AdminService {
 
 
         // 필터2 : 주문번호 기준 필터링
-        if (filter2 != null) {
-            resultList.removeIf(orderRes -> !orderRes.getOrdercode().equals(Long.parseLong(filter2)));
+        if (filter2 != null && !filter2.isEmpty()) {
+            String partialFilter = filter2.trim();
+            resultList.removeIf(orderRes -> !String.valueOf(orderRes.getOrdercode()).contains(partialFilter));
         }
 
         // 필터3 : 상품번호 , 주문 정보를 필터링할 때 filter3 값과 일치하는 상품 번호가 있는 경우 해당 주문 정보를 유지, 그렇지 않은 경우에만 제거
@@ -252,6 +253,10 @@ public class AdminService {
                 .productName(byOrderId.get(0).getPName())
                 .totalPrice(totalCountPrice) // 전체 가격 설정
                 .givePoint(totalGivePoint)
+                .userMail(byOrderCode.getIuser().getUid())
+                .iuser(byOrderCode.getIuser().getIuser())
+                .name(byOrderCode.getIuser().getName())
+                .orderMemo(byOrderCode.getRequest()) // 주문메모
                 .build();
 
         return data;
