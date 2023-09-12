@@ -101,7 +101,7 @@ public class MypageServicelmpl implements MypageService {
                 int price = orderDetailEntity.get(j).getTotalPrice();
                 totalprice += price;
 
-//                 fullPath = "/img/product/"+orderDetailEntity.get(j).getProductId()+"/"+orderDetailEntity.get(j).getImg();
+                 fullPath = orderDetailEntity.get(j).getImg();
 
 
                 //카테고리 아이디 찾기
@@ -125,7 +125,8 @@ public class MypageServicelmpl implements MypageService {
             String name = "[" + catenum + "단계] " + pName;
             order.get(i).setPName(name);
             order.get(i).setTotalprice(totalprice);
-//            order.get(i).setImg(fullPath);
+            order.get(i).setImg(fullPath);
+
 
 
         }

@@ -73,7 +73,7 @@ public class SearchService {
     public Double deleteRedisPopular(String msg){
         Double babymeal = null;
         try{
-            babymeal = redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, -1);
+            babymeal = redisTemplate.opsForZSet().incrementScore("a:babyfood", msg, -1);
         }catch (Exception e) {
             e.printStackTrace();
         }
