@@ -73,7 +73,7 @@ public class SearchService {
     public Double deleteRedisPopular(String msg){
         Double babymeal = null;
         try{
-            babymeal = redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, -1);
+            babymeal = redisTemplate.opsForZSet().incrementScore("a:babyfood", msg, -1);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -204,13 +204,13 @@ public class SearchService {
     public Double redispopular(String msg){
         Double babymeal = null;
         try{
-             babymeal = redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, 1);
+             babymeal = redisTemplate.opsForZSet().incrementScore("a:babyfood", msg, 1);
         }catch (Exception e) {
             e.printStackTrace();
         }
 
         Runnable task = () -> {
-            redisTemplate.opsForZSet().incrementScore("a:babymeal", msg, -1);
+            redisTemplate.opsForZSet().incrementScore("a:babyfood", msg, -1);
         };
 
         taskScheduler.schedule(task, Date.from(Instant.now().plus(24, ChronoUnit.HOURS)));
