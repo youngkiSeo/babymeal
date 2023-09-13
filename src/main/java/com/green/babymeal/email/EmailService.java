@@ -5,6 +5,7 @@ import com.green.babymeal.email.model.MailSendDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +31,21 @@ public class EmailService {
     @Autowired
     private final EmailMapper mapper;
 
-    public EmailService(EmailMapper mapper) {
+    @Autowired
+    private final PasswordEncoder PW_ENCODER;
+
+
+    public EmailService(EmailMapper mapper, PasswordEncoder pwEncoder) {
         this.mapper = mapper;
+        PW_ENCODER = pwEncoder;
     }
+
     // 앱2차비밀번호 !!! 비밀번호 넣으면 동작하지 않습니다
     // 팀 공동사용중, 비밀번호나 세팅 확인 필요시 슬랙참고해주세요
 
 
-    public void send(MailSendDto dto) {
+
+    public String send(MailSendDto dto) {
 
         log.info("메일 전송 시작");
 
@@ -65,6 +73,7 @@ public class EmailService {
             message.setText(dto.getCtnt());
             Transport.send(message);
             log.info("메일 전송 완료");
+            return "메일 전송 완료";
 
         } catch (AddressException e) {
             e.printStackTrace();
@@ -73,32 +82,32 @@ public class EmailService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return "메일 전송 실패";
     }
 
 
 
     public String findPassword(String mail, String mobileNb) {
-
         // email을 기준으로 DB의 유저 정보와 비교
-//        SignPwDto inputDto = new SignPwDto();
-//        inputDto.setMail(mail);
-//        inputDto.setMobileNb(mobileNb);
-
-        SignPwDto dataDto = SIGN_MAPPER.findPassword(mail);
+        SignPwDto dataDto = mapper.findPassword(mail);
         log.info(" : {}", dataDto.getIuser());
 
         if (mobileNb.equals(dataDto.getMobileNb())){
             log.info("회원정보 일치, 비밀번호 변경 시작");
-            MailSendDto dto = new MailSendDto();
             String pw = updPassword(); // 임시 비밀번호 생성
             log.info(pw);
-//            SIGN_MAPPER.updPassword(dataDto.getIuser(), pw); // DB의 비밀번호 변경
+            String encryptedPw = PW_ENCODER.encode(pw); // 비밀번호 암호화
+
+            // DB의 비밀번호 변경
+            mapper.updPassword(dataDto.getIuser(), encryptedPw);
+
+            // 메일 발송
+            MailSendDto dto = new MailSendDto();
             dto.setTitle("비밀번호 변경 메일입니다");
             dto.setCtnt("임시 비밀번호 : " + pw + "\n 임시 비밀번호를 이용하여 로그인 후, 사용하고자 하는 비밀번호로 변경하세요.");
             dto.setMailAddress(mail);
-            EmailController.postSend(dto);// 메일발송
-            String pw1 = PW_ENCODER.encode(pw);
-            SIGN_MAPPER.updPassword(dataDto.getIuser(), pw1); // DB의 비밀번호 변경
+            send(dto);
+
             return "회원정보 일치 / 임시 비밀번호 메일 발송";
         }
         else {

@@ -15,18 +15,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/mail")
 public class EmailController {
 
-    @Autowired
-    private EmailService service;
+    private EmailService service; // 인스턴스 필드로 유지
 
+    @Autowired
+    public EmailController(EmailService service) {
+        this.service = service;
+    }
 
     @PostMapping("/send")
     @Operation(summary = "메일 발송 기능",description = "사용법 <br>"+
             "mailAddress : 수신자 메일 주소<br>"+
             "title : 메일 제목<br>"+
             "ctnt : 내용 <br>")
-    public void postSend(@RequestBody MailSendDto dto) {
+    public String postSend(@RequestBody MailSendDto dto) {
         log.info("{}", dto);
-        service.send(dto);
+        return service.send(dto);
         // 보내고 싶은 메일이 있다면 dto 객체에 내용 맞춰서 넣은 후 해당 메소드 호출
     }
 
@@ -40,7 +43,4 @@ public class EmailController {
         service.findPassword(mail, mobileNb);
         return service.findPassword(mail, mobileNb);
     }
-
-
-
 }
