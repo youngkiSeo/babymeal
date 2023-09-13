@@ -22,14 +22,14 @@ public class SampleController {
     private KakaoPay kakaopay;
 
 
-    @GetMapping("/kakaoPay")
+    @GetMapping("/kakaopay")
     @Operation(summary = "사용x")
     public void kakaoPayGet() {
 
     }
 
 
-    @PostMapping("/kakaoPay")
+    @PostMapping("/kakaopay")
     @Operation(summary = "카카오페이 결제 실행 시 카카오페이 qr코드 주소 반환",description = "" +
             "카카오페이 바로구매 시 해당 productId 와 count 를 보내야한다<br>" +
             "장바구니에서 카카오페이 구매 시 productId와 count를 안 보내도 됨<br>" +
@@ -51,7 +51,7 @@ public class SampleController {
     }
 
 
-    @GetMapping("/kakaoPaySuccess")
+    @GetMapping("/kakaopaysuccess")
     @Operation(summary = "카카오페이 결제 성공시 accesstoken을 헤더에 박고 pg_token을 쿼리스트링으로 보내야한다")
     public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token,Model model) {
         log.info("kakaoPaySuccess get............................................");

@@ -102,25 +102,21 @@ public class CateService {
 
 
         List<CateSelVo1> fetch = jpaQueryFactory.select(Projections.bean(CateSelVo1.class,
-                        qProductEntity.productId.as("productId"),
-                        qProductThumbnailEntity.img.as("thumbnail"),
-                        qProductEntity.pPrice.as("price"),
-                        qProductEntity.pName.as("name"),
-                        qProductEntity.pQuantity.as("quantity"),
-                        qProductEntity.saleVolume.as("saleVoumn"),
+                        qProductEntity.productId.as("productId"), qProductThumbnailEntity.img.as("thumbnail"),
+                        qProductEntity.pPrice.as("price"), qProductEntity.pName.as("name"),
+                        qProductEntity.pQuantity.as("quantity"), qProductEntity.saleVolume.as("saleVoumn"),
                         qProductEntity.pointRate.as("pointRate")))
                 .from(qProductEntity)
-                .join(qProductCateRelationEntity.productEntity, qProductEntity).on(qProductCateRelationEntity.productEntity.productId.eq(qProductEntity.productId))
-                .join(qProductThumbnailEntity.productId, qProductEntity).on(qProductThumbnailEntity.productId.productId.eq(qProductEntity.productId))
-                .join(qProductAllergyEntity.productId, qProductEntity).on(qProductAllergyEntity.productId.productId.eq(qProductEntity.productId))
-                .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cateSelList.getCateId()).and(qProductEntity.pQuantity.ne(0)).and(qProductEntity.isDelete.eq((byte) 0))
-                        .and(qProductThumbnailEntity.img.isNotNull()).and(cateDetail(cateSelList.getCateDetailId())))
+                .leftJoin(qProductCateRelationEntity).on(qProductCateRelationEntity.productEntity.productId.eq(qProductEntity.productId))
+                .leftJoin(qProductThumbnailEntity).on(qProductThumbnailEntity.productId.productId.eq(qProductEntity.productId))
+                .leftJoin(qProductAllergyEntity).on(qProductAllergyEntity.productId.productId.eq(qProductEntity.productId))
+                .where(qProductCateRelationEntity.categoryEntity.cateId.eq(cateSelList.getCateId()).and(qProductEntity.pQuantity.ne(0))
+                        .and(qProductEntity.isDelete.eq((byte) 0)).and(qProductThumbnailEntity.img.isNotNull())
+                        .and(cateDetail(cateSelList.getCateDetailId())))
                 .groupBy(qProductEntity).fetch();
 
         return fetch;
     }
-
-
         private BooleanExpression cateDetail(Long cateDetailId){
         if(cateDetailId==null){
             return null;
