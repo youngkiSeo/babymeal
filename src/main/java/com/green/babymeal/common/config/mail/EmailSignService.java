@@ -21,7 +21,7 @@ import java.util.Random;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class EmailService {
+public class EmailSignService {
 
     private final JavaMailSender javaMailSender;
     private final RedisService redisService;

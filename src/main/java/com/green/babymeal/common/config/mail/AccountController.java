@@ -1,12 +1,9 @@
 package com.green.babymeal.common.config.mail;
 
-import com.green.babymeal.common.config.mail.model.MailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "이메일 인증, 비밀번호 찾기")
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/login")
 public class AccountController {
-    private final EmailService emailService;
+    private final EmailSignService emailService;
 
     @PostMapping("/mailConfirm")
     @ResponseBody

@@ -167,7 +167,7 @@ spring:
     username: team_a
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 file:
   dir: /home/download
 server:

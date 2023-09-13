@@ -26,7 +26,7 @@ public class EmailService {
 
     private final String user = "green502teamA@gmail.com";
     private final String password = "kqvrkfnjbemoclmb";
-    private final String admin = "dlwlsrb0307@naver.com";
+    private final String admin = "green502teamA@gmail.com";
 
     @Autowired
     private final EmailMapper mapper;
