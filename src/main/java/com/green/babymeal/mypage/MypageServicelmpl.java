@@ -117,7 +117,7 @@ public class MypageServicelmpl implements MypageService {
 
                 String name = "";
                 //이름 찾기
-                if (byProductEntity.size() > 1) {
+                if (orderDetailEntity.size() > 1) {
                     name = byProductEntity.get(0).getProductEntity().getPName() + "외" + (orderDetailEntity.size() - 1) + "개";
                 } else
                     name = byProductEntity.get(0).getProductEntity().getPName();
