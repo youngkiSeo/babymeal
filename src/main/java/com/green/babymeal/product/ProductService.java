@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -97,6 +100,29 @@ public class ProductService {
             }
         }
 
+// 배송예정일 계산
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+        LocalTime afternoonOne = LocalTime.of(13, 0); // 오후 1시
+
+// 주말 확인
+        boolean isSaturday = currentDate.getDayOfWeek() == DayOfWeek.SATURDAY;
+        boolean isSunday = currentDate.getDayOfWeek() == DayOfWeek.SUNDAY;
+
+// 배송일 계산
+        LocalDate estimatedDeliveryDate;
+
+        if (isSaturday) {
+            // 토요일인 경우 배송일 + 3
+            estimatedDeliveryDate = currentDate.plusDays(2);
+        } else if (isSunday || (currentTime.isAfter(afternoonOne) && !isSaturday)) {
+            // 일요일이거나 현재 시각이 오후 1시 이후인 경우 배송일 + 2
+            estimatedDeliveryDate = currentDate.plusDays(1);
+        } else {
+            // 나머지 경우에는 배송일 +1
+            estimatedDeliveryDate = currentDate.plusDays(1);
+        }
+
         // 조회된 상품 정보와 알러지 정보를 매핑하여 ProductSelDto 객체 생성
         ProductSelDto productDataDto = new ProductSelDto();
         productDataDto.setPName("[" + cateIdLong + "단계]" + productEntity.getPName());
@@ -108,6 +134,7 @@ public class ProductService {
         productDataDto.setAllergyNames(allergyName);
         productDataDto.setDescription(productDataDto.getDescription());
         productDataDto.setThumbnail(thumbnailList);
+        productDataDto.setDeliveryDate("예상 배송일은 "+estimatedDeliveryDate+"입니다.");
         return productDataDto;
     }
 

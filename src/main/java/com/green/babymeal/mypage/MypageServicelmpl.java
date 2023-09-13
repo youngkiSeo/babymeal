@@ -73,6 +73,7 @@ public class MypageServicelmpl implements MypageService {
         Byte delYn = 0;
         int num = 10;
         String pName = null;
+        Long productID= 0L;
 
         List<OrderlistSelVo> order = jpaQueryFactory
                 .select(Projections.constructor(OrderlistSelVo.class, orderlist.orderId, orderlist.orderCode, orderlist.createdAt
@@ -95,18 +96,20 @@ public class MypageServicelmpl implements MypageService {
 
             int totalprice = 0;
             String fullPath =null;
+
             Long catenum = 0L;
 
             for (int j = 0; j < orderDetailEntity.size(); j++) {
                 int price = orderDetailEntity.get(j).getTotalPrice();
                 totalprice += price;
 
-//                 fullPath = "/img/product/"+orderDetailEntity.get(j).getProductId()+"/"+orderDetailEntity.get(j).getImg();
+                 fullPath = orderDetailEntity.get(j).getImg();
 
 
                 //카테고리 아이디 찾기
 
                 Long productId = orderDetailEntity.get(j).getProductId();
+                productID = productId;
                 ProductEntity productEntity = ProductEntity.builder().productId(productId).build();
                 List<ProductCateRelationEntity> byProductEntity = productcaterelationRep.findByProductEntity_ProductId(productEntity.getProductId());
                 Long cateId = byProductEntity.get(0).getCategoryEntity().getCateId();
@@ -119,13 +122,16 @@ public class MypageServicelmpl implements MypageService {
                 } else
                     name = byProductEntity.get(0).getProductEntity().getPName();
 
+
                 pName = name;
             }
 
             String name = "[" + catenum + "단계] " + pName;
             order.get(i).setPName(name);
             order.get(i).setTotalprice(totalprice);
-//            order.get(i).setImg(fullPath);
+            order.get(i).setImg(fullPath);
+            order.get(i).setProductId(productID);
+
 
 
         }
