@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.babymeal.email.EmailMapper">
+    <select id="findPassword">
+            select uid mail, mobile_nb mobileNb, iuser
+            from user
+            where uid = #{mail}
+        </select>
+        <update id="updPassword">
+            update user
+            SET password = #{pw}
+            where iuser = #{iuser}
+        </update>
+
+        <select id="emailCheck">
+            select email from user
+            where uid=#{email}
+        </select>
+</mapper>
