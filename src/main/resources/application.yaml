@@ -5,7 +5,7 @@ app:
     access-secret: DeaguGreenArtAcademyClass502ForJavaSpringBoot
     accessTokenExpiry: 3_600_000 # 1시간
     refresh-secret: ForJavaSpringBootClass502DaeguGreenArtAcademy
-    refreshTokenExpiry: 1_296_000_000 #
+    refreshTokenExpiry: 1_296_000_000 # 15일
     redis-access-black-key: "A-AT-BLACK"
     redis-refresh-key: "A-RT"
   oauth2:
@@ -21,12 +21,28 @@ springboot:
     token-type: Bearer
 
 spring:
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: yummeal@naver.com
+    password: ghost123!
+    properties:
+      debug: true
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            trust: smtp.naver.com
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-file-size: 3MB
       max-request-size: 12MB
   main:
     allow-bean-definition-overriding: true
+
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -91,6 +107,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
 
 # cors
 cors:
@@ -160,3 +177,4 @@ app:
   oauth2:
     authorized-redirect-uris:
       - http://192.168.0.144:5001/oauth/redirect
+      - http://112.222.157.156:5001/oauth/redirect
