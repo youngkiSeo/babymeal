@@ -14,4 +14,5 @@ public class ProductSelDto {
     private Long cateId;
     private List<String> allergyNames;
     private List<String> thumbnail;
+    private String deliveryDate;
 }
