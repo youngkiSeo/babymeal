@@ -26,7 +26,7 @@
             })
     }
     function postKakaoPaySuccess(pg_token, accessToken) {
-        fetch(`/api/kakaopaysuccess?pg_token=${pg_token}`, {
+        fetch(`/api/kakaoPaySuccess?pg_token=${pg_token}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`

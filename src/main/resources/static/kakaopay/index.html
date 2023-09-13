@@ -6,7 +6,7 @@
 </head>
 
 <body>
-  <form id="frm" action="/api/kakaopay" method="post">
+  <form id="frm" action="/api/kakaoPay" method="post">
     <div>productId : <input type="text" name="productId" value="1"></div>
     <div>count : <input type="number" name="count" value="1"></div>
     <div>address : <input type="text" name="address" value="대구시"></div>
@@ -48,7 +48,7 @@
       usepoint: $frm.usepoint.value
     }
     console.log(params);
-    fetch('/api/kakaopay', {
+    fetch('/api/kakaoPay', {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
