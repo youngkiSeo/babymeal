@@ -38,7 +38,7 @@ public class EmailSignService {
         MimeMessage  message = javaMailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, to); // to 보내는 대상
-        message.setSubject("ㅇㅇㅇ 회원가입 인증 코드: "); //메일 제목
+        message.setSubject("Yummeal 회원가입 인증 코드: "); //메일 제목
 
         // 메일 내용 메일의 subtype을 html로 지정하여 html문법 사용 가능
         String msg="";
