@@ -49,4 +49,8 @@ public class CateController {
     }
 
 
+    @GetMapping("/dsl")
+    private List selCateDSL(@ModelAttribute CateSelList cateSelList){
+        return service.selCateDSL(cateSelList);
+    }
 }
