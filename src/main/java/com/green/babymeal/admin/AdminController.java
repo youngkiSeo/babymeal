@@ -10,7 +10,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -45,14 +48,14 @@ public class AdminController {
             "  ]<br>" +
             "} ] 입니다. > 생성날짜 기준 오름차순 정렬, 내림차순은 desc 입니다 <br>" +
             "변수명, asc/desc(오름차/내림차 택1) 해서 정렬가능<br>")
-    public Page<OrderlistRes> allOrder(@RequestParam(required = false) String filter1,
+    public OrderSelVo allOrder(@RequestParam(required = false) String filter1,
                                        @RequestParam(required = false) String filter2,
                                        @RequestParam(required = false) String filter3,
                                        @RequestParam(required = false) String filter4,
                                        @RequestParam(required = false) String filter5,
                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                       Pageable pageable) {
+                                       @ParameterObject @PageableDefault(sort = "orderId",page = 0, direction = Sort.Direction.ASC)Pageable pageable) {
         if (startDate == null) {
             // 올해 1월 1일부터 오늘까지
             LocalDate today = LocalDate.now();

@@ -75,7 +75,7 @@ public class AdminService {
     QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
 
 
-    public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
+    public OrderSelVo allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4, String filter5,
                                        Pageable pageable) {
         Page<OrderlistEntity> outputOrderlist = orderlistRepository.findByCreatedAtBetween(startDate, endDate, pageable);
@@ -211,7 +211,20 @@ public class AdminService {
             pageable = PageRequest.of(pageable.getPageNumber(), (int) outputOrderlist.getTotalElements());
         }
 
-        return new PageImpl<>(resultList, pageable, outputOrderlist.getTotalElements());
+//        return new PageImpl<>(resultList, pageable, outputOrderlist.getTotalElements());
+
+        OrderSelVo vo = new OrderSelVo();
+        vo.setPage(pageable.getPageNumber());
+        int maxpage = 0;
+        if (resultList.size()/ pageable.getPageSize() < 1){
+            maxpage = (resultList.size()/ pageable.getPageSize())+1;
+        }
+        else maxpage = resultList.size()/ pageable.getPageSize();
+        vo.setMaxPage(maxpage);
+        vo.setAllcount((int)orderlistRepository.count());
+        vo.setCount(resultList.size());
+        vo.setList(resultList);
+        return vo;
     }
 
 
