@@ -518,13 +518,13 @@ public class AdminService {
         adminMapper.delCate(dto.getProductId()); // 상품의 카테고리정보 모두 삭제
         adminMapper.insProductCateRelation(apcd); // 상품의 카테고리정보 입력
         adminMapper.deleteAllergies(dto.getProductId()); // 상품의 알러지정보 모두 삭제
+        List<Long> allergyIdList = dto.getAllergyId();
 
         // 상품 알러지 존재시에만, 알러지정보 입력
-        if (dto.getAllergyId() != null && !dto.getAllergyId().isEmpty()) {
-            Map<String, Object> allergyParam = new HashMap<>();
-            allergyParam.put("allergyIds", dto.getAllergyId());
-            allergyParam.put("productId", dto.getProductId());
-            adminMapper.updAllergyId(allergyParam);
+        if (allergyIdList != null && !allergyIdList.isEmpty()) {
+            // 알러지 정보가 들어오면 데이터 업데이트
+            // 들어오지 않는 경우 알러지 데이터는 업데이트 하지 않음
+            adminMapper.insertAllergyId(allergyIdList, dto.getProductId());
         }
 
         return adminMapper.changeAdminProduct(dto);

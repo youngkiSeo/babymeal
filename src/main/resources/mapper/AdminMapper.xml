@@ -58,13 +58,14 @@
         </foreach>
     </insert>
 
-    <!-- 수정시 알러지 등록 -->
-    <insert id="updAllergyId" parameterType="java.util.Map">
-        <foreach collection="allergyIds" item="allergyId" separator=";">
-            INSERT INTO product_allergy (product_id, allergy_id)
-            VALUES (#{productId}, #{allergyId})
-        </foreach>
-    </insert>
+<!--    &lt;!&ndash; 수정시 알러지 등록 &ndash;&gt;-->
+<!--    <insert id="updAllergyId" parameterType="java.util.Map">-->
+<!--        INSERT INTO product_allergy-->
+<!--        (product_id, allergy_id)-->
+<!--        <foreach collection="allergyId" item="allergyId" separator=";">-->
+<!--            VALUES (#{productId}, #{allergyId})-->
+<!--        </foreach>-->
+<!--    </insert>-->
     <!-- 기존 알러지 삭제 -->
     <delete id="deleteAllergies" parameterType="java.lang.Long">
         DELETE FROM product_allergy
