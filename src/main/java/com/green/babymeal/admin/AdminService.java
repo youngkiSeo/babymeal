@@ -215,12 +215,13 @@ public class AdminService {
 
         OrderSelVo vo = new OrderSelVo();
         vo.setPage(pageable.getPageNumber());
-        int maxpage = 0;
+        /*int maxpage = 0;
         if (resultList.size()/ pageable.getPageSize() < 1){
-            maxpage = (resultList.size()/ pageable.getPageSize())+1;
+            maxpage = (int)(Math.ceil(resultList.size()/ (double)pageable.getPageSize()));
         }
-        else maxpage = resultList.size()/ pageable.getPageSize();
+        else maxpage = (int)(Math.ceil(resultList.size()/ (double)pageable.getPageSize()));
         vo.setMaxPage(maxpage);
+        vo.setMaxPage(pageable.getPageSize());*/
         vo.setAllcount((int)orderlistRepository.count());
         vo.setCount(resultList.size());
         vo.setList(resultList);

@@ -27,7 +27,7 @@ public interface OrderlistRepository extends JpaRepository<OrderlistEntity, Long
     @Query("SELECT A " +
             "FROM OrderlistEntity A " +
             "WHERE A.orderCode = :orderCode")
-    Page<OrderlistDetailRes> findOrderById(Long orderCode);
+    List<OrderlistDetailRes> findOrderById(Long orderCode);
     OrderlistEntity findByOrderCode(Long orderCode); // 주문번호로 데이터 조회
 
     List<OrderlistEntity> findByOrderCodeIn(List<Long> orderCode);
