@@ -75,15 +75,13 @@ public class AdminService {
     QProductThumbnailEntity thumbnail = QProductThumbnailEntity.productThumbnailEntity;
 
 
-    public Page<OrderlistRes> allOrder(LocalDate startDate, LocalDate endDate,
+    public OrderSelVo allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4, String filter5,
                                        Pageable pageable) {
-        List<OrderlistEntity> orders = orderlistRepository.findByCreatedAtBetween(startDate, endDate);
-        log.info("결과1 : {}" , orders.stream().toList());
+        Page<OrderlistEntity> outputOrderlist = orderlistRepository.findByCreatedAtBetween(startDate, endDate, pageable);
         List<OrderlistRes> resultList = new ArrayList<>();
 
-
-        for (OrderlistEntity order : orders) {
+        for (OrderlistEntity order : outputOrderlist.getContent()) {
             List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderCode());
 
             // 주문 관련 정보 추출
@@ -132,7 +130,9 @@ public class AdminService {
             resultList.add(orderlistRes);
         }
 
-        // 필터링
+
+
+            //resultList.get(1).getOrderDetailVo().get(1).getProductName(); 의 index를 순회해야 함
         if (filter1 != null) { // 상품명 검색
             List<String> filter1Tokens = getTwiiterApiWord(filter1);
             log.info("리스트 : {}", filter1Tokens);
@@ -164,8 +164,11 @@ public class AdminService {
             }
 
             // 필터링된 주문 목록으로 결과를 업데이트
+            // 바로 업데이트했더니 인덱스 오류나서 부득이 임시목록에서 값 옮겨담는 것으로 처리
             resultList = filteredOrders;
         }
+
+
 
         // 필터2 : 주문번호 기준 필터링
         if (filter2 != null && !filter2.isEmpty()) {
@@ -193,6 +196,8 @@ public class AdminService {
             log.info("??? : {}", resultList.get(0).getShipment());
 
             resultList.removeIf(orderlistRes -> orderlistRes.getShipment() == null || orderlistRes.getShipment().longValue() != Long.parseLong(filter4));
+
+            //resultList.removeIf(orderlistRes -> orderlistRes.getShipment() == null || !orderlistRes.getShipment().equals(filterValue));
         }
 
         //필터5 : 구매자이름
@@ -200,20 +205,27 @@ public class AdminService {
             resultList.removeIf(orderlistRes -> !orderlistRes.getUserVo().getName().equals(filter5));
         }
 
-        // 페이징 적용
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List<OrderlistRes> pageList;
 
-        if (resultList.size() < startItem) {
-            pageList = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, resultList.size());
-            pageList = resultList.subList(startItem, toIndex);
+        // size가 총 항목 수보다 큰 경우 size를 총 항목 수로 조정
+        if (pageable.getPageSize() > outputOrderlist.getTotalElements()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), (int) outputOrderlist.getTotalElements());
         }
 
-        return new PageImpl<>(pageList, pageable, resultList.size());
+//        return new PageImpl<>(resultList, pageable, outputOrderlist.getTotalElements());
+
+        OrderSelVo vo = new OrderSelVo();
+        vo.setPage(pageable.getPageNumber());
+        /*int maxpage = 0;
+        if (resultList.size()/ pageable.getPageSize() < 1){
+            maxpage = (int)(Math.ceil(resultList.size()/ (double)pageable.getPageSize()));
+        }
+        else maxpage = (int)(Math.ceil(resultList.size()/ (double)pageable.getPageSize()));
+        vo.setMaxPage(maxpage);
+        vo.setMaxPage(pageable.getPageSize());*/
+        vo.setAllcount((int)orderlistRepository.count());
+        vo.setCount(resultList.size());
+        vo.setList(resultList);
+        return vo;
     }
 
 
