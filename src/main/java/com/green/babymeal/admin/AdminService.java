@@ -78,10 +78,10 @@ public class AdminService {
     public OrderSelVo allOrder(LocalDate startDate, LocalDate endDate,
                                        String filter1, String filter2, String filter3, String filter4, String filter5,
                                        Pageable pageable) {
-        Page<OrderlistEntity> outputOrderlist = orderlistRepository.findByCreatedAtBetween(startDate, endDate, pageable);
+        List<OrderlistEntity> orders = orderlistRepository.findByCreatedAtBetween(startDate, endDate);
         List<OrderlistRes> resultList = new ArrayList<>();
 
-        for (OrderlistEntity order : outputOrderlist.getContent()) {
+        for (OrderlistEntity order : orders) {
             List<OrderDetailEntity> orderDetails = orderDetailRepository.findByOrderId_OrderCode(order.getOrderCode());
 
             // 주문 관련 정보 추출
@@ -205,27 +205,27 @@ public class AdminService {
             resultList.removeIf(orderlistRes -> !orderlistRes.getUserVo().getName().equals(filter5));
         }
 
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<OrderlistRes> pageList;
 
-        // size가 총 항목 수보다 큰 경우 size를 총 항목 수로 조정
-        if (pageable.getPageSize() > outputOrderlist.getTotalElements()) {
-            pageable = PageRequest.of(pageable.getPageNumber(), (int) outputOrderlist.getTotalElements());
+        if (resultList.size() < startItem) {
+            pageList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, resultList.size());
+            pageList = resultList.subList(startItem, toIndex);
         }
 
-//        return new PageImpl<>(resultList, pageable, outputOrderlist.getTotalElements());
+        //결과 반환
+        OrderSelVo orderSelVo = new OrderSelVo();
+        orderSelVo.setPage(pageable.getPageNumber());
+        orderSelVo.setCount(pageable.getPageSize());
+        orderSelVo.setList(pageList);
+        orderSelVo.setAllcount(resultList.size());
+        orderSelVo.setMaxPage((int) Math.ceil(resultList.size()/pageable.getPageSize()));
 
-        OrderSelVo vo = new OrderSelVo();
-        vo.setPage(pageable.getPageNumber());
-        /*int maxpage = 0;
-        if (resultList.size()/ pageable.getPageSize() < 1){
-            maxpage = (int)(Math.ceil(resultList.size()/ (double)pageable.getPageSize()));
-        }
-        else maxpage = (int)(Math.ceil(resultList.size()/ (double)pageable.getPageSize()));
-        vo.setMaxPage(maxpage);
-        vo.setMaxPage(pageable.getPageSize());*/
-        vo.setAllcount((int)orderlistRepository.count());
-        vo.setCount(resultList.size());
-        vo.setList(resultList);
-        return vo;
+        return orderSelVo;
     }
 
 

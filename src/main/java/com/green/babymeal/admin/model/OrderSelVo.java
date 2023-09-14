@@ -8,7 +8,7 @@ import java.util.List;
 public class OrderSelVo {
     private int page;
     private int count;
-//    private int maxPage;
+    private int maxPage;
     private int Allcount;
     private List list;
 }
