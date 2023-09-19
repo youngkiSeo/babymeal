@@ -1,5 +1,5 @@
 # Project
-JAVA / MariaDB / Spring Boot / JSP / MyBatis
+JAVA / MariaDB / Spring Boot / JPA / MyBatis
 
 
 ## 🖥️ 프로젝트 소개
