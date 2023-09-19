@@ -1,6 +1,9 @@
+<p align="center">
+  <img src="https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b">
+</p>
+
 # Project
 JAVA / MariaDB / Spring Boot / JSP / MyBatis
-
 
 ## 🖥️ 프로젝트 소개
 이유식 판매 쇼핑몰 프로젝트 <br>
