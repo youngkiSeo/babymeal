@@ -88,22 +88,14 @@ ID / PW : green502teama@gmail.com
 <img src="[https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b](https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492)https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492">
 </p>
 
-<table align="center">
-  <tr>
-    <th>열 1 제목</th>
-    <th>열 2 제목</th>
-    <th>열 3 제목</th>
-  </tr>
-  <tr>
-    <td>셀 1</td>
-    <td>셀 2</td>
-    <td>셀 3</td>
-  </tr>
-  <tr>
-    <td><p align="center">
-<img src="[https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b](https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492)https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492">
-</p></td>
-    <td>셀 5</td>
-    <td>셀 6</td>
-  </tr>
-</table>
+
+| 이미지1         | 이미지2         | 이미지3         |
+|----------------|----------------|----------------|
+| <img src="https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b"> | ![이미지2](이미지2의 URL) | ![이미지3](이미지3의 URL) |
+| 이미지이름1    | 이미지이름2    | 이미지이름3    |
+|----------------|----------------|----------------|
+| ![이미지4](이미지4의 URL) | ![이미지5](이미지5의 URL) | ![이미지6](이미지6의 URL) |
+| 이미지이름4    | 이미지이름5    | 이미지이름6    |
+|----------------|----------------|----------------|
+| ![이미지7](이미지7의 URL) | ![이미지8](이미지8의 URL) | ![이미지9](이미지9의 URL) |
+| 이미지이름7    | 이미지이름8    | 이미지이름9    |
