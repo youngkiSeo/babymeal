@@ -78,3 +78,32 @@ ID / PW : green502teama@gmail.com
 
 ## 📌 결과 페이지
 * 스크린샷 추가예정
+
+<p align="center">
+<img src="https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b">
+</p>
+
+- 메인 페이지
+  <p align="center">
+<img src="[https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b](https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492)https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492">
+</p>
+
+<table align="center">
+  <tr>
+    <th>열 1 제목</th>
+    <th>열 2 제목</th>
+    <th>열 3 제목</th>
+  </tr>
+  <tr>
+    <td>셀 1</td>
+    <td>셀 2</td>
+    <td>셀 3</td>
+  </tr>
+  <tr>
+    <td><p align="center">
+<img src="[https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b](https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492)https://github.com/youngkiSeo/babymeal/assets/132994346/e6cb6d38-d900-4a97-b6c5-422e0cf74492">
+</p></td>
+    <td>셀 5</td>
+    <td>셀 6</td>
+  </tr>
+</table>
