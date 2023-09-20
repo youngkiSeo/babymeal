@@ -25,12 +25,27 @@ JAVA / MariaDB / Spring Boot / JPA / MyBatis <br>
 
 ### 🧑‍🤝‍🧑 맴버구성 (백엔드)
 - 팀장  : 서영기
-- Github: https://github.com/youngkiSeo
-- Mail: matep8@knou.ac.kr
-- 담당파트: 유저 페이지 검색/마이페이지/주문
+> Github: https://github.com/youngkiSeo <br>
+> Mail: matep8@knou.ac.kr <br>
+> 담당파트: 유저 페이지 검색/마이페이지/주문 <br>
 - 팀원1 : 김다율
+> Github: https://github.com/Large-Hedgehog <br>
+> Mail: kdy12061004@gmail.com <br>
+> 담당파트: 관리자페이지 상품/주문 조회 및 검색, 웹에디터, 이메일발송/PW찾기, 상품조회
 - 팀원2 : 이진규
+> Github: 적어주세요 <br>
+> Mail: 적어주세요 <br>
+> 담당파트: 
 - 팀원3 : 홍기윤
+> Github: 적어주세요 <br>
+> Mail: 적어주세요 <br>
+> 담당파트: 
+
+
+> 프론트엔드 팀 깃허브
+> 1차(유저페이지) https://github.com/devwjdalsdl07/yummeal-admin
+> 2차(관리자페이지) https://github.com/devwjdalsdl07/Yummeal
+
 
 #### ⚙️ 개발 환경
 - `Java`
