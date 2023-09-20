@@ -25,6 +25,9 @@ JAVA / MariaDB / Spring Boot / JPA / MyBatis <br>
 
 ### 🧑‍🤝‍🧑 맴버구성 (백엔드)
 - 팀장  : 서영기
+- Github: https://github.com/youngkiSeo
+- Mail: matep8@knou.ac.kr
+- 담당파트: 유저 페이지 검색/마이페이지/주문
 - 팀원1 : 김다율
 - 팀원2 : 이진규
 - 팀원3 : 홍기윤
