@@ -20,8 +20,8 @@ JAVA / MariaDB / Spring Boot / JPA / MyBatis <br>
 * 23.07.14일 - 23.09.13일 
 * 1차 : 23.07.14일 - 23.08.13
 * 2차 : 23.08.14일 - 23.09.13 <br>
-* 1차 기능 구현은 MyBatis이용
-* 2차 프로젝트 기간동안 1차의 내용을 MyBatis -> JPA로 변경하여 구현 및 기능 추가
+  <small><i> 1차 기능 구현은 MyBatis이용<br></i></small>
+  <small><i> 2차 프로젝트 기간동안 1차의 내용을 MyBatis -> JPA로 변경 및 기능 추가</i></small>
 
 ### 🧑‍🤝‍🧑 맴버구성 (백엔드)
 - 팀장  : 서영기
@@ -32,9 +32,9 @@ JAVA / MariaDB / Spring Boot / JPA / MyBatis <br>
 #### ⚙️ 개발 환경
 - `Java`
 - `JDK 1.8.0`
-- **Framework** : Springboot
-- **Database** : MariaDB
-- **ORM** : Mybatis
+- `Framework : Springboot`
+- `Database : MariaDB`
+- `ORM : Mybatis`
 
 ## 📌 주요 기능
 #### 로그인 및 회원가입 
@@ -87,7 +87,7 @@ etc. 회원탈퇴, 배송상태 변경 등의 관리자용 기능
 
 ## 📌 결과 페이지
 
-|                                                                                                      |                                                                                                          | ??????                                                                                                   |
+|                                                                                                      |                                                                                                          |                                                                                                    |
 |----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
 | <img src="https://github.com/youngkiSeo/babymeal/assets/132994346/416253d6-efc0-4c12-b417-6f049dc35b4b"> | <img src="https://github.com/youngkiSeo/babymeal/assets/132994346/2606b755-84dc-442a-bbe4-31d5c5ca1dee"> | <img src="https://github.com/youngkiSeo/babymeal/assets/132994346/153f1d8d-ded6-4543-b311-fd41b27f64bf"> |
 | Intro                                                                                                    | 메인 페이지                                                                                                   | 상품 전체보기                                                                                                  |
