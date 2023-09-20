@@ -9,12 +9,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Tag(name = "메일발송")
+@Tag(name = "메일발송, 현재 사용 XXXX")
 @RestController
 @EnableScheduling
 @RequestMapping("/api/mail")
 public class EmailController {
 
+    //1차 당시 사용했던 메일 발송 및 비밀번호 찾기 소스코드입니다
+    //현재 common config mail패키지 사용
+    //이 코드의 동작을 원할 경우 common config mail패키지 및 maven 주석처리 필요
     private EmailService service; // 인스턴스 필드로 유지
 
     @Autowired
