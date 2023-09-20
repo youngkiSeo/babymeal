@@ -1,5 +1,6 @@
 package com.green.babymeal.product.model;
 
+import com.green.babymeal.common.entity.UserEntity;
 import lombok.Data;
 
 @Data

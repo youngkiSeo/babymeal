@@ -1,15 +1,19 @@
 package com.green.babymeal.product;
 
-import com.green.babymeal.cate.model.CateSelVo;
+import com.green.babymeal.common.config.security.AuthenticationFacade;
 import com.green.babymeal.common.entity.*;
 import com.green.babymeal.common.repository.*;
 import com.green.babymeal.product.model.ProductReviewDto;
+import com.green.babymeal.product.model.ProductReviewSelDto;
 import com.green.babymeal.product.model.ProductSelDto;
 import com.green.babymeal.product.model.ProductVolumeDto;
 import com.green.babymeal.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -17,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,7 +28,8 @@ import java.util.stream.Collectors;
 public class ProductService {
 
 
-    private final Long USERPk = 1L; // 테스트용 임시 유저 pk
+    private final AuthenticationFacade USERPK;
+
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -44,25 +48,48 @@ public class ProductService {
     @Autowired
     private UserRepository userRepository;
 
+    public ProductService(AuthenticationFacade userpk) {
+        USERPK = userpk;
+    }
+
     public int postReview(ProductReviewDto dto) {
         ProductEntity product = new ProductEntity();
         product.setProductId(dto.getProductId());
         UserEntity user = new UserEntity();
-        user.setIuser(USERPk);
+        user.setIuser(USERPK.getLoginUser().getIuser());
 
         // Review 생성
         ReviewEntity review = new ReviewEntity();
         review.setCtnt(dto.getCtnt());
         review.setProductId(product); // Product 객체 참조 설정
-        review.setIuser(user); // User 객체 참조 설정
+        review.setIuser(USERPK.getLoginUser()); // User 객체 참조 설정
         reviewRepository.save(review);
         return 1;
     }
 
-    public List<ReviewEntity> getReviewById(Long productId) {
-        ProductEntity entity = new ProductEntity();
-        entity.setProductId(productId);
-        return reviewRepository.findAllByProductId(entity);
+    public Page<ProductReviewSelDto> getReviewById(Long productId, Pageable pageable) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setProductId(productId);
+        Page<ReviewEntity> reviewData = reviewRepository.findAllByProductId(productEntity, pageable);
+
+        // ReviewEntity를 ProductReviewSelDto로 변환
+        List<ProductReviewSelDto> productReviewList = reviewData.getContent().stream()
+                .map(reviewEntity -> {
+                    UserEntity userEntity = reviewEntity.getIuser();
+                    String userName = (userEntity != null) ? userEntity.getName() : "no name";
+                    Long iuser = (userEntity != null) ? userEntity.getIuser() : 0;
+
+                    return ProductReviewSelDto.builder()
+                            .reviewId(reviewEntity.getReviewId())
+                            .ctnt(reviewEntity.getCtnt())
+                            .iuser(iuser)
+                            .userName(userName)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        // 수정된 페이지 객체를 반환
+        return new PageImpl<>(productReviewList, pageable, reviewData.getTotalElements());
     }
 
     public List<ProductVolumeDto> selProductVolumeYearMonth(int year, int month) {
