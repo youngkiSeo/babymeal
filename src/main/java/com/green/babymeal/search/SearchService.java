@@ -132,6 +132,15 @@ public class SearchService {
             msg = typoText;
         }
 
+
+
+        //트위터 형태소 분석기
+
+        CharSequence normalized = TwitterKoreanProcessorJava.normalize(msg);
+        Seq<KoreanTokenizer.KoreanToken> tokens = TwitterKoreanProcessorJava.tokenize(normalized);
+        Seq<KoreanTokenizer.KoreanToken> stemmed = TwitterKoreanProcessorJava.stem(tokens);
+        List<String> text = TwitterKoreanProcessorJava.tokensToJavaStringList(stemmed);
+
         //인기검색어 - 레디스저장
         redispopular(msg);
 
@@ -141,14 +150,6 @@ public class SearchService {
             log.info("product:{}",product);
             redisrecent(product);
         }
-
-        //트위터 형태소 분석기
-
-        CharSequence normalized = TwitterKoreanProcessorJava.normalize(msg);
-        Seq<KoreanTokenizer.KoreanToken> tokens = TwitterKoreanProcessorJava.tokenize(normalized);
-        Seq<KoreanTokenizer.KoreanToken> stemmed = TwitterKoreanProcessorJava.stem(tokens);
-        List<String> text = TwitterKoreanProcessorJava.tokensToJavaStringList(stemmed);
-
         StringBuffer sb = new StringBuffer();
 
         if ( text.size() > 0){
