@@ -23,23 +23,19 @@ JAVA / MariaDB / Spring Boot / JPA / MyBatis <br>
   <small><i> 1차 기능 구현은 MyBatis이용<br></i></small>
   <small><i> 2차 프로젝트 기간동안 1차의 내용을 MyBatis -> JPA로 변경 및 기능 추가</i></small>
 
-### 🧑‍🤝‍🧑 맴버구성 (백엔드)
+### 🧑‍🤝‍🧑 멤버구성 (백엔드)
 - 팀장  : 서영기
 > Github: https://github.com/youngkiSeo <br>
 > Mail: matep8@knou.ac.kr <br>
-> 담당파트: 유저 페이지 검색/마이페이지/주문 <br>
+> 담당파트: 유저용 검색/마이페이지/주문 <br>
 - 팀원1 : 김다율
 > Github: https://github.com/Large-Hedgehog <br>
 > Mail: kdy12061004@gmail.com <br>
 > 담당파트: 관리자페이지 상품/주문 조회 및 검색, 웹에디터, 이메일발송/PW찾기, 상품조회
 - 팀원2 : 이진규
-> Github: 적어주세요 <br>
-> Mail: 적어주세요 <br>
-> 담당파트: 
-- 팀원3 : 홍기윤
-> Github: 적어주세요 <br>
-> Mail: 적어주세요 <br>
-> 담당파트: 
+> Github: https://github.com/Hackchobo/Hackchobo <br>
+> Mail: jingu0307@gmail.com <br>
+> 담당파트: 회원가입, 소셜/시큐리티 로그인, 아기정보 관련 파트, 관리자-유저파트
 
 
 > 프론트엔드 팀 깃허브
@@ -72,7 +68,8 @@ JAVA / MariaDB / Spring Boot / JPA / MyBatis <br>
 
 #### 검색
 - 알러지/이유식 단계를 이용한 필터링 기능
-- 형태소 분석기 및 한영변환을 이용하여 검색기능 구현
+- 검색어에 형태소 분석기 및 한영변환 적용
+- 오타가 있거나 상품의 이름을 정확히 기억하지 못할 때에도 최대한 원하는 검색 결과를 확인할 수 있도록 구현
 - redis 활용한 인기/최근검색어 조회
 
 #### 상품
